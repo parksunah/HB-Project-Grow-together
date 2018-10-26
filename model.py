@@ -84,24 +84,25 @@ class Salary(db.Model):
     __tablename__ = "salaries"
 
     salary_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    date = db.Column(db.DateTime, nullable=False)
-    salary = db.Column(db.Integer, nullable=False)
-    location = db.Column(db.String, nullable=False)
-    job_title = db.Column(db.String, nullable=False)
+    date = db.Column(db.DateTime, nullable=False, unique=False)
+    salary = db.Column(db.Integer, nullable=False, unique=False)
+    location = db.Column(db.String, nullable=False, unique=False)
+    job_title = db.Column(db.String, nullable=False, unique=False)
     company_id = db.Column(db.Integer, db.ForeignKey("companys.company_id"), nullable=False)
 
     company = db.relationship("Company", backref=db.backref("salaries"))
 
-    def __init__(self, date, salary, location, job_title):
+    def __init__(self, date, job_title, salary, location):
         self.date = date
+        self.job_title = job_title
         self.salary = salary
         self.location = location
-        self.job_title = job_title
+        
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return f"<Salary salary_id={self.salary_id}, date={self.date}, salary={self.salary}, location={self.location}, job_title={self.job_title}, company_id={self.company_id}>"
+        return f"<Salary salary_id={self.salary_id}, date={self.date}, job_title={self.job_title}, salary={self.salary}, location={self.location}, company_id={self.company_id}>"
 
 
 
@@ -125,6 +126,8 @@ if __name__ == "__main__":
     from server import app
     connect_to_db(app)
     print("Connected to DB.")   
+
+    
 
 
 
