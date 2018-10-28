@@ -4,7 +4,7 @@ from flask import Flask, render_template, redirect, request, flash, session, url
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import Company, Industry, Interest, Salary, connect_to_db, db
-
+from forms import CompanyForm
 
 
 app = Flask(__name__)
@@ -19,9 +19,10 @@ app.secret_key = "ABC"
 app.jinja_env.undefined = StrictUndefined
 
 
-# @app.route("/")
-# def create_view():
-
+@app.route('/form')
+def sdg():
+    form = CompanyForm()
+    return render_template('sdg.html', form=form)
 
 
 
@@ -35,8 +36,8 @@ if __name__ == "__main__":
     # make sure templates, etc. are not cached in debug mode
     app.jinja_env.auto_reload = app.debug
 
-    connect_to_db(app)
-    db.create_all()
+    # connect_to_db(app)
+    # db.create_all()
 
     # Use the DebugToolbar
     DebugToolbarExtension(app)

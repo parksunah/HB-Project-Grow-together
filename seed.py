@@ -1,109 +1,110 @@
 import datetime
 from sqlalchemy import func
+from pytrends.request import TrendReq
+import pandas as pd
+import csv
 
 from model import Company, Industry, Salary, Interest, connect_to_db, db
 from server import app
 
 
-def load_companys():
-    """load the data and add it to database."""
+def load_industry():
+    """Set industry datas."""
+    
+    industry_list = [
+        "Capital Goods", "Consulting", "Consumer Non-Durables",
+        "Consumer Services", "Consumer Staples", "Education",
+        "Financials", "Health Care", "Media", "Technology",
+        "Basic Industries", "Consumer Discretionary", "Consumer Durables",
+        "Energy", "Finance", "Financial", "Information Technology",
+        "Miscellaneous", "Public Utilities"
+    ]
+    for item in industry_list:
 
-    with open ("companylist.txt") as file:
-
-        for row in file:
-            row = row.rstrip()
-            name, industry = row.split("|")
-            name = name.strip()
-            industry = industry.strip()
-
-            company = Company(name=name)
-            company.industry = db.session.query(Industry).filter_by(name=industry).first()
-
-            db.session.add(company)
-
+        industry = Industry(item)
+    
+        db.session.add(industry)
+        print("industry loading")
     db.session.commit()
+    print("industry loading completed")
 
 
-def load_salaries():
-    """load the salary and add it to database."""
+def load_company():
 
-    with open("salarydata.txt") as file:
+    with open ("data.csv") as file:
+        data = csv.reader(file, delimiter=',')
+        next(file) # skip first line
 
-        for row in file:
-            row = row.rstrip()
-            date, company_name, job_title, salary, location,  = row.split("|")
+        for row in data:
+            company_name, industry_name = row[1], row[2]
             
-            # get rid of white space and formating.
-            date = date.strip()
-            date  = datetime.datetime.strptime(date, "%m/%d/%y")
-            company_name = company_name.strip()
-            job_title = job_title.strip()
-            salary = salary.strip()
-            location = location.strip()
+            if Company.query.filter_by(name=company_name).first() == None:
 
+                if industry_name and industry_name not in ["#N/A", "n/a"]:
+                    company = Company(company_name)
+                    company.industry = Industry.query.filter_by(name=industry_name).first()
+                    db.session.add(company)
+                    print("company loading")
+        
+                else:
+                    company = Company(company_name)
+                    db.session.add(company)
+                    print("company loading")
+        
+        db.session.commit()
+        print("company loading completed")
+
+
+def load_salary():
+
+    with open ("data.csv") as file:
+        data = csv.reader(file, delimiter=',')
+        next(file) # skip first line
+        
+        for row in data:
+            company_name, job_title, salary, location, date = row[1], row[6], row[7], row[8], row[11]
+            date = datetime.datetime.strptime(date, "%m-%d-%y")
             salary = Salary(date, job_title, int(salary), location)
             salary.company = Company.query.filter_by(name=company_name).first()
-
             db.session.add(salary)
+            print("salary loading")
+
+        db.session.commit()    
+        print("salary loading completed")
+
+
+def load_insterest():
+    """load insterst datas and add it to database."""
+
+    trend = TrendReq(hl='en-US', tz=360) # connect to google trends
+   
+    for company in Company.query.all():
+   
+        kw_list = [] # set keyword
+        kw = company.name.lower()
+        kw_list.append(kw)
+
+        trend.build_payload(kw_list, timeframe='today 5-y') # build pay load
+
+    # returns historical, indexed data for when the keyword was searched most as shown on Google Trends' Interest Over Time section.
+    # return type : pandas dataframe
+        trend_df = trend.interest_over_time() 
+        trend_df = trend_df.iloc[:,:1] # get rid of isPartial column
+
+        if not trend_df.empty: 
+            for row in trend_df.iterrows():
+            
+                date, value = row[0], row[1] # date : datetime / interest : pandas series.
+                value = value.to_dict()
+                interest = Interest(date=date, interest=value[kw])
+                interest.company = Company.query.filter_by(name=company.name).first()
+                
+                db.session.add(interest)
+                print(interest)
 
     db.session.commit()
+    print("interest loading completed")
 
-
-def seed():
-    """Set initial fake datas."""
-    
-    # Industries
-    Internet = Industry("Internet")
-    Electronics = Industry("Electronics")
-    Aerospace_defense = Industry("Aerospace_defense")
-    Apparel = Industry("Apparel")
-    Automotive = Industry("Automotive")
-    Consumer_goods = Industry("Consumer_goods")
-    Biotechnology = Industry("Biotechnology")
-    Electronics = Industry("Electronics")
-    Energy = Industry("Energy")
-    Entertainment = Industry("Entertainment")
-    Financial = Industry("Financial")
-
-    # Companys
-    # Facebook = Company("Facebook")
-    # Facebook.industry = Internet
-    
-    # Google = Company("Google")
-    # Google.industry = Internet
-
-    # Fitbit = Company("Fitbit")
-    # Fitbit.industry = Electronics
-
-    # Salaries
-    # s1 = Salary("2018-10-01", 100000, "San Francisco", "Software engineer")
-    # s1.company = Facebook    
-
-    # s2 = Salary("2018-10-02", 95000, "San Jose", "Software engineer")
-    # s2.company = Google
-
-    # s3 = Salary("2018-10-03", 90000, "Palo Alto", "Accounting Manager")
-    # s3.company = Fitbit
-
-    # # Interests
-    # i1 = Interest("2018-10-01", 20)
-    # i1.company = Fitbit
-
-    # i2 = Interest("2018-10-02", 30)
-    # i2.company = Fitbit
-    
-    # i3 = Interest("2018-10-03", 40)
-    # i3.company = Facebook
-    
-    # i4 = Interest("2018-10-03", 25)
-    # i4.company = Google
-
-
-    # db.session.add_all([Internet, Electronics, Facebook, Google, Fitbit, s1, s2, s3, i1, i2, i3, i4])
-    db.session.add_all([Internet, Electronics, Aerospace_defense, 
-                        Apparel, Automotive, Consumer_goods, Biotechnology, 
-                        Electronics, Energy, Entertainment, Financial])
-    db.session.commit()
 
 
 
@@ -111,12 +112,13 @@ if __name__ == "__main__":
     connect_to_db(app)
 
     # In case tables haven't been created, create them
-    db.create_all()
+    #db.create_all()
 
     # Import different types of data
-    seed()
-    load_companys()
-    load_salaries()
+    #load_industry()
+    #load_company()
+    #load_salary()
+    load_insterest()
 
 
 

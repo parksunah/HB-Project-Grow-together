@@ -17,14 +17,14 @@ db = SQLAlchemy()
 class Company(db.Model):
     """Company searching for."""
 
-    __tablename__ = "companys"
+    __tablename__ = "companies"
 
     company_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    industry_id = db.Column(db.Integer, db.ForeignKey("industries.industry_id"), nullable=False)
+    industry_id = db.Column(db.Integer, db.ForeignKey("industries.industry_id"), nullable=True)
     desc = db.Column(db.String, nullable=True)
 
-    industry = db.relationship("Industry", backref=db.backref("companys"))
+    industry = db.relationship("Industry", backref=db.backref("companies"))
 
     def __init__(self, name):
         self.name = name
@@ -59,14 +59,14 @@ class Industry(db.Model):
 class Interest(db.Model):
     """Interest from google trends."""
 
-    __tablename__ = "interests"
+    __tablename__ = "interest"
 
     interest_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     date = db.Column(db.DateTime, nullable=False)
     interest = db.Column(db.Integer, nullable=False)
-    company_id = db.Column(db.Integer, db.ForeignKey("companys.company_id"), nullable=False)
+    company_id = db.Column(db.Integer, db.ForeignKey("companies.company_id"), nullable=False)
 
-    company = db.relationship("Company", backref=db.backref("interests"))
+    company = db.relationship("Company", backref=db.backref("interest"))
 
     def __init__(self, date, interest):
         self.date = date
@@ -88,7 +88,7 @@ class Salary(db.Model):
     salary = db.Column(db.Integer, nullable=False, unique=False)
     location = db.Column(db.String, nullable=False, unique=False)
     job_title = db.Column(db.String, nullable=False, unique=False)
-    company_id = db.Column(db.Integer, db.ForeignKey("companys.company_id"), nullable=False)
+    company_id = db.Column(db.Integer, db.ForeignKey("companies.company_id"), nullable=False)
 
     company = db.relationship("Company", backref=db.backref("salaries"))
 
