@@ -79,31 +79,40 @@ def load_insterest():
     trend = TrendReq(hl='en-US', tz=360) # connect to google trends
    
     for company in Company.query.all():
-   
-        kw_list = [] # set keyword
-        kw = company.name.lower()
-        kw_list.append(kw)
+        
+        if company.company_id <= 1300:
+            continue
 
-        trend.build_payload(kw_list, timeframe='today 5-y') # build pay load
+        if 1301 <= company.company_id <= 1700:
+            kw_list = [] # set keyword
+            kw = company.name.lower()
+            kw_list.append(kw)
 
-    # returns historical, indexed data for when the keyword was searched most as shown on Google Trends' Interest Over Time section.
-    # return type : pandas dataframe
-        trend_df = trend.interest_over_time() 
-        trend_df = trend_df.iloc[:,:1] # get rid of isPartial column
+            trend.build_payload(kw_list, timeframe='today 5-y') # build pay load
 
-        if not trend_df.empty: 
-            for row in trend_df.iterrows():
-            
-                date, value = row[0], row[1] # date : datetime / interest : pandas series.
-                value = value.to_dict()
-                interest = Interest(date=date, interest=value[kw])
-                interest.company = Company.query.filter_by(name=company.name).first()
+        # returns historical, indexed data for when the keyword was searched most as shown on Google Trends' Interest Over Time section.
+        # return type : pandas dataframe
+            trend_df = trend.interest_over_time() 
+            trend_df = trend_df.iloc[:,:1] # get rid of isPartial column
+
+            if not trend_df.empty: 
+                for row in trend_df.iterrows():
                 
-                db.session.add(interest)
-                print(interest)
+                    date, value = row[0], row[1] # date : datetime / interest : pandas series.
+                    value = value.to_dict()
+                    interest = Interest(date=date, interest=value[kw])
+                    interest.company = Company.query.filter_by(name=company.name).first()
+                    
+                    db.session.add(interest)
+                    db.session.commit()
+                    print("interest loading")
 
-    db.session.commit()
-    print("interest loading completed")
+        else: 
+            print("interest loading completed")
+            break
+
+        
+        print("end of for loops")
 
 
 

@@ -4,14 +4,15 @@ import re
 import argparse
 import json
 from flask import Flask, jsonify
+from server import app
 
-
-app = Flask(__name__)
-
-
+@app.route("/test.js")
 def parse():
  
-    keyword = "Facebook"
+    # form = CompanyForm(request.form)
+    # company_name = form.company.data
+
+    keyword = "google"
     place =  "California"
 
     headers = { 'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
@@ -56,8 +57,6 @@ def parse():
         job_listings = []
         if place_id:
             response = requests.post(job_litsting_url, headers=headers, data=data)
-            # extracting data from
-            # https://www.glassdoor.com/Job/jobs.htm?suggestCount=0&suggestChosen=true&clickSource=searchBtn&typedKeyword=andr&sc.keyword=android+developer&locT=C&locId=1146821&jobType=
             parser = html.fromstring(response.text)
             # Making absolute url 
             base_url = "https://www.glassdoor.com"
@@ -65,14 +64,17 @@ def parse():
 
             XPATH_ALL_JOB = '//li[@class="jl"]'
             XPATH_NAME = './/a/text()'
+            XPATH_JOB_URL = './/a/@href'
             XPATH_LOC = './/span[@class="subtle loc"]/text()'
             XPATH_COMPANY = './/div[@class="flexbox empLoc"]/div/text()'
             XPATH_SALARY = './/span[@class="green small"]/text()'
             XPATH_RATING = './/span[@class="compactStars "]/text()'
 
+
             listings = parser.xpath(XPATH_ALL_JOB)
             for job in listings:
                 raw_job_name = job.xpath(XPATH_NAME)
+                raw_job_url = job.xpath(XPATH_JOB_URL)
                 raw_lob_loc = job.xpath(XPATH_LOC)
                 raw_company = job.xpath(XPATH_COMPANY)
                 raw_salary = job.xpath(XPATH_SALARY)
@@ -88,6 +90,7 @@ def parse():
                 company = ''.join(raw_company).replace('–','')
                 salary = ''.join(raw_salary).strip()
                 rating = ''.join(raw_rating).strip()
+                job_url = raw_job_url[0] if raw_job_url else None
 
                 jobs = {
                     "Name": job_name,
@@ -96,6 +99,7 @@ def parse():
                     "City": city,
                     "Salary": salary,
                     "Location": job_location,
+                    "Url": job_url,
                     "Rating" : rating
                 }
                 job_listings.append(jobs)
@@ -107,12 +111,10 @@ def parse():
     except:
         print("Failed to load locations")
 
+
+
 if __name__ == "__main__":
 
-    #print("Fetching job details")
-    #scraped_data = parse("Facebook", "San Francisco")
-    #print("Writing data to output file")
-
-    
 
     app.run(port=5000, host='0.0.0.0')
+

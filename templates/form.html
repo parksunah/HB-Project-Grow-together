@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+
+</head>
+<body>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.15/api/row().show().js"></script>
+
+
+<!-- Salary table ////////////////////////////////////////////////////////// -->
+
+<table class="display table table-striped table-bordered" data-company-name="{{ company_name }}">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Job Title</th>
+            <th data-class-name="priority">Salary</th>
+            <th>Location</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for salary in salary_query %}
+        <tr>
+            <td>{{ salary.date }} </td>
+            <td>{{ salary.job_title }}</td> 
+            <td>{{ salary.salary }}</td> 
+            <td>{{ salary.location }} </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Using DataTable for each table ////////////////////////////////////// -->
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $('table.display').DataTable();
+} );
+</script>
+
+
+<!-- Glassdoor job listing table /////////////////////////////////////////// -->
+
+
+<table class="display table table-striped table-bordered">
+<thead>
+    <tr>
+        <th>Job Title</th>
+        <th>Location</th>
+        <th>Estimated Salary</th>
+        <th>Url</th>
+    </tr>
+</thead>
+<tbody>
+    {% for job in job_listings %}
+    <tr>
+        <td>{{ job["Name"] }} </td>
+        <td>{{ job["City"] }}</td> 
+        <td>{{ job["Salary"] }}</td> 
+        <td><a href="{{ job["Url"] }}" target="_blank"> Click here </a></td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>   
+
+
+<script type="text/javascript">
+   
+    function test() {
+
+    let url = "test.json";
+    let company_name = { "company_name" : $("#salary-table").data("company-name") };
+
+    $.get(url, company_name, (result) => {
+        $('#job-table').html(result.json);
+    });
+
+    }
+test();
+
+</script>
+
+</body>
+</html>
+
