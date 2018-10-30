@@ -11,7 +11,6 @@ import re
 import argparse
 
 
-
 app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar
@@ -167,11 +166,51 @@ def get_job_listings(company_name):
         print("Failed to load locations")
 
 
-@app.route("/test.json")
-def job_listings_convert_to_json():
-    """Convert list to JSON"""
+# @app.route("/job_listings.json")
+# def _job_listings_convert_to_json():
+#     """Convert a list to JSON."""
 
-    return jsonify(get_job_listings())
+#     company_name = request.args.get("company_name")
+
+#     return jsonify(get_job_listings(company_name))
+
+
+@app.route("/interest.json")
+def get_interest():
+    """Create interest list using sqlalchemy for chart."""
+
+    company_name = request.args.get("company_name")
+
+    company = Company.query.filter_by(name=company_name).first()
+    company_id = company.company_id
+
+    data_dict = {
+    "labels": [ obj.date.isoformat() for obj in Interest.query.filter_by(company_id=company_id).all()],
+    "datasets": [
+        {
+            "label": company_name,
+            "fill": True,
+            "lineTension": 0.5,
+            "backgroundColor": "rgba(151,187,205,0.2)",
+            "borderColor": "rgba(151,187,205,1)",
+            "borderCapStyle": 'butt',
+            "borderDash": [],
+            "borderDashOffset": 0.0,
+            "borderJoinStyle": 'miter',
+            "pointBorderColor": "rgba(151,187,205,1)",
+            "pointBackgroundColor": "#fff",
+            "pointBorderWidth": 1,
+            "pointHoverRadius": 5,
+            "pointHoverBackgroundColor": "#fff",
+            "pointHoverBorderColor": "rgba(151,187,205,1)",
+            "pointHoverBorderWidth": 2,
+            "pointHitRadius": 10,
+            "data": [ obj.interest for obj in Interest.query.filter_by(company_id=company_id).all() ],
+            "spanGaps": False},
+            ]
+        }   
+
+    return jsonify(data_dict)
 
 
 

@@ -80,10 +80,10 @@ def load_insterest():
    
     for company in Company.query.all():
         
-        if company.company_id <= 1300:
+        if company.company_id <= 4400:
             continue
 
-        if 1301 <= company.company_id <= 1700:
+        if 4401 <= company.company_id <= 4500:
             kw_list = [] # set keyword
             kw = company.name.lower()
             kw_list.append(kw)
@@ -104,15 +104,15 @@ def load_insterest():
                     interest.company = Company.query.filter_by(name=company.name).first()
                     
                     db.session.add(interest)
-                    db.session.commit()
-                    print("interest loading")
+                         
 
         else: 
+            db.session.commit()
             print("interest loading completed")
             break
 
         
-        print("end of for loops")
+        print("interest loading")
 
 
 

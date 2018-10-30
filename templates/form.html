@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css"> <!-- Datatable -->
 
 </head>
 <body>
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
-<script src="https://cdn.datatables.net/plug-ins/1.10.15/api/row().show().js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script> <!-- jquery -->
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script> <!-- Datatable -->
+<script src="https://cdn.datatables.net/plug-ins/1.10.15/api/row().show().js"></script> <!-- Datatable -->
+<link href="http://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">  <!-- font -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js"></script> <!-- Chart js -->
 
+<p> Employees' Rating : {{ job_listings[0]["Rating"]}} </p>
 
 <!-- Salary table ////////////////////////////////////////////////////////// -->
 
-<table class="display table table-striped table-bordered" data-company-name="{{ company_name }}">
+<table id ="salary-table" class="display table table-striped table-bordered" data-company-name="{{ company_name }}">
     <thead>
         <tr>
             <th>Date</th>
@@ -67,19 +70,45 @@ $(document).ready(function() {
 </table>   
 
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
    
-    function test() {
+    function job_listings() {
 
-    let url = "test.json";
-    let company_name = { "company_name" : $("#salary-table").data("company-name") };
+    let url = "job_listings.json";
+    let company_data = { "company_name" : $("#salary-table").data("company-name") }; /* interest.json?company_name=facebook */
 
-    $.get(url, company_name, (result) => {
+    $.get(url, company_data, (result) => {
         $('#job-table').html(result.json);
     });
 
     }
-test();
+job_listings();
+
+</script> -->
+
+<!-- Google trends interest chart ////////////////////////////////////////// -->
+
+<div class="interest-chart">
+    <canvas id="lineChart"></canvas>
+    
+</div>
+
+<script>
+    const options = {
+      responsive: true
+    };
+
+    // Make Line Chart of Interest over time
+    let ctx_line = $("#lineChart").get(0).getContext("2d");
+    let company_data = { "company_name" : $("#salary-table").data("company-name") };
+
+    $.get("/interest.json", company_data, function (data) {
+      let myLineChart = Chart.Line(ctx_line, {
+                                    data: data,
+                                    options: options
+                                });
+      
+    });
 
 </script>
 
