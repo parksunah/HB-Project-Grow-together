@@ -47,15 +47,28 @@ def search_result_view():
     form = CompanyForm(request.args)
     company_name = form.company.data
     company_name = company_name.upper()
-    company = Company.query.filter_by(name=company_name).first()
+    company = Company.query.options(
+        db.joinedload("industry")
+          .joinedload("companies")
+          .joinedload("interest")
+    ).filter_by(name=company_name).first()
+
     
     job_listings = get_job_listings(company_name)
+
+
+    if company.interest:
+        ranking = get_interest_growth_ranking(company)
+    else:
+        ranking = None
 
     if company != None:
 
         salary_query = company.salaries
 
-        return render_template("form.html", salary_query=salary_query, company_name=company_name, job_listings=job_listings)
+        return render_template("form.html", salary_query=salary_query, 
+                                company_name=company_name, job_listings=job_listings,
+                                ranking =ranking)
 
     else:
 
@@ -175,7 +188,7 @@ def get_job_listings(company_name):
 #     return jsonify(get_job_listings(company_name))
 
 
-@app.route("/interest.json")
+@app.route("/interest.json") 
 def get_interest():
     """Create interest list using sqlalchemy for chart."""
 
@@ -184,34 +197,104 @@ def get_interest():
     company = Company.query.filter_by(name=company_name).first()
     company_id = company.company_id
 
-    data_dict = {
-    "labels": [ obj.date.isoformat() for obj in Interest.query.filter_by(company_id=company_id).all()],
-    "datasets": [
-        {
-            "label": company_name,
-            "fill": True,
-            "lineTension": 0.5,
-            "backgroundColor": "rgba(151,187,205,0.2)",
-            "borderColor": "rgba(151,187,205,1)",
-            "borderCapStyle": 'butt',
-            "borderDash": [],
-            "borderDashOffset": 0.0,
-            "borderJoinStyle": 'miter',
-            "pointBorderColor": "rgba(151,187,205,1)",
-            "pointBackgroundColor": "#fff",
-            "pointBorderWidth": 1,
-            "pointHoverRadius": 5,
-            "pointHoverBackgroundColor": "#fff",
-            "pointHoverBorderColor": "rgba(151,187,205,1)",
-            "pointHoverBorderWidth": 2,
-            "pointHitRadius": 10,
-            "data": [ obj.interest for obj in Interest.query.filter_by(company_id=company_id).all() ],
-            "spanGaps": False},
-            ]
-        }   
+    if not company.interest:
+        return None
 
-    return jsonify(data_dict)
+    else:
 
+        data_dict = {
+        "labels": [ obj.date.isoformat() for obj in Interest.query.filter_by(company_id=company_id).all()],
+        "datasets": [
+            {
+                "label": company_name,
+                "fill": True,
+                "lineTension": 0.5,
+                "backgroundColor": "rgba(151,187,205,0.2)",
+                "borderColor": "rgba(151,187,205,1)",
+                "borderCapStyle": 'butt',
+                "borderDash": [],
+                "borderDashOffset": 0.0,
+                "borderJoinStyle": 'miter',
+                "pointBorderColor": "rgba(151,187,205,1)",
+                "pointBackgroundColor": "#fff",
+                "pointBorderWidth": 1,
+                "pointHoverRadius": 5,
+                "pointHoverBackgroundColor": "#fff",
+                "pointHoverBorderColor": "rgba(151,187,205,1)",
+                "pointHoverBorderWidth": 2,
+                "pointHitRadius": 10,
+                "data": [ obj.interest for obj in Interest.query.filter_by(company_id=company_id).all() ],
+                "spanGaps": False},
+                ]
+            }   
+
+        return jsonify(data_dict)
+
+
+def get_interest_growth(company):
+    """Get the interest ranking in the same industy companies."""
+
+    interest = sorted(company.interest, key=lambda x: x.date)
+
+    interest_start = interest[0]
+    interest_end = interest[-1]
+
+    # preventing for division by zero error.
+    if interest_start.interest == 0:
+        interest_growth = (interest_end.interest - 1) / 1 * 100
+        
+    else:
+        interest_growth = (interest_end.interest - interest_start.interest) / interest_start.interest * 100
+
+    return interest_growth
+
+
+def get_interest_growth_ranking(target_company):
+
+    # get target company from db
+    # company.industry -> industry of company
+    # company.industry.companies -> all companies of industry
+
+    # target_company = Company.query.filter_by(name=target_company_name).first()
+
+    # companies = Company.query.options(db.joinedload('interest')).all()
+
+    smaller = []
+
+    # db.
+
+    # industry = Industry.query.options(
+    #                 db.joinedload("companies", innerjoin=True)
+    #                   .joinedload("interest", innerjoin=True)
+    #     ).filter_by(name=industry_name).all()
+    
+    # companies = target_company.industry.companies
+    
+    # select industries.name, companies.name, interest.interest 
+    # FROM industries 
+    # JOIN companies on companies.industry_id = industries.industry_id 
+    # JOIN interest ON companies.company_id = interest.company_id 
+    # WHERE industries.name = 'Technology';
+
+    # c = Company.query.options(db.joinedload('industry').joinedload('companies').joinedload('interest')
+    #     ).filter_by(name=target_company.name).first()
+    target_interest_growth = get_interest_growth(target_company)
+
+    for company in target_company.industry.companies:
+
+        if company.interest:
+            company_interest_growth = get_interest_growth(company)
+            if company_interest_growth < target_interest_growth:
+                smaller.append(company_interest_growth)
+            else:
+                continue
+        else:
+            continue
+
+
+    ranking = len(smaller) + 1
+
+    return ranking
 
 
 

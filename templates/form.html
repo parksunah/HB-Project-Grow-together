@@ -12,6 +12,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js"></script> <!-- Chart js -->
 
 <p> Employees' Rating : {{ job_listings[0]["Rating"]}} </p>
+<p> {{ ranking }} </p>
 
 <!-- Salary table ////////////////////////////////////////////////////////// -->
 
@@ -27,10 +28,10 @@
     <tbody>
         {% for salary in salary_query %}
         <tr>
-            <td>{{ salary.date }} </td>
-            <td>{{ salary.job_title }}</td> 
-            <td>{{ salary.salary }}</td> 
-            <td>{{ salary.location }} </td>
+            <td>{{ salary.date.strftime("%b-%d-%Y") }} </td>
+            <td>{{ salary.job_title.title() }}</td> 
+            <td>{{ "${:,}".format(salary.salary) }}</td> 
+            <td>{{ salary.location.title() }} </td>
         </tr>
         {% endfor %}
     </tbody>
@@ -104,8 +105,8 @@ job_listings();
 
     $.get("/interest.json", company_data, function (data) {
       let myLineChart = Chart.Line(ctx_line, {
-                                    data: data,
-                                    options: options
+                                   data: data,
+                                   options: options
                                 });
       
     });

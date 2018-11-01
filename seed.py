@@ -80,10 +80,10 @@ def load_insterest():
    
     for company in Company.query.all():
         
-        if company.company_id <= 4400:
+        if company.company_id <= 5100:
             continue
 
-        if 4401 <= company.company_id <= 4500:
+        if 5101 <= company.company_id <= 5400:
             kw_list = [] # set keyword
             kw = company.name.lower()
             kw_list.append(kw)

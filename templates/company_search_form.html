@@ -51,8 +51,10 @@
 
     loadCompanies();
 
-    $("#company").autocomplete({source: companies});
-
+    $("#company").autocomplete({
+                    source: companies, 
+                    minLength:3
+                });
     });
 
 </script>
