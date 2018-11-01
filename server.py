@@ -259,7 +259,7 @@ def get_interest_growth_ranking(target_company):
 
     # companies = Company.query.options(db.joinedload('interest')).all()
 
-    smaller = []
+    larger = []
 
     # db.
 
@@ -284,15 +284,17 @@ def get_interest_growth_ranking(target_company):
 
         if company.interest:
             company_interest_growth = get_interest_growth(company)
-            if company_interest_growth < target_interest_growth:
-                smaller.append(company_interest_growth)
+            if company_interest_growth > target_interest_growth:
+                larger.append(company_interest_growth)
             else:
                 continue
         else:
             continue
 
 
-    ranking = len(smaller) + 1
+    ranking = len(larger) + 1
+    print(larger)
+    print(target_interest_growth)
 
     return ranking
 

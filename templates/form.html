@@ -30,7 +30,7 @@
         <tr>
             <td>{{ salary.date.strftime("%b-%d-%Y") }} </td>
             <td>{{ salary.job_title.title() }}</td> 
-            <td>{{ "${:,}".format(salary.salary) }}</td> 
+            <td>{{ "{:,}".format(salary.salary) }}</td> 
             <td>{{ salary.location.title() }} </td>
         </tr>
         {% endfor %}
