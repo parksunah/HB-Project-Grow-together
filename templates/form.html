@@ -12,7 +12,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js"></script> <!-- Chart js -->
 
 
-<!-- Definition //////////////////////////////////////////////////////////// -->
+<!-- Logo and Definition /////////////////////////////////////////////////// -->
 <div id="logo">
     <img src={{ company_infos[1] }}>
 </div>
@@ -23,6 +23,7 @@
 <script type="text/javascript">
 
 
+// This is for Duckduckgo API's
  function getDefinition() {
 
     $.ajax({
@@ -50,9 +51,6 @@
   }
 
 // getDefinition()
-
-
-
 </script>
 
 
@@ -90,7 +88,7 @@
     </tbody>
 </table>
 
-<!-- Using DataTable for each table ////////////////////////////////////// -->
+<!-- Using DataTable for each table //////////////////////////////////////// -->
 
 <script type="text/javascript">
 $(document).ready(function() {
@@ -143,8 +141,7 @@ job_listings();
 <!-- Google trends interest chart ////////////////////////////////////////// -->
 
 <div class="interest-chart">
-    <canvas id="lineChart"></canvas>
-    
+    <canvas id="lineChart"></canvas> 
 </div>
 
 <script>
@@ -152,13 +149,15 @@ job_listings();
       responsive: true,
       xAxes: [{
             type: 'time',
-            time: {
-                displayFormats: {
-                quarter: 'MMM YYYY'
+            scales: {
+                  time: {
+                    displayFormats: {
+                        quarter: 'MMM YYYY'
+                    }
+                  }
                 }
-            }
-        }]
-    };
+            }]
+     };
 
     // Make Line Chart of Interest over time
     let ctx_line = $("#lineChart").get(0).getContext("2d");
@@ -169,9 +168,29 @@ job_listings();
                                    data: data,
                                    options: options
                                 });
+
+      document.getElementById("lineChart").onclick = function(evt){
+      const activePoints = myLineChart.getElementsAtEvent(evt);
+
+      const datasetIndex = activePoints._datasetIndex;
+      const index = activePoints._index;
+
+      alert(index);
+      console.log(index);
+
+      };
     });
 
 </script>
+
+
+<script>
+
+
+
+
+</script>
+
 
 </body>
 </html>
