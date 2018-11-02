@@ -11,8 +11,60 @@
 <link href="http://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">  <!-- font -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js"></script> <!-- Chart js -->
 
+
+<!-- Definition //////////////////////////////////////////////////////////// -->
+
+<img id="definition-img" src="{{ company_infos[1] }}">
+<div id="definition">
+    {{ company_infos[0] }}
+</div>
+
+<script type="text/javascript">
+
+
+ function getDefinition() {
+
+    $.ajax({
+        url : 'https://api.duckduckgo.com/?q={{company_name.lower()}}.com&format=json&pretty=1',
+        jsonp: "callback",
+        dataType: 'jsonp',
+        xhrFields: { withCredentials: true},
+        success: function(results) {
+            const abstract = results.AbstractText;
+            const img = results.Image;
+
+            if (abstract == "") {
+                abstract = "No information available.";
+            }
+
+            if (img == "") {
+                img = "No information available.";
+            }
+
+            $("#definition").html(abstract);
+            $("#definition-img").attr("src", img);
+            
+        }
+    });
+  }
+
+// getDefinition()
+
+
+
+</script>
+
+
+<!-- rating, ranking /////////////////////////////////////////////////////// -->
+
+{% if job_listings %}
 <p> Employees' Rating : {{ job_listings[0]["Rating"]}} </p>
+{% endif %}
+
+{% if ranking %}
 <p> {{ ranking }} </p>
+<p> {{ industry_name }} </p>
+{% endif %}
 
 <!-- Salary table ////////////////////////////////////////////////////////// -->
 

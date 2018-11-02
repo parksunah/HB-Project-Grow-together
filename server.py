@@ -9,6 +9,7 @@ from lxml import html, etree
 import requests
 import re
 import argparse
+import os
 
 
 app = Flask(__name__)
@@ -55,12 +56,15 @@ def search_result_view():
 
     
     job_listings = get_job_listings(company_name)
+    company_infos = get_company_infos(company_name)
 
-
-    if company.interest:
+    if company.industry:
         ranking = get_interest_growth_ranking(company)
+        industry_name = company.industry.name
+    
     else:
         ranking = None
+        industry_name = None
 
     if company != None:
 
@@ -68,7 +72,8 @@ def search_result_view():
 
         return render_template("form.html", salary_query=salary_query, 
                                 company_name=company_name, job_listings=job_listings,
-                                ranking =ranking)
+                                ranking =ranking, industry_name=industry_name, 
+                                company_infos=company_infos)
 
     else:
 
@@ -251,33 +256,7 @@ def get_interest_growth(company):
 
 def get_interest_growth_ranking(target_company):
 
-    # get target company from db
-    # company.industry -> industry of company
-    # company.industry.companies -> all companies of industry
-
-    # target_company = Company.query.filter_by(name=target_company_name).first()
-
-    # companies = Company.query.options(db.joinedload('interest')).all()
-
     larger = []
-
-    # db.
-
-    # industry = Industry.query.options(
-    #                 db.joinedload("companies", innerjoin=True)
-    #                   .joinedload("interest", innerjoin=True)
-    #     ).filter_by(name=industry_name).all()
-    
-    # companies = target_company.industry.companies
-    
-    # select industries.name, companies.name, interest.interest 
-    # FROM industries 
-    # JOIN companies on companies.industry_id = industries.industry_id 
-    # JOIN interest ON companies.company_id = interest.company_id 
-    # WHERE industries.name = 'Technology';
-
-    # c = Company.query.options(db.joinedload('industry').joinedload('companies').joinedload('interest')
-    #     ).filter_by(name=target_company.name).first()
     target_interest_growth = get_interest_growth(target_company)
 
     for company in target_company.industry.companies:
@@ -293,10 +272,32 @@ def get_interest_growth_ranking(target_company):
 
 
     ranking = len(larger) + 1
-    print(larger)
-    print(target_interest_growth)
+    total = len(target_company.industry.companies)
 
-    return ranking
+    return ranking, total
+
+
+
+def get_company_infos(company_name):
+    """Get Company's desc and logo img using Bing API."""
+
+    subscription_key = os.environ['subscription_key'] # error occurs
+    assert subscription_key
+
+    search_url = "https://api.cognitive.microsoft.com/bing/v7.0/search"
+    search_term = company_name.lower()+" company profile"
+
+    headers = {"Ocp-Apim-Subscription-Key" : subscription_key}
+    params  = {"q": search_term, "textDecorations":True, "textFormat":"HTML"}
+    response = requests.get(search_url, headers=headers, params=params)
+    response.raise_for_status()
+    search_results = response.json()
+
+    company_desc = search_results['entities']['value'][0]['description']
+    company_img = search_results['entities']['value'][0]['image']['thumbnailUrl']
+
+    return (company_desc, company_img)
+
 
 
 
