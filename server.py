@@ -42,7 +42,7 @@ def companydic():
 
 
 @app.route("/company_view")
-def search_result_view():
+def create_result_view():
     """Create the company's salary table."""
   
     form = CompanyForm(request.args)
@@ -82,7 +82,7 @@ def search_result_view():
 
 
 def get_job_listings(company_name):
-    """Glassdoor job postings scraper"""
+    """Glassdoor job postings scraper. source : scrapehero."""
  
     keyword = company_name
     place =  "San Francisco Bay area"
@@ -281,7 +281,7 @@ def get_interest_growth_ranking(target_company):
 def get_company_infos(company_name):
     """Get Company's desc and logo img using Bing API."""
 
-    subscription_key = os.environ['subscription_key'] # error occurs
+    subscription_key = os.environ['BING_KEY'] # error occurs
     assert subscription_key
 
     search_url = "https://api.cognitive.microsoft.com/bing/v7.0/search"
@@ -292,6 +292,7 @@ def get_company_infos(company_name):
     response = requests.get(search_url, headers=headers, params=params)
     response.raise_for_status()
     search_results = response.json()
+    print(search_results)
 
     company_desc = search_results['entities']['value'][0]['description']
     company_img = search_results['entities']['value'][0]['image']['thumbnailUrl']

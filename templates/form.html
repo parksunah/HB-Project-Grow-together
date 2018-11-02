@@ -13,8 +13,9 @@
 
 
 <!-- Definition //////////////////////////////////////////////////////////// -->
-
-<img id="definition-img" src="{{ company_infos[1] }}">
+<div id="logo">
+    <img src={{ company_infos[1] }}>
+</div>
 <div id="definition">
     {{ company_infos[0] }}
 </div>
@@ -62,8 +63,8 @@
 {% endif %}
 
 {% if ranking %}
-<p> {{ ranking }} </p>
-<p> {{ industry_name }} </p>
+<p> Google trends movement ranking is {{ ranking[0] }}th of {{ranking[1]}} (during past 5 years) </p>
+<p> in {{ industry_name }} sector </p>
 {% endif %}
 
 <!-- Salary table ////////////////////////////////////////////////////////// -->
@@ -148,7 +149,15 @@ job_listings();
 
 <script>
     const options = {
-      responsive: true
+      responsive: true,
+      xAxes: [{
+            type: 'time',
+            time: {
+                displayFormats: {
+                quarter: 'MMM YYYY'
+                }
+            }
+        }]
     };
 
     // Make Line Chart of Interest over time
@@ -160,7 +169,6 @@ job_listings();
                                    data: data,
                                    options: options
                                 });
-      
     });
 
 </script>
