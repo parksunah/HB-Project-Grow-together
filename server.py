@@ -60,6 +60,8 @@ def create_result_view():
     company_infos = get_company_infos(company_name)
     print('#' * 20, datetime.now() - start) # for checking runtime
 
+    interest_chart=create_interest_chart(company)
+
     if company.industry:
         ranking = get_interest_growth_ranking(company)
         industry_name = company.industry.name
@@ -76,63 +78,29 @@ def create_result_view():
         return render_template("form.html", salary_query=salary_query, 
                                 company_name=company_name, job_listings=job_listings,
                                 ranking =ranking, industry_name=industry_name, 
-                                company_infos=company_infos)
+                                company_infos=company_infos,
+                                interest_chart=interest_chart)
 
     else:
 
         flash("Please check the company name.")
         return redirect("/search")
 
-# @app.route("/job_listings.json")
-# def _job_listings_convert_to_json():
-#     """Convert a list to JSON."""
 
-#     company_name = request.args.get("company_name")
+def create_interest_chart(company):
 
-#     return jsonify(get_job_listings(company_name))
-
-
-@app.route("/interest.json") 
-def get_interest_chart():
-    """Create interest list using sqlalchemy for chart."""
-
-    company_name = request.args.get("company_name")
-
-    company = Company.query.filter_by(name=company_name).first()
-    company_id = company.company_id
 
     if not company.interest:
         return None
 
     else:
 
-        data_dict = {
-        "labels": [ obj.date.isoformat() for obj in Interest.query.filter_by(company_id=company_id).all()],
-        "datasets": [
-            {
-                "label": company_name,
-                "fill": True,
-                "lineTension": 0.5,
-                "backgroundColor": "rgba(151,187,205,0.2)",
-                "borderColor": "rgba(151,187,205,1)",
-                "borderCapStyle": 'butt',
-                "borderDash": [],
-                "borderDashOffset": 0.0,
-                "borderJoinStyle": 'miter',
-                "pointBorderColor": "rgba(151,187,205,1)",
-                "pointBackgroundColor": "#fff",
-                "pointBorderWidth": 1,
-                "pointHoverRadius": 5,
-                "pointHoverBackgroundColor": "#fff",
-                "pointHoverBorderColor": "rgba(151,187,205,1)",
-                "pointHoverBorderWidth": 2,
-                "pointHitRadius": 10,
-                "data": [ obj.interest for obj in Interest.query.filter_by(company_id=company_id).all() ],
-                "spanGaps": False},
-                ]
-            }   
-
-        return jsonify(data_dict)
+        chart_dic = { 
+                      "label1": [ obj.date.isoformat() for obj in company.interest ],
+                      "label2": [ obj.interest for obj in company.interest ]
+                    }
+              
+        return chart_dic
 
 
 def get_interest_growth(company):

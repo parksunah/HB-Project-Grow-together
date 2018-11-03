@@ -13,46 +13,13 @@
 
 
 <!-- Logo and Definition /////////////////////////////////////////////////// -->
+
 <div id="logo">
     <img src={{ company_infos[1] }}>
 </div>
 <div id="definition">
     {{ company_infos[0] }}
 </div>
-
-<script type="text/javascript">
-
-
-// This is for Duckduckgo API's
- function getDefinition() {
-
-    $.ajax({
-        url : 'https://api.duckduckgo.com/?q={{company_name.lower()}}.com&format=json&pretty=1',
-        jsonp: "callback",
-        dataType: 'jsonp',
-        xhrFields: { withCredentials: true},
-        success: function(results) {
-            const abstract = results.AbstractText;
-            const img = results.Image;
-
-            if (abstract == "") {
-                abstract = "No information available.";
-            }
-
-            if (img == "") {
-                img = "No information available.";
-            }
-
-            $("#definition").html(abstract);
-            $("#definition-img").attr("src", img);
-            
-        }
-    });
-  }
-
-// getDefinition()
-</script>
-
 
 <!-- rating, ranking /////////////////////////////////////////////////////// -->
 
@@ -121,72 +88,59 @@ $(document).ready(function() {
 </tbody>
 </table>   
 
-
-<!-- <script type="text/javascript">
-   
-    function job_listings() {
-
-    let url = "job_listings.json";
-    let company_data = { "company_name" : $("#salary-table").data("company-name") }; /* interest.json?company_name=facebook */
-
-    $.get(url, company_data, (result) => {
-        $('#job-table').html(result.json);
-    });
-
-    }
-job_listings();
-
-</script> -->
-
 <!-- Google trends interest chart ////////////////////////////////////////// -->
 
-<div class="interest-chart">
-    <canvas id="lineChart"></canvas> 
-</div>
 
+<canvas data-chart='{{ interest_chart|tojson }}' id="myChart"></canvas>
 <script>
-    const options = {
-      responsive: true,
-      xAxes: [{
-            type: 'time',
-            scales: {
-                  time: {
-                    displayFormats: {
-                        quarter: 'MMM YYYY'
-                    }
-                  }
+const ctx = document.getElementById("myChart").getContext('2d');
+const myChart = new Chart.Line(ctx, {
+    data: {
+        labels: $("#myChart").data("chart").label1,
+        datasets: [{
+            label: $("#salary-table").data("company-name"),
+            data: $("#myChart").data("chart").label2,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
                 }
             }]
-     };
-
-    // Make Line Chart of Interest over time
-    let ctx_line = $("#lineChart").get(0).getContext("2d");
-    let company_data = { "company_name" : $("#salary-table").data("company-name") };
-
-    $.get("/interest.json", company_data, function (data) {
-      let myLineChart = Chart.Line(ctx_line, {
-                                   data: data,
-                                   options: options
-                                });
-
-      document.getElementById("lineChart").onclick = function(evt){
-      const activePoints = myLineChart.getElementsAtEvent(evt);
-
-      const datasetIndex = activePoints._datasetIndex;
-      const index = activePoints._index;
-
-      alert(index);
-      console.log(index);
-
-      };
-    });
+        }
+    }
+});
 
 </script>
+<script type="text/javascript">
 
 
-<script>
-
-
+document.getElementById("myChart").onclick = function(evt){
+            const activePoints2 = myChart.getElementsAtEvent(evt);
+            const firstPoint2 = activePoints2[0];
+            const label = myChart.data.labels[firstPoint2._index];
+            const value = myChart.data.datasets[firstPoint2._datasetIndex].data[firstPoint2._index];
+            alert(label + ": " + value);
+        };
 
 
 </script>
