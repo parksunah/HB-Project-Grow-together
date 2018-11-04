@@ -161,7 +161,7 @@ def get_company_infos(company_name):
     response.raise_for_status()
     search_results = response.json()
 
-    if search_results:
+    if 'entities' in search_results:
 
         company_desc = search_results['entities']['value'][0]['description']
         company_img = search_results['entities']['value'][0]['image']['thumbnailUrl']
@@ -179,7 +179,6 @@ def get_news():
     when user click the interest chart's specific point."""
 
     import datetime
-    from dateutil.relativedelta import relativedelta
     
     news_key = os.environ['NEWS_KEY']
 
