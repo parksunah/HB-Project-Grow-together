@@ -6,7 +6,7 @@ url = ('https://newsapi.org/v2/everything?'
        'from=2018-11-04&'
        'to=2018-11-04&'
        'sortBy=popularity&'
-       'apiKey=9ec8f353d0a74a6496f0a10635a783ea')
+       'apiKey=secret')
 
 r = requests.get(url)
 
