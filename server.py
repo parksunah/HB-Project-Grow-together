@@ -177,15 +177,18 @@ def get_company_infos(company_name):
 def get_news():
     """Get news for specific date, 
     when user click the interest chart's specific point."""
+
+    import datetime
+    from dateutil.relativedelta import relativedelta
     
     news_key = os.environ['NEWS_KEY']
 
     company_name2 = request.args.get("company_name")
     company_name = company_name2.lower()
 
-    news_date2 = request.args.get("from")
-    news_date = news_date2[:10]
-
+    news_date = request.args.get("from")
+    from_date = news_date[:10]
+    to_date = datetime.datetime.strptime(from_date, "%Y-%m-%d") + datetime.timedelta(6)
 
     print(news_date)
 
@@ -193,8 +196,8 @@ def get_news():
     
     params  = { 
             "q": company_name, 
-            "from": news_date,    
-            "to": news_date,
+            "from": from_date,    
+            "to": to_date,
             "sortBy" : "popularity",
             "apiKey" : news_key
             }
