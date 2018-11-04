@@ -42,6 +42,7 @@ def companydic():
 @app.route("/company_view")
 def create_result_view():
     """Create the company's salary table."""
+
     from datetime import datetime; start = datetime.now()
     form = CompanyForm(request.args)
     company_name = form.company.data
@@ -88,7 +89,7 @@ def create_result_view():
 
 
 def create_interest_chart(company):
-
+    """Google trends interest chart generator."""
 
     if not company.interest:
         return None
@@ -170,6 +171,38 @@ def get_company_infos(company_name):
     else:
 
         return (None, None)
+
+
+@app.route("/news.json")
+def get_news():
+    """Get news for specific date, 
+    when user click the interest chart's specific point."""
+    
+    news_key = os.environ['NEWS_KEY']
+
+    company_name2 = request.args.get("company_name")
+    company_name = company_name2.lower()
+
+    news_date2 = request.args.get("from")
+    news_date = news_date2[:10]
+
+
+    print(news_date)
+
+    url = "https://newsapi.org/v2/everything"
+    
+    params  = { 
+            "q": company_name, 
+            "from": news_date,    
+            "to": news_date,
+            "sortBy" : "popularity",
+            "apiKey" : news_key
+            }
+
+    response = requests.get(url, params=params)
+    print(response.url)
+
+    return jsonify(response.json()['articles'][0])
 
 
 

@@ -13,13 +13,16 @@
 
 
 <!-- Logo and Definition /////////////////////////////////////////////////// -->
-
+<button id="getNews"> submit </button>
 <div id="logo">
     <img src={{ company_infos[1] }}>
 </div>
 <div id="definition">
     {{ company_infos[0] }}
 </div>
+<span id="news1"> ************</span>
+<span id="news2"> ********</span>
+<span id="news3"> ********</span>
 
 <!-- rating, ranking /////////////////////////////////////////////////////// -->
 
@@ -125,14 +128,16 @@ const myChart = new Chart.Line(ctx, {
                 ticks: {
                     beginAtZero:true
                 }
-            }]
+            }],
         }
     }
 });
 
 </script>
-<script type="text/javascript">
 
+<!-- News generator by click event ///////////////////////////////////////// -->
+
+<script type="text/javascript">
 
 document.getElementById("myChart").onclick = function(evt){
             const activePoints2 = myChart.getElementsAtEvent(evt);
@@ -140,10 +145,22 @@ document.getElementById("myChart").onclick = function(evt){
             const label = myChart.data.labels[firstPoint2._index];
             const value = myChart.data.datasets[firstPoint2._datasetIndex].data[firstPoint2._index];
             alert(label + ": " + value);
+            let company_data = { "company_name" : $("#salary-table").data("company-name"), "from" : label};
+
+            const url = "news.json";
+
+            $.get(url, company_data, (response) => {
+                $('#news1').html(response.publishedAt);
+                $('#news2').html(response.description);
+                $('#news3').html(response.title);
+                console.log(response);
+    });
+
         };
 
 
 </script>
+
 
 
 </body>

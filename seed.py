@@ -80,40 +80,32 @@ def load_insterest():
    
     for company in Company.query.all():
         
-        if company.company_id <= 6200:
-            continue
+        kw_list = [] # set keyword
+        kw = company.name.lower()
+        kw_list.append(kw)
 
-        if 6201 <= company.company_id <= 6307:
-            kw_list = [] # set keyword
-            kw = company.name.lower()
-            kw_list.append(kw)
+        trend.build_payload(kw_list, timeframe='today 5-y') # build pay load
 
-            trend.build_payload(kw_list, timeframe='today 5-y') # build pay load
+    # returns historical, indexed data for when the keyword was searched most as shown on Google Trends' Interest Over Time section.
+    # return type : pandas dataframe
+        trend_df = trend.interest_over_time() 
+        trend_df = trend_df.iloc[:,:1] # get rid of isPartial column
 
-        # returns historical, indexed data for when the keyword was searched most as shown on Google Trends' Interest Over Time section.
-        # return type : pandas dataframe
-            trend_df = trend.interest_over_time() 
-            trend_df = trend_df.iloc[:,:1] # get rid of isPartial column
-
-            if not trend_df.empty: 
-                for row in trend_df.iterrows():
+        if not trend_df.empty: 
+            for row in trend_df.iterrows():
+            
+                date, value = row[0], row[1] # date : datetime / interest : pandas series.
+                value = value.to_dict()
+                interest = Interest(date=date, interest=value[kw])
+                interest.company = Company.query.filter_by(name=company.name).first()
                 
-                    date, value = row[0], row[1] # date : datetime / interest : pandas series.
-                    value = value.to_dict()
-                    interest = Interest(date=date, interest=value[kw])
-                    interest.company = Company.query.filter_by(name=company.name).first()
-                    
-                    db.session.add(interest)
-                         
+                db.session.add(interest)
+                print("interest loading")     
 
-        else: 
-            db.session.commit()
-            print("interest loading completed")
-            break
+    db.session.commit()
+    print("interest loading completed")
 
         
-        print("interest loading")
-
 
 
 
@@ -127,7 +119,7 @@ if __name__ == "__main__":
     #load_industry()
     #load_company()
     #load_salary()
-    load_insterest()
+    #load_insterest()
 
 
 
