@@ -105,6 +105,52 @@ def load_insterest():
     db.session.commit()
     print("interest loading completed")
 
+
+def get_interest_growth(company):
+    """Get the interest ranking in the same industy companies."""
+
+    interest = sorted(company.interest, key=lambda x: x.date)
+    interest_start = interest[0]
+    interest_end = interest[-1]
+
+    # preventing for division by zero error.
+    if interest_start.interest == 0:
+        interest_growth = (interest_end.interest - 1) / 1 * 100
+        
+    else:
+        interest_growth = (interest_end.interest - interest_start.interest) / interest_start.interest * 100
+
+    return interest_growth
+
+
+def get_interest_growth_ranking(industry_id):
+    """Get the interest movement ranking in the same industry and store it to db."""
+
+    growth_list = []
+    company_list = []
+
+    industry = Industry.query.options(
+        db.joinedload("companies")
+    ).filter_by(industry_id=industry_id).first()
+
+    for company in industry.companies:
+
+        if company.interest:
+            company_interest_growth = get_interest_growth(company)
+            if company_interest_growth not in growth_list:
+                growth_list.append(company_interest_growth)
+                company_list.append(company)
+        
+    sorted_growth_list = sorted(growth_list, reverse=True)
+    print(sorted_growth_list)
+
+    for company in company_list:
+        ranking = sorted_growth_list.index(get_interest_growth(company))
+        print(ranking, company.name, get_interest_growth(company))
+        company.desc = ranking+1
+        print(company.desc)
+        db.session.commit()
+
         
 
 

@@ -24,9 +24,11 @@
     {{ company_infos[0] }}
 </div>
 {% endif %}
-<div id="news1"> ************</div>
-<div id="news2"> ********</div>
-<div id="news3"> ********</div>
+<div id="news-publish"> ************</div>
+<div id="news-title"> ********</div>
+<div id="news-desc"> ********</div>
+<div id="news-content"> ********</div>
+<div id="news-url"> ********</div>
 
 <!-- rating, ranking /////////////////////////////////////////////////////// -->
 
@@ -154,9 +156,11 @@ document.getElementById("myChart").onclick = function(evt){
             const url = "news.json";
 
             $.get(url, company_data, (response) => {
-                $('#news1').html(response.publishedAt);
-                $('#news2').html(response.description);
-                $('#news3').html(response.title);
+                $('#news-publish').html(response.publishedAt);
+                $('#news-desc').html(response.description);
+                $('#news-title').html(response.title);
+                $('#news-content').html(response.content);
+                $('#news-url').html(response.url);
                 console.log(response);
     });
 

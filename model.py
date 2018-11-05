@@ -33,7 +33,7 @@ class Company(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return f"<Company company_id={self.company_id} name={self.name}>"
+        return f"<Company company_id={self.company_id} name={self.name}, ranking={self.desc}>"
 
     def as_dict(self):
         return {'name': self.name}
