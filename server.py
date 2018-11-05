@@ -49,8 +49,6 @@ def create_result_view():
     company_name = company_name.upper()
     company = Company.query.options(
         db.joinedload("industry")
-          .joinedload("companies")
-          .joinedload("interest")
     ).filter_by(name=company_name).first()
     print('#' * 20, datetime.now() - start) # for checking runtime
     
@@ -63,22 +61,32 @@ def create_result_view():
 
     interest_chart=create_interest_chart(company)
 
-    if company.industry:
-        ranking = get_interest_growth_ranking(company)
+    if company.desc:
+        interest_growth = get_interest_growth(company)
+        print('#' * 20, datetime.now() - start)
+        ranking = company.desc
         industry_name = company.industry.name
-    
+        industry_num = len(company.industry.companies)
+        print('#' * 20, datetime.now() - start)
+
     else:
+        interest_growth = None
         ranking = None
         industry_name = None
-
+        industry_num = None
 
     if company != None:
 
         salary_query = company.salaries
 
-        return render_template("form.html", salary_query=salary_query, 
-                                company_name=company_name, job_listings=job_listings,
-                                ranking =ranking, industry_name=industry_name, 
+        return render_template( "form.html", 
+                                salary_query=salary_query, 
+                                company_name=company_name, 
+                                job_listings=job_listings,
+                                interest_growth=interest_growth,
+                                ranking=ranking, 
+                                industry_name=industry_name,
+                                industry_num=industry_num, 
                                 company_infos=company_infos,
                                 interest_chart=interest_chart)
 
@@ -149,7 +157,7 @@ def get_interest_growth_ranking(target_company):
 def get_company_infos(company_name):
     """Get Company's desc and logo img using Bing API."""
 
-    subscription_key = os.environ['BING_KEY'] # error occurs
+    subscription_key = os.environ['BING_KEY'] 
     assert subscription_key
 
     search_url = "https://api.cognitive.microsoft.com/bing/v7.0/search"
