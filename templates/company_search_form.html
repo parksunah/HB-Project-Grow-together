@@ -26,10 +26,9 @@
 <!-- Company name input from /////////////////////////////////////////////// -->
 
     <form action="/company_view" method="GET">
-        {{ form.csrf_token }}
         <div class="company-search">
-            {{form.company(size=75)}}
-          <button type="submit" class="submit_btn">Submit</button>
+            {{ form.company(size=75) }}
+            {{ form.submit() }}
         </div>
     </form>
 
