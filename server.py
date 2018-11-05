@@ -4,6 +4,7 @@ from flask import Flask, render_template, redirect, request, flash, session, url
 from flask_debugtoolbar import DebugToolbarExtension
 import requests
 import os
+from datetime import datetime
 
 from model import Company, Industry, Interest, Salary, connect_to_db, db
 from forms import CompanyForm
@@ -55,27 +56,27 @@ def create_result_view():
     job_listings = get_job_listings(company_name)
     print('#' * 20, datetime.now() - start) # for checking runtime
 
-
     company_infos = get_company_infos(company_name)
     print('#' * 20, datetime.now() - start) # for checking runtime
 
-    interest_chart=create_interest_chart(company)
-
-    if company.desc:
-        interest_growth = get_interest_growth(company)
-        print('#' * 20, datetime.now() - start)
-        ranking = company.desc
-        industry_name = company.industry.name
-        industry_num = len(company.industry.companies)
-        print('#' * 20, datetime.now() - start)
-
-    else:
-        interest_growth = None
-        ranking = None
-        industry_name = None
-        industry_num = None
-
     if company != None:
+
+        if company.desc:
+            interest_growth = get_interest_growth(company)
+            print('#' * 20, datetime.now() - start)
+            ranking = company.desc
+            industry_name = company.industry.name
+            industry_num = len(company.industry.companies)
+            print('#' * 20, datetime.now() - start)
+
+        else:
+            interest_growth = None
+            ranking = None
+            industry_name = None
+            industry_num = None
+
+
+        interest_chart=create_interest_chart(company)
 
         salary_query = company.salaries
 
@@ -98,6 +99,7 @@ def create_result_view():
 
 def create_interest_chart(company):
     """Google trends interest chart generator."""
+    
 
     if not company.interest:
         return None
@@ -105,7 +107,7 @@ def create_interest_chart(company):
     else:
 
         chart_dic = { 
-                      "label1": [ obj.date.isoformat() for obj in company.interest ],
+                      "label1": [ datetime.strftime(obj.date, "%b-%d-%Y") for obj in company.interest ],
                       "label2": [ obj.interest for obj in company.interest ]
                     }
               
@@ -128,30 +130,6 @@ def get_interest_growth(company):
         interest_growth = (interest_end.interest - interest_start.interest) / interest_start.interest * 100
 
     return interest_growth
-
-
-def get_interest_growth_ranking(target_company):
-
-    larger = []
-    target_interest_growth = get_interest_growth(target_company)
-
-    for company in target_company.industry.companies:
-
-        if company.interest:
-            company_interest_growth = get_interest_growth(company)
-            if company_interest_growth > target_interest_growth:
-                larger.append(company_interest_growth)
-            else:
-                continue
-        else:
-            continue
-
-
-    ranking = len(larger) + 1
-    total = len(target_company.industry.companies)
-
-    return ranking, total
-
 
 
 def get_company_infos(company_name):
@@ -194,8 +172,8 @@ def get_news():
     company_name = company_name2.lower()
 
     news_date = request.args.get("from")
-    from_date = news_date[:10]
-    to_date = datetime.datetime.strptime(from_date, "%Y-%m-%d") + datetime.timedelta(6)
+    from_date = datetime.datetime.strptime(news_date, "%b-%d-%Y")
+    to_date = from_date + datetime.timedelta(6)
 
     print(news_date)
 
@@ -205,7 +183,7 @@ def get_news():
             "q": company_name, 
             "from": from_date,    
             "to": to_date,
-            "sortBy" : "popularity",
+            "sortBy" : "relevancy",
             "apiKey" : news_key
             }
 
