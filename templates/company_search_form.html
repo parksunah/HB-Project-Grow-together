@@ -1,26 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="/static/test.js"></script>
-</head>
-<body>
+{% extends 'base.html' %}
 
+{% block title %} Search {% endblock %}
 
-<!-- flash messages - will be replaced by base.html /////////////////////////////// -->
-
-
- {% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
+{% block content %}
 
 
 <!-- Company name input from /////////////////////////////////////////////// -->
@@ -58,5 +40,6 @@
 
 </script>
 
-</body>
-</html>
+
+
+{% endblock %}

@@ -36,7 +36,8 @@ class Company(db.Model):
         return f"<Company company_id={self.company_id} name={self.name}, ranking={self.desc}>"
 
     def as_dict(self):
-        return {'name': self.name}
+
+        return {"name": self.name}
 
 
 class Industry(db.Model):

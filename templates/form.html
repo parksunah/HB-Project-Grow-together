@@ -1,16 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css"> <!-- Datatable -->
+{% extends 'base.html' %}
 
-</head>
-<body>
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script> <!-- jquery -->
-<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script> <!-- Datatable -->
-<script src="https://cdn.datatables.net/plug-ins/1.10.15/api/row().show().js"></script> <!-- Datatable -->
-<link href="http://fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">  <!-- font -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js"></script> <!-- Chart js -->
+{% block title %} Search {% endblock %}
 
+{% block content %}
 
 <!-- Logo and Definition /////////////////////////////////////////////////// -->
 
@@ -167,6 +159,5 @@ document.getElementById("myChart").onclick = function(evt){
 
 
 
-</body>
-</html>
+{% endblock %}
 
