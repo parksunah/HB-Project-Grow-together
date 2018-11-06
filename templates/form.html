@@ -4,6 +4,26 @@
 
 {% block content %}
 
+
+<div id="navbar"></div>
+
+<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="http://unpkg.com/babel-standalone"></script>
+<script src="/static/nav.jsx" type="text/jsx"></script>
+
+<script type="text/jsx">
+    const salaryJobTitles = {{ test_list|tojson }};
+    ReactDOM.render(
+      (
+        <NavList items={salaryJobTitles} />
+      ),
+      document.getElementById('navbar')
+    );
+</script>
+
+
+
 <!-- Logo and Definition /////////////////////////////////////////////////// -->
 
 {% if company_infos[1] %}
