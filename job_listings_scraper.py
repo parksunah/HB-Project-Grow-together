@@ -85,26 +85,28 @@ def get_job_listings(company_name):
                 state = ''.join(raw_state).strip()
                 raw_city = job_location.replace(state, '')
                 city = raw_city.replace(',', '').strip()
-                company = ''.join(raw_company).replace('–','')
+                company = ''.join(raw_company).replace('–','').strip().lower()
                 salary = ''.join(raw_salary).strip()
                 rating = ''.join(raw_rating).strip()
                 job_url = raw_job_url[0] if raw_job_url else None
 
-                jobs = {
-                    "Name": job_name,
-                    "Company": company,
-                    "State": state,
-                    "City": city,
-                    "Salary": salary,
-                    "Location": job_location,
-                    "Url": job_url,
-                    "Rating" : rating
-                }
-                job_listings.append(jobs)
+                if company in keyword.lower():
+
+                    jobs = {
+                        "Name": job_name,
+                        "Company": company,
+                        "State": state,
+                        "City": city,
+                        "Salary": salary,
+                        "Location": job_location,
+                        "Url": job_url,
+                        "Rating" : rating
+                    }
+                    job_listings.append(jobs)
 
             return job_listings
         else:
-            print("location id not available")
+            return None
 
     except:
-        print("Failed to load locations")
+        return None

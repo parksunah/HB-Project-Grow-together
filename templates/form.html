@@ -4,34 +4,6 @@
 
 {% block content %}
 
-
-<div id="navbar"></div>
-<div id="navbar2"></div>
-
-<!-- <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
-<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script> -->
-<script src="http://unpkg.com/babel-standalone"></script>
-<script src="/static/bundle.js"></script>
-
-<div id="container" style="padding: 24px"></div>
-<script>
-  const mountNode = document.getElementById('container');
-</script>
-
-<script type="text/jsx">
-    const salaryJobTitles = {{ test_list|tojson }};
-    ReactDOM.render(
-      (
-        <NavList items={salaryJobTitles[0]} />
-      ),
-      document.getElementById('navbar')
-    );
-    
-</script>
-
-
-
-
 <!-- Logo and Definition /////////////////////////////////////////////////// -->
 
 {% if company_infos[1] %}

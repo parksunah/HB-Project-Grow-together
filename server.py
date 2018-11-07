@@ -136,6 +136,8 @@ def get_interest_growth(company):
 def get_company_infos(company_name):
     """Get Company's desc and logo img using Bing API."""
 
+    import pprint 
+
     subscription_key = os.environ['BING_KEY'] 
     assert subscription_key
 
@@ -145,19 +147,33 @@ def get_company_infos(company_name):
     headers = {"Ocp-Apim-Subscription-Key" : subscription_key}
     params  = {"q": search_term, "textDecorations":True, "textFormat":"HTML"}
     response = requests.get(search_url, headers=headers, params=params)
+    print(response.url)
     response.raise_for_status()
     search_results = response.json()
+    pprint.pprint(search_results)
+
 
     if 'entities' in search_results:
 
         company_desc = search_results['entities']['value'][0]['description']
-        company_img = search_results['entities']['value'][0]['image']['thumbnailUrl']
+
+        if 'image' in search_results['entities']['value'][0]:
+    
+            company_img = search_results['entities']['value'][0]['image']['thumbnailUrl']
+
+        else:
+
+            company_img = None
+
+
+        print(company_img)
+        print(company_desc)
 
         return (company_desc, company_img)
 
     else:
 
-        return (None, None)
+         return (None, None)
 
 
 @app.route("/news.json")
