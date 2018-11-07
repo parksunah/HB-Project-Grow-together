@@ -81,7 +81,7 @@ def create_result_view():
         salary_query = company.salaries
 
         return render_template( "form.html",
-                                test_list=[salary.job_title for salary in salary_query[:4]],
+                                test_list=[(salary.job_title, salary.location) for salary in salary_query],
                                 salary_query=salary_query, 
                                 company_name=company_name, 
                                 job_listings=job_listings,
