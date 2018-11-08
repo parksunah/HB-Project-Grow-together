@@ -16,11 +16,7 @@
     {{ company_infos[0] }}
 </div>
 {% endif %}
-<div id="news-publish"> ************</div>
-<div id="news-title"> ********</div>
-<div id="news-desc"> ********</div>
-<div id="news-content"> ********</div>
-<div id="news-url"> ********</div>
+<div id="news-article"> ********</div>
 
 <!-- rating, ranking /////////////////////////////////////////////////////// -->
 
@@ -134,22 +130,36 @@ const myChart = new Chart.Line(ctx, {
 <script type="text/javascript">
 
 document.getElementById("myChart").onclick = function(evt){
-            const activePoints2 = myChart.getElementsAtEvent(evt);
-            const firstPoint2 = activePoints2[0];
-            const label = myChart.data.labels[firstPoint2._index];
-            const value = myChart.data.datasets[firstPoint2._datasetIndex].data[firstPoint2._index];
+            const activePoints = myChart.getElementsAtEvent(evt);
+            const firstPoint = activePoints[0];
+            const label = myChart.data.labels[firstPoint._index];
+            const value = myChart.data.datasets[firstPoint._datasetIndex].data[firstPoint._index];
             alert(label + ": " + value);
             let company_data = { "company_name" : $("#salary-table").data("company-name"), "from" : label};
 
+            
             const url = "news.json";
 
             $.get(url, company_data, (response) => {
-                $('#news-publish').html(response.publishedAt);
-                $('#news-desc').html(response.description);
-                $('#news-title').html(response.title);
-                $('#news-content').html(response.content);
-                $('#news-url').html(response.url);
+                
+                const newsList = [];
+                
+                for (let r of response) {
+                    
+                    const subList = [];
+
+                    subList.push(r.publishedAt);
+                    subList.push(r.description);
+                    subList.push(r.title);
+                    subList.push(r.url);
+
+                    newsList.push(subList);
+                    
+                }
+
+                $('#news-article').html(newsList);
                 console.log(response);
+                console.log(newsList);
     });
 
         };

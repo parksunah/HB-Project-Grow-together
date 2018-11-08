@@ -147,10 +147,9 @@ def get_company_infos(company_name):
     headers = {"Ocp-Apim-Subscription-Key" : subscription_key}
     params  = {"q": search_term, "textDecorations":True, "textFormat":"HTML"}
     response = requests.get(search_url, headers=headers, params=params)
-    print(response.url)
     response.raise_for_status()
     search_results = response.json()
-    pprint.pprint(search_results)
+    #pprint.pprint(search_results)
 
 
     if 'entities' in search_results:
@@ -165,9 +164,8 @@ def get_company_infos(company_name):
 
             company_img = None
 
-
-        print(company_img)
-        print(company_desc)
+        #print(company_img)
+        #print(company_desc)
 
         return (company_desc, company_img)
 
@@ -207,7 +205,7 @@ def get_news():
     response = requests.get(url, params=params)
     print(response.url)
 
-    return jsonify(response.json()['articles'][0])
+    return jsonify(response.json()['articles'])
 
 
 
