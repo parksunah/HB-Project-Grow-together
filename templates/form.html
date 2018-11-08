@@ -4,6 +4,58 @@
 
 {% block content %}
 
+
+<!-- Nav bar with scrollable area -->
+ <style>
+  body {
+      position: relative; 
+  }
+  </style>
+</head>
+<body data-spy="scroll" data-target="#navbar-example2" data-offset="50">
+
+<nav id="navbar-example2" class="navbar navbar-light bg-light fixed-top"> 
+  <a class="navbar-brand" href="#">Home</a>
+  <ul class="nav nav-pills">
+    <li class="nav-item">
+      <a class="nav-link" href="#logo">About Company</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#salary">Real Salary Data</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#job-listing">Job Listing</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#chart">Google trends</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#news-article">Related News</a>
+    </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="#one">one</a>
+        <a class="dropdown-item" href="#two">two</a>
+        <div role="separator" class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#three">three</a>
+      </div>
+    </li>
+  </ul>
+</nav>
+<div data-spy="scroll" data-target="#navbar-example2" data-offset="0">
+  <h4 id="fat">@fat</h4>
+  <p>...</p>
+  <h4 id="mdo">@mdo</h4>
+  <p>...</p>
+  <h4 id="one">one</h4>
+  <p>...</p>
+  <h4 id="two">two</h4>
+  <p>...</p>
+  <h4 id="three">three</h4>
+  <p>...</p>
+</div>
+
 <!-- Logo and Definition /////////////////////////////////////////////////// -->
 
 {% if company_infos[1] %}
@@ -16,7 +68,7 @@
     {{ company_infos[0] }}
 </div>
 {% endif %}
-<div id="news-article"> ********</div>
+
 
 <!-- rating, ranking /////////////////////////////////////////////////////// -->
 
@@ -30,6 +82,7 @@
 
 <!-- Salary table ////////////////////////////////////////////////////////// -->
 
+<div id="salary">
 <table id ="salary-table" class="display table table-striped table-bordered" data-company-name="{{ company_name }}">
     <thead>
         <tr>
@@ -50,6 +103,7 @@
         {% endfor %}
     </tbody>
 </table>
+</div>
 
 <!-- Using DataTable for each table //////////////////////////////////////// -->
 
@@ -62,7 +116,7 @@ $(document).ready(function() {
 
 <!-- Glassdoor job listing table /////////////////////////////////////////// -->
 
-
+<div id="job-listing">
 <table class="display table table-striped table-bordered">
 <thead>
     <tr>
@@ -82,10 +136,12 @@ $(document).ready(function() {
     </tr>
     {% endfor %}
 </tbody>
-</table>   
+</table>
+</div>   
 
 <!-- Google trends interest chart ////////////////////////////////////////// -->
 
+<div id="chart">
 <canvas data-chart='{{ interest_chart|tojson }}' id="myChart"></canvas>
 <script>
 const ctx = document.getElementById("myChart").getContext('2d');
@@ -124,8 +180,10 @@ const myChart = new Chart.Line(ctx, {
 });
 
 </script>
+</div>
 
 <!-- News generator by click event ///////////////////////////////////////// -->
+
 
 <script type="text/javascript">
 
@@ -167,6 +225,8 @@ document.getElementById("myChart").onclick = function(evt){
 
 </script>
 
+
+<div id="news-article"> ********</div>
 
 
 {% endblock %}

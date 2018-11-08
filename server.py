@@ -81,7 +81,6 @@ def create_result_view():
         salary_query = company.salaries
 
         return render_template( "form.html",
-                                test_list=[(salary.job_title, salary.location) for salary in salary_query],
                                 salary_query=salary_query, 
                                 company_name=company_name, 
                                 job_listings=job_listings,
@@ -171,11 +170,14 @@ def get_company_infos(company_name):
 
     elif 'webPages' in search_results:
 
+        # If API's search result has no Wikipedia sector, 
+        # it will return the first webpage's description.
         company_desc = search_results['webPages']['value'][0]['snippet']
 
         return (company_desc, None)
 
     else:
+        # If API can't find any information.
         return (None, None)
 
 
