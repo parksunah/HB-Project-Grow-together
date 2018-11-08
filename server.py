@@ -149,7 +149,7 @@ def get_company_infos(company_name):
     response = requests.get(search_url, headers=headers, params=params)
     response.raise_for_status()
     search_results = response.json()
-    #pprint.pprint(search_results)
+    pprint.pprint(search_results)
 
 
     if 'entities' in search_results:
@@ -169,9 +169,14 @@ def get_company_infos(company_name):
 
         return (company_desc, company_img)
 
-    else:
+    elif 'webPages' in search_results:
 
-         return (None, None)
+        company_desc = search_results['webPages']['value'][0]['snippet']
+
+        return (company_desc, None)
+
+    else:
+        return (None, None)
 
 
 @app.route("/news.json")
