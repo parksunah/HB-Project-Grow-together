@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 
-{% block title %} Search {% endblock %}
+{% block title %} Inside Out {% endblock %}
 
 {% block content %}
 
 
-<!-- Nav bar with scrollable area -->
+<!-- Nav bar with scrollable area ///////////////////////////////////////////-->
+
  <style>
   body {
       position: relative; 
@@ -15,7 +16,14 @@
 <body data-spy="scroll" data-target="#navbar-example2" data-offset="50">
 
 <nav id="navbar-example2" class="navbar navbar-light bg-light fixed-top"> 
-  <a class="navbar-brand" href="#">Home</a>
+  <a class="navbar-brand" href="/search">Home</a>
+  <form action="/company_view" method="GET">
+        <div class="company-search">
+            {{ form.company(size=25) }}
+            {{ form.submit() }}
+        </div>
+    </form>
+
   <ul class="nav nav-pills">
     <li class="nav-item">
       <a class="nav-link" href="#logo">About Company</a>
@@ -43,20 +51,37 @@
     </li>
   </ul>
 </nav>
-<div data-spy="scroll" data-target="#navbar-example2" data-offset="0">
-  <h4 id="fat">@fat</h4>
-  <p>...</p>
-  <h4 id="mdo">@mdo</h4>
-  <p>...</p>
-  <h4 id="one">one</h4>
-  <p>...</p>
-  <h4 id="two">two</h4>
-  <p>...</p>
-  <h4 id="three">three</h4>
-  <p>...</p>
-</div>
+
+
+<!-- Autocomplete  ///////////////////////////////////////////////////////// -->
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+    const companies=[];
+
+    function loadCompanies(){
+        $.getJSON('/companies', function(data, status, xhr){
+            for (let i = 0; i < data.length; i++ ) {
+                companies.push(data[i].name);
+            }
+    });
+    };
+
+    loadCompanies();
+
+    $("#company").autocomplete({
+                    source: companies, 
+                    minLength:3
+                });
+    });
+</script>
+
 
 <!-- Logo and Definition /////////////////////////////////////////////////// -->
+
+<br><br><br>
+<h1>{{ company_name }}</h1>
 
 {% if company_infos[1] %}
 <div id="logo">
@@ -72,15 +97,21 @@
 
 <!-- rating, ranking /////////////////////////////////////////////////////// -->
 
+<div id="rating">
 {% if job_listings %}
 <p> Employees' Rating : {{ job_listings[0]["Rating"]}} </p>
 {% endif %}
+</div>
 
+<div id="ranking" data-ranking="{{ industry_name }}">
 {% if ranking %}
 <p> Google trends movement growth is {{ interest_growth }}%, ranking is {{ ranking }} of {{ industry_num }} in {{ industry_name }} sector. (during past 5 years) </p>
 {% endif %}
+</div>
 
 <!-- Salary table ////////////////////////////////////////////////////////// -->
+
+<h1> Real Salary Data from Labor Department </h1>
 
 <div id="salary">
 <table id ="salary-table" class="display table table-striped table-bordered" data-company-name="{{ company_name }}">
@@ -116,6 +147,8 @@ $(document).ready(function() {
 
 <!-- Glassdoor job listing table /////////////////////////////////////////// -->
 
+<h1> Job listing by Glassdoor </h1>
+
 <div id="job-listing">
 <table class="display table table-striped table-bordered">
 <thead>
@@ -140,6 +173,8 @@ $(document).ready(function() {
 </div>   
 
 <!-- Google trends interest chart ////////////////////////////////////////// -->
+
+<h1> Interest Movement Chart From Google trends </h1>
 
 <div id="chart">
 <canvas data-chart='{{ interest_chart|tojson }}' id="myChart"></canvas>
@@ -184,6 +219,8 @@ const myChart = new Chart.Line(ctx, {
 
 <!-- News generator by click event ///////////////////////////////////////// -->
 
+<h1> News </h1>
+<div id="news-article"> ********</div>
 
 <script type="text/javascript">
 
@@ -226,7 +263,62 @@ document.getElementById("myChart").onclick = function(evt){
 </script>
 
 
-<div id="news-article"> ********</div>
+<!-- News generator by click event ///////////////////////////////////////// -->
+
+    <h1>Location</h1>
+
+    <style>
+       /* Set the size of the div element that contains the map */
+      #map {
+        height: 400px;  /* The height is 400 pixels */
+        width: 100%;  /* The width is the width of the web page */
+       }
+    </style>
+
+    <div id="address"></div>
+    <div id="location-name"></div>
+    <!--The div element for the map -->
+    <div id="map" data-map='{{ location|tojson }}'></div>
+    
+
+
+    <script>
+
+    function initMap() {
+
+      const mapLocation = { lat: $("#map").data("map").lat, 
+                            lng: $("#map").data("map").lng }; 
+      const locationName = $("#map").data("map").name;
+      
+      const map = new google.maps.Map(
+          document.getElementById('map'), {zoom: 16, center: mapLocation});
+
+      const marker = new google.maps.Marker({position: mapLocation, map: map});
+
+      let infoWindow = new google.maps.InfoWindow({
+          content: locationName
+        });
+
+      marker.addListener('click', function() {
+          infoWindow.open(map, marker);
+        });
+    }
+
+
+    const address = $("#map").data("map").address;
+    const locationName = $("#map").data("map").name;
+    $("#address").html(address);
+    $("#location-name").html(locationName);
+
+    </script>
+
+
+
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key={{ map_key }}&callback=initMap">
+    </script>
+  </body>
+</html>
 
 
 {% endblock %}

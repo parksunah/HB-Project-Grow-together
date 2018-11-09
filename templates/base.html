@@ -25,6 +25,7 @@
 </head>
 
 
+
 <body>
 
    {% with messages = get_flashed_messages() %}
@@ -34,6 +35,11 @@
       {% endfor %}
     {% endif %}
   {% endwith %}
+
+
+
+</script>
+
 
 
   {% block content %} CONTENT HERE {% endblock %}

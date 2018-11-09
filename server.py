@@ -1,6 +1,6 @@
 from jinja2 import StrictUndefined
 import json
-from flask import Flask, render_template, redirect, request, flash, session, url_for, jsonify, flash
+from flask import Flask, render_template, redirect, request, flash, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 import requests
 import os
@@ -49,8 +49,8 @@ def create_result_view():
     company_name = form.company.data
     company_name = company_name.upper()
     company = Company.query.options(
-        db.joinedload("industry")
-    ).filter_by(name=company_name).first()
+                db.joinedload("industry")
+                ).filter_by(name=company_name).first()
     print('#' * 20, datetime.now() - start) # for checking runtime
     
     job_listings = get_job_listings(company_name)
@@ -77,10 +77,16 @@ def create_result_view():
 
 
         interest_chart=create_interest_chart(company)
+        location=get_maps(company_name)
+        print('#' * 20, datetime.now() - start) # for checking runtime
+        print(location)
 
         salary_query = company.salaries
 
         return render_template( "form.html",
+                                map_key=os.environ['MAP_KEY'],
+                                form=form,
+                                location=location,
                                 salary_query=salary_query, 
                                 company_name=company_name, 
                                 job_listings=job_listings,
@@ -100,7 +106,6 @@ def create_result_view():
 def create_interest_chart(company):
     """Google trends interest chart generator."""
     
-
     if not company.interest:
         return None
 
@@ -169,7 +174,6 @@ def get_company_infos(company_name):
         return (company_desc, company_img)
 
     elif 'webPages' in search_results:
-
         # If API's search result has no Wikipedia sector, 
         # it will return the first webpage's description.
         company_desc = search_results['webPages']['value'][0]['snippet']
@@ -190,14 +194,16 @@ def get_news():
     
     news_key = os.environ['NEWS_KEY']
 
-    company_name2 = request.args.get("company_name")
-    company_name = company_name2.lower()
+    cap_company_name = request.args.get("company_name")
+    company_name = cap_company_name.lower()
 
     news_date = request.args.get("from")
     from_date = datetime.datetime.strptime(news_date, "%b-%d-%Y")
     to_date = from_date + datetime.timedelta(6)
 
-    print(news_date)
+    print("********************", news_date)
+    print("********************", from_date.isoformat())
+    print("********************", to_date)
 
     url = "https://newsapi.org/v2/everything"
     
@@ -206,13 +212,54 @@ def get_news():
             "from": from_date,    
             "to": to_date,
             "sortBy" : "relevancy",
-            "apiKey" : news_key
+            "apiKey" : news_key,
+            "language":"en"
             }
 
     response = requests.get(url, params=params)
     print(response.url)
 
     return jsonify(response.json()['articles'])
+
+
+@app.route("/map.json")
+def get_maps(company_name):
+
+
+    map_key = os.environ['MAP_KEY']
+
+    url = ("https://maps.googleapis.com/maps/api/place/findplacefromtext/json")
+    params = { "input" : company_name + " HQ california",
+               "inputtype" : "textquery",
+               "fields":"photos,formatted_address,name,rating,opening_hours,geometry",
+               "key":map_key} 
+
+    response = requests.get(url, params=params)
+    r = response.json()
+    
+    if r['status'] != 'ZERO_RESULTS':
+
+        location = {"name" : r['candidates'][0]['name'], 
+                    "address": r['candidates'][0]['formatted_address'],
+                    "lat" : r['candidates'][0]['geometry']['location']['lat'],
+                    "lng" : r['candidates'][0]['geometry']['location']['lng']}
+    else:
+        return None
+
+    return location
+
+@app.route("/interest_ranking")
+def create_interest_ranking_page():
+    """Create google interest ranking page in each industry sector."""
+
+    industry_name = request.args.get("industry_name")
+
+    company = Company.query.options(
+                    db.joinedload("industry")
+                      ).filter_by(industry_name=industry_name).order_by(Company.desc).all()
+
+
+    return render_template("interest_ranking.html", industry=industry)
 
 
 
