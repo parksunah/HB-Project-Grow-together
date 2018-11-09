@@ -56,10 +56,8 @@
 <!-- Autocomplete  ///////////////////////////////////////////////////////// -->
 
 <script type="text/javascript">
-
     $(document).ready(function () {
     const companies=[];
-
     function loadCompanies(){
         $.getJSON('/companies', function(data, status, xhr){
             for (let i = 0; i < data.length; i++ ) {
@@ -67,9 +65,7 @@
             }
     });
     };
-
     loadCompanies();
-
     $("#company").autocomplete({
                     source: companies, 
                     minLength:3
@@ -213,7 +209,6 @@ const myChart = new Chart.Line(ctx, {
         }
     }
 });
-
 </script>
 </div>
 
@@ -223,7 +218,6 @@ const myChart = new Chart.Line(ctx, {
 <div id="news-article"> ********</div>
 
 <script type="text/javascript">
-
 document.getElementById("myChart").onclick = function(evt){
             const activePoints = myChart.getElementsAtEvent(evt);
             const firstPoint = activePoints[0];
@@ -231,35 +225,43 @@ document.getElementById("myChart").onclick = function(evt){
             const value = myChart.data.datasets[firstPoint._datasetIndex].data[firstPoint._index];
             alert(label + ": " + value);
             let company_data = { "company_name" : $("#salary-table").data("company-name"), "from" : label};
-
             
             const url = "news.json";
-
             $.get(url, company_data, (response) => {
                 
                 const newsList = [];
                 
                 for (let r of response) {
-                    
-                    const subList = [];
 
-                    subList.push(r.publishedAt);
-                    subList.push(r.description);
-                    subList.push(r.title);
-                    subList.push(r.url);
+                const article = 
 
-                    newsList.push(subList);
-                    
+                `<div>
+                  <h3> ${r.title}</h3>
+                  <p>  ${r.publishedAt} </p>
+                  <p>  ${r.url} </p>
+                  <p>  ${r.description} </p>
+                </div>
+                `
+                newsList.push(article);
+                
                 }
 
+                // for (let r of response) {
+                    
+                //     const subList = [];
+                //     subList.push(r.publishedAt);
+                //     subList.push(r.description);
+                //     subList.push(r.title);
+                //     subList.push(r.url);
+                //     newsList.push(subList);
+                    
+                // }
+                console.log(newsList.length);
                 $('#news-article').html(newsList);
                 console.log(response);
-                console.log(newsList);
+                
     });
-
         };
-
-
 </script>
 
 
@@ -283,33 +285,25 @@ document.getElementById("myChart").onclick = function(evt){
 
 
     <script>
-
     function initMap() {
-
       const mapLocation = { lat: $("#map").data("map").lat, 
                             lng: $("#map").data("map").lng }; 
       const locationName = $("#map").data("map").name;
       
       const map = new google.maps.Map(
           document.getElementById('map'), {zoom: 16, center: mapLocation});
-
       const marker = new google.maps.Marker({position: mapLocation, map: map});
-
       let infoWindow = new google.maps.InfoWindow({
           content: locationName
         });
-
       marker.addListener('click', function() {
           infoWindow.open(map, marker);
         });
     }
-
-
     const address = $("#map").data("map").address;
     const locationName = $("#map").data("map").name;
     $("#address").html(address);
     $("#location-name").html(locationName);
-
     </script>
 
 
@@ -322,4 +316,3 @@ document.getElementById("myChart").onclick = function(evt){
 
 
 {% endblock %}
-
