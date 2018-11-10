@@ -1,80 +1,95 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <style>
-       /* Set the size of the div element that contains the map */
-      #map {
-        height: 400px;  /* The height is 400 pixels */
-        width: 100%;  /* The width is the width of the web page */
-       }
-    </style>
-  </head>
-  <body>
-    <h3>My Google Maps Demo</h3>
-    <!--The div element for the map -->
-    <div id="map"></div>
-    <script>
-// Initialize and add the map
-// function initMap() {
-//   // The location of Uluru
-//   var uluru = {lat: 37.392684, lng: -122.0420338};
-//   // The map, centered at Uluru
-//   var map = new google.maps.Map(
-//       document.getElementById('map'), {zoom: 12, center: uluru});
-//   // The marker, positioned at Uluru
-//   var marker = new google.maps.Marker({position: uluru, map: map});
-// }
-
-
-function addGoldenGateBridgeByName() {
-
-  let beautifulBridge = new google.maps.Geocoder();
-  let premise = "linkedin+california";
-  let sanfrancisco = {lat: 37.7749295, lng: -122.4194155};
-  let map = new google.maps.Map(
-       document.getElementById('map'), {zoom: 16, center: sanfrancisco});
-  let marker = new google.maps.Marker();
-
-  beautifulBridge.geocode({'address': premise}, function(results, status) {
-      if (status === google.maps.GeocoderStatus.OK) {
-        map.setCenter(results[0].geometry.location);
-        console.log(results);
-
-        let marker = new google.maps.Marker({
-          map: map,
-          place: {
-            location: results[0].geometry.location,
-            query: "Golden Gate"
-          }
-        });
-        // Construct a new InfoWindow.
-        let infoWindow = new google.maps.InfoWindow({
-          content: 'Golden Gate Bridge'
-        });
-
-        // Opens the InfoWindow when marker is clicked.
-        marker.addListener('click', function() {
-          infoWindow.open(map, marker);
-        });
-      } else {
-        alert('Geocode was not successful for the following reason: ' + status);
-      }
-    });
+<head>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+<style type="text/css">
+  
+table {
+  margin: 0 auto;
+  text-align: center;
+  border-collapse: collapse;
+  border: 1px solid #d4d4d4;
+  font-size: 20px;
+  background: #fff;
+}
+ 
+table th, 
+table tr:nth-child(2n+2) {
+  background: #e7e7e7;
+}
+  
+table th, 
+table td {
+  padding: 20px 50px;
+}
+  
+table th {
+  border-bottom: 1px solid #d4d4d4;
 }
 
-// addHackbrightByAddress();
+
+.stars-outer {
+  display: inline-block;
+  position: relative;
+  font-family: Font Awesome 5 Free;
+}
+ 
+.stars-outer::before {
+  content: "\f006 \f006 \f006 \f006 \f006";
+}
+ 
+.stars-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+ 
+.stars-inner::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  color: #f8ce0b;
+}
 
 
 
 
-    </script>
-    <!--Load the API from the specified URL
-    * The async attribute allows the browser to render the page while the API loads
-    * The key parameter will contain your own API key (which is not needed for this tutorial)
-    * The callback parameter executes the initMap() function
-    -->
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA0hjpxdyIFYP4XxDYj7rsHC9SjSXVHFuk&callback=addGoldenGateBridgeByName">
-    </script>
-  </body>
+</style>
+</head>
+<body>
+
+<table>
+ <thead>
+    <tr>
+      <th>Hotel</th>
+      <th>Rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="hotel-a">
+      <td>Hotel A</td>
+      <td>
+        <div class="stars-outer">
+          <div class="stars-inner"></div>
+        </div>
+      </td>
+    </tr>
+    <tr class="hotel-b">
+      <td>Hotel B</td>
+      <td>
+        <div class="stars-outer">
+          <div class="stars-inner"></div>
+        </div>
+      </td>
+    </tr>
+ 
+    <!-- 3 more rows here -->
+     
+  </tbody>
+</table>
+
+
+
+</body>
 </html>

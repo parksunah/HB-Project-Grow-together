@@ -55,24 +55,7 @@
 
 <!-- Autocomplete  ///////////////////////////////////////////////////////// -->
 
-<script type="text/javascript">
-    $(document).ready(function () {
-    const companies=[];
-    function loadCompanies(){
-        $.getJSON('/companies', function(data, status, xhr){
-            for (let i = 0; i < data.length; i++ ) {
-                companies.push(data[i].name);
-            }
-    });
-    };
-    loadCompanies();
-    $("#company").autocomplete({
-                    source: companies, 
-                    minLength:3
-                });
-    });
-</script>
-
+<script src="/static/autocomplete.js"></script>
 
 <!-- Logo and Definition /////////////////////////////////////////////////// -->
 
@@ -265,7 +248,7 @@ document.getElementById("myChart").onclick = function(evt){
 </script>
 
 
-<!-- News generator by click event ///////////////////////////////////////// -->
+<!-- Location Map ///////////////////////////////////////////////////////// -->
 
     <h1>Location</h1>
 
@@ -283,36 +266,43 @@ document.getElementById("myChart").onclick = function(evt){
     <div id="map" data-map='{{ location|tojson }}'></div>
     
 
-
-    <script>
-    function initMap() {
-      const mapLocation = { lat: $("#map").data("map").lat, 
-                            lng: $("#map").data("map").lng }; 
-      const locationName = $("#map").data("map").name;
-      
-      const map = new google.maps.Map(
-          document.getElementById('map'), {zoom: 16, center: mapLocation});
-      const marker = new google.maps.Marker({position: mapLocation, map: map});
-      let infoWindow = new google.maps.InfoWindow({
-          content: locationName
-        });
-      marker.addListener('click', function() {
-          infoWindow.open(map, marker);
-        });
-    }
-    const address = $("#map").data("map").address;
-    const locationName = $("#map").data("map").name;
-    $("#address").html(address);
-    $("#location-name").html(locationName);
-    </script>
+<script src="/static/maps.js"></script>
 
 
+<!-- Stars for rating generator //////////////////////////////////////////// -->
 
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key={{ map_key }}&callback=initMap">
-    </script>
-  </body>
-</html>
+<div class="stars-outer"
+  <div class="stars-inner"></div>
+</div>
+
+
+<style type="css">
+    .stars-outer {
+  display: inline-block;
+  position: relative;
+  font-family: FontAwesome;
+}
+ 
+.stars-outer::before {
+  content: "\f006 \f006 \f006 \f006 \f006";
+}
+ 
+.stars-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+ 
+.stars-inner::before {
+  content: "\f005 \f005 \f005 \f005 \f005";
+  color: #f8ce0b;
+}
+
+</style>
+
 
 
 {% endblock %}
