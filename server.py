@@ -29,7 +29,7 @@ def select_company():
 
     form = CompanyForm()
 
-    return render_template("company_search_form.html", form=form)
+    return render_template("home.html", form=form)
 
 @app.route("/companies")
 def companydic():
@@ -41,7 +41,7 @@ def companydic():
 
 
 @app.route("/company_view")
-def create_result_view():
+def create_main_view():
     """Create the company's salary table."""
 
     from datetime import datetime; start = datetime.now()
@@ -83,7 +83,7 @@ def create_result_view():
 
         salary_query = company.salaries
 
-        return render_template( "form.html",
+        return render_template( "main.html",
                                 map_key=os.environ['MAP_KEY'],
                                 form=form,
                                 location=location,

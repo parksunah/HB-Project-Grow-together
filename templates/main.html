@@ -13,9 +13,9 @@
   }
   </style>
 </head>
-<body data-spy="scroll" data-target="#navbar-example2" data-offset="50">
+<body data-spy="scroll" data-target="#navbar" data-offset="50">
 
-<nav id="navbar-example2" class="navbar navbar-light bg-light fixed-top"> 
+<nav id="navbar" class="navbar navbar-light bg-light fixed-top"> 
   <a class="navbar-brand" href="/search">Home</a>
   <form action="/company_view" method="GET">
         <div class="company-search">
@@ -157,147 +157,41 @@ $(document).ready(function() {
 
 <div id="chart">
 <canvas data-chart='{{ interest_chart|tojson }}' id="myChart"></canvas>
-<script>
-const ctx = document.getElementById("myChart").getContext('2d');
-const myChart = new Chart.Line(ctx, {
-    data: {
-        labels: $("#myChart").data("chart").label1,
-        datasets: [{
-            label: $("#salary-table").data("company-name"),
-            data: $("#myChart").data("chart").label2,
-            backgroundColor: "rgba(255, 99, 132, 0.2)",
-            borderColor: "rgba(255, 99, 132, 1)",
-            borderWidth: 1,
-            pointHoverBackgroundColor : "rgba(255, 99, 132, 1)",
-            pointHoverBorderColor : "rgba(255, 99, 132, 0.2)",
-            pointHoverBorderWidth : 2,
-            pointHitRadius : 10,
-        }]
-    },
-    options: {
-        scales: {
-            xAxes: [{
-                      display: true,
-                      ticks: {
-                          callback: function(dataLabel, index) {
-                              return index % 2 === 0 ? dataLabel : '';
-                          }
-                      }
-            }],
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }],
-        }
-    }
-});
-</script>
 </div>
+
+<script src="/static/interest_chart.js"></script>
 
 <!-- News generator by click event ///////////////////////////////////////// -->
 
 <h1> News </h1>
 <div id="news-article"> ********</div>
 
-<script type="text/javascript">
-document.getElementById("myChart").onclick = function(evt){
-            const activePoints = myChart.getElementsAtEvent(evt);
-            const firstPoint = activePoints[0];
-            const label = myChart.data.labels[firstPoint._index];
-            const value = myChart.data.datasets[firstPoint._datasetIndex].data[firstPoint._index];
-            alert(label + ": " + value);
-            let company_data = { "company_name" : $("#salary-table").data("company-name"), "from" : label};
-            
-            const url = "news.json";
-            $.get(url, company_data, (response) => {
-                
-                const newsList = [];
-                
-                for (let r of response) {
-
-                const article = 
-
-                `<div>
-                  <h3> ${r.title}</h3>
-                  <p>  ${r.publishedAt} </p>
-                  <p>  ${r.url} </p>
-                  <p>  ${r.description} </p>
-                </div>
-                `
-                newsList.push(article);
-                
-                }
-
-                console.log(newsList.length);
-                $('#news-article').html(newsList);
-                console.log(response);
-                
-    });
-        };
-</script>
+<script src="/static/news.js"></script>
 
 
 <!-- Location Map ///////////////////////////////////////////////////////// -->
 
-    <h1>Location</h1>
+<h1>Location</h1>
 
-    <style>
-       /* Set the size of the div element that contains the map */
-      #map {
-        height: 400px;  /* The height is 400 pixels */
-        width: 100%;  /* The width is the width of the web page */
-       }
-    </style>
-
-    <div id="address"></div>
-    <div id="location-name"></div>
-    <!--The div element for the map -->
-    <div id="map" data-map='{{ location|tojson }}'></div>
+<div id="address"></div>
+<div id="location-name"></div>
+<!--The div element for the map -->
+<div id="map" data-map='{{ location|tojson }}'></div>
     
 
 <script src="/static/map.js"></script>
 
-
 <script async defer
   src="https://maps.googleapis.com/maps/api/js?key={{ map_key }}&callback=initMap">
+</script>
 
 
-
-
-<!-- Stars for rating generator //////////////////////////////////////////// -->
+<!-- Stars for rating generator //////////// Not completed ///////////////// -->
 
 <div class="stars-outer"
   <div class="stars-inner"></div>
 </div>
 
-
-<style type="css">
-    .stars-outer {
-  display: inline-block;
-  position: relative;
-  font-family: FontAwesome;
-}
- 
-.stars-outer::before {
-  content: "\f006 \f006 \f006 \f006 \f006";
-}
- 
-.stars-inner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 0;
-}
- 
-.stars-inner::before {
-  content: "\f005 \f005 \f005 \f005 \f005";
-  color: #f8ce0b;
-}
-
-</style>
 
 
 

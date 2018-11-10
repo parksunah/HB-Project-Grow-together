@@ -17,7 +17,6 @@ if r.json()['status'] == 'ZERO_RESULTS':
     print("Blah!")
 
 
-# url2 = "https://maps.googleapis.com/maps/api/place/textsearch/xml?query=restaurants+in+Sydney&key=AIzaSyA0hjpxdyIFYP4XxDYj7rsHC9SjSXVHFuk"
 
 # r2 = requests.get(url2)
 
