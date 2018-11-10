@@ -33,7 +33,7 @@ def select_company():
 
 @app.route("/companies")
 def companydic():
-    """Using for Jquery company name Autocomplete."""
+    """Company name search form autocomplete."""
 
     res = Company.query.all()
     list_companies = [r.as_dict() for r in res]
@@ -102,12 +102,6 @@ def create_main_view():
         flash("Please check the company name.")
         return redirect("/search")
 
-@app.route("/api/company_name")
-def get_company_name():
-    company_name = request.args.get("company_name")
-
-    return jsonify(company_name)
-
 
 def create_interest_chart(company):
     """Google trends interest chart generator."""
@@ -144,7 +138,7 @@ def get_interest_growth(company):
 
 
 def get_company_infos(company_name):
-    """Get Company's desc and logo img using Bing API."""
+    """Get Company's desc and logo img with Bing API."""
 
     import pprint 
 
@@ -206,10 +200,6 @@ def get_news():
     news_date = request.args.get("from")
     from_date = datetime.datetime.strptime(news_date, "%b-%d-%Y")
     to_date = from_date + datetime.timedelta(6)
-
-    print("********************", news_date)
-    print("********************", from_date.isoformat())
-    print("********************", to_date)
 
     url = "https://newsapi.org/v2/everything"
     
