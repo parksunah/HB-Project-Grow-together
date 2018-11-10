@@ -102,6 +102,12 @@ def create_result_view():
         flash("Please check the company name.")
         return redirect("/search")
 
+@app.route("/api/company_name")
+def get_company_name():
+    company_name = request.args.get("company_name")
+
+    return jsonify(company_name)
+
 
 def create_interest_chart(company):
     """Google trends interest chart generator."""
@@ -222,9 +228,8 @@ def get_news():
     return jsonify(response.json()['articles'])
 
 
-@app.route("/map.json")
 def get_maps(company_name):
-
+    """Create company's HQ location using google map."""
 
     map_key = os.environ['MAP_KEY']
 

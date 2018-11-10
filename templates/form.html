@@ -229,16 +229,6 @@ document.getElementById("myChart").onclick = function(evt){
                 
                 }
 
-                // for (let r of response) {
-                    
-                //     const subList = [];
-                //     subList.push(r.publishedAt);
-                //     subList.push(r.description);
-                //     subList.push(r.title);
-                //     subList.push(r.url);
-                //     newsList.push(subList);
-                    
-                // }
                 console.log(newsList.length);
                 $('#news-article').html(newsList);
                 console.log(response);
@@ -266,7 +256,13 @@ document.getElementById("myChart").onclick = function(evt){
     <div id="map" data-map='{{ location|tojson }}'></div>
     
 
-<script src="/static/maps.js"></script>
+<script src="/static/map.js"></script>
+
+
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key={{ map_key }}&callback=initMap">
+
+
 
 
 <!-- Stars for rating generator //////////////////////////////////////////// -->
