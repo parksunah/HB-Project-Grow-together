@@ -29,3 +29,11 @@ width: 100%;  /* The width is the width of the web page */
   content: "\f005 \f005 \f005 \f005 \f005";
   color: #F5A623;
 }
+
+
+.ui-autocomplete-input { 
+    position: absolute; 
+    cursor: default;
+    z-index:99999 !important;
+} 
+

@@ -10,17 +10,22 @@
   body {
       position: relative; 
   }
+
+  .ui-front { z-index: 9999; }
+
   </style>
 </head>
 <body data-spy="scroll" data-target="#navbar" data-offset="50">
 
 <nav id="navbar" class="navbar navbar-light bg-light fixed-top"> 
-  <a class="navbar-brand" href="/search">Home</a>
+  <a class="navbar-brand" href="/">
+    <i class="fas fa-home"></i> Home
+  </a>
   <form action="/company_view" method="GET">
-        <div class="company-search">
+        <span class="company-search">
             {{ form.company(size=25) }}
             {{ form.submit() }}
-        </div>
+        </span>
     </form>
 
   <ul class="nav nav-pills">
@@ -118,14 +123,14 @@
 <!-- <div class="rating"> -->
   <div class="rating__stars">
     <div class="fas stars-outer">
-      <div id="star" class="star stars-inner" data-rating="4.4"></div>
+      <div id="star" class="stars-inner" data-rating="{{ job_listings[0]["Rating"]}}"></div>
     </div>
   </div>
 <!-- </div> -->
 
 <script type="text/javascript">
   // Get all stars with class of star and turn it into an array
-const stars = Array.from(document.querySelectorAll('.star'));
+const stars = Array.from(document.querySelectorAll('.stars-inner'));
 console.log(stars);
 
 // Loop through all the classes
@@ -213,14 +218,16 @@ $(document).ready(function() {
     </tr>
 </thead>
 <tbody>
-    {% for job in job_listings %}
-    <tr>
-        <td>{{ job["Name"] }} </td>
-        <td>{{ job["City"] }}</td> 
-        <td>{{ job["Salary"] }}</td> 
-        <td><a href="{{ job["Url"] }}" target="_blank"> Click here </a></td>
-    </tr>
-    {% endfor %}
+    {% if job_listings %}
+      {% for job in job_listings %}
+      <tr>
+          <td>{{ job["Name"] }} </td>
+          <td>{{ job["City"] }}</td> 
+          <td>{{ job["Salary"] }}</td> 
+          <td><a href="{{ job["Url"] }}" target="_blank"> Click here </a></td>
+      </tr>
+      {% endfor %}
+    {% endif %}
 </tbody>
 </table>
 </div>   
