@@ -148,13 +148,11 @@ def get_company_infos(company_name):
     search_url = "https://api.cognitive.microsoft.com/bing/v7.0/search"
     search_term = company_name.lower()+" company profile"
 
-    headers = {"Ocp-Apim-Subscription-Key" : subscription_key}
-    params  = {"q": search_term, "textDecorations":True, "textFormat":"HTML"}
+    headers = {"Ocp-Apim-Subscription-Key" : subscription_key, "Content-Type": "application/json; charset=utf-8"}
+    params  = {"q": search_term, "textDecorations":True}
     response = requests.get(search_url, headers=headers, params=params)
-    response.raise_for_status()
     search_results = response.json()
     pprint.pprint(search_results)
-
 
     try:
 
@@ -173,12 +171,12 @@ def get_company_infos(company_name):
 
         return (company_desc, company_img)
 
-    # elif 'webPages' in search_results:
-    #     # If API's search result has no Wikipedia sector, 
-    #     # it will return the first webpage's description.
-    #     company_desc = search_results['webPages']['value'][0]['snippet']
+        # elif 'webPages' in search_results:
+        #     # If API's search result has no Wikipedia sector, 
+        #     # it will return the first webpage's description.
+        #     company_desc = search_results['webPages']['value'][0]['snippet']
 
-    #     return (company_desc, None)
+        #     return (company_desc, None)
 
     except KeyError:
         # If API can't find any information.
@@ -203,6 +201,8 @@ def get_news():
 
     url = "https://newsapi.org/v2/everything"
     
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+
     params  = { 
             "q": company_name, 
             "from": from_date,    
@@ -213,7 +213,7 @@ def get_news():
             }
 
     try:
-        response = requests.get(url, params=params)
+        response = requests.get(url, headers=headers, params=params)
         print(response.url)
 
         return jsonify(response.json()['articles'])
@@ -233,7 +233,10 @@ def get_maps(company_name):
                "fields":"photos,formatted_address,name,rating,opening_hours,geometry",
                "key":map_key} 
 
-    response = requests.get(url, params=params)
+    headers = {'Content-Type': 'application/json; charset=utf-8'}
+
+    response = requests.get(url, headers=headers, params=params)
+    
     r = response.json()
     
     if r['status'] != 'ZERO_RESULTS':
@@ -246,7 +249,7 @@ def get_maps(company_name):
         return None
 
     return location
-    
+
 
 @app.route("/interest_ranking")
 def create_interest_ranking_page():
