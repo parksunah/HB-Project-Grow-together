@@ -261,7 +261,6 @@ def create_interest_ranking_page():
                     db.joinedload("industry")
                       ).filter_by(industry_name=industry_name).order_by(Company.desc).all()
 
-
     return render_template("interest_ranking.html", industry=industry)
 
 

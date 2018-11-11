@@ -8,13 +8,14 @@ width: 100%;  /* The width is the width of the web page */
 .stars-outer {
   display: inline-block;
   position: relative;
-  font-family: FontAwesome;
+  font-family: Font Awesome\ 5 Free;
 }
- 
+
 .stars-outer::before {
-  content: "\f006 \f006 \f006 \f006 \f006";
+  content: "\f005 \f005 \f005 \f005 \f005";
+  color: #F9DBA6;
 }
- 
+
 .stars-inner {
   position: absolute;
   top: 0;
@@ -23,8 +24,8 @@ width: 100%;  /* The width is the width of the web page */
   overflow: hidden;
   width: 0;
 }
- 
+
 .stars-inner::before {
   content: "\f005 \f005 \f005 \f005 \f005";
-  color: #f8ce0b;
+  color: #F5A623;
 }
