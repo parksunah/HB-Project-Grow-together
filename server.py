@@ -23,7 +23,7 @@ app.secret_key = "ABC"
 app.jinja_env.undefined = StrictUndefined
 
 
-@app.route("/search")
+@app.route("/")
 def select_company():
     """Select Company for search."""
 
@@ -59,8 +59,8 @@ def create_main_view():
     company_infos = get_company_infos(company_name)
     print('#' * 20, datetime.now() - start) # for checking runtime
 
-    if company != None:
-
+    try:
+        # des == ranking
         if company.desc:
             interest_growth = get_interest_growth(company)
             print('#' * 20, datetime.now() - start)
@@ -97,10 +97,10 @@ def create_main_view():
                                 company_infos=company_infos,
                                 interest_chart=interest_chart)
 
-    else:
+    except AttributeError:
 
         flash("Please check the company name.")
-        return redirect("/search")
+        return redirect("/")
 
 
 def create_interest_chart(company):
@@ -156,15 +156,15 @@ def get_company_infos(company_name):
     pprint.pprint(search_results)
 
 
-    if 'entities' in search_results:
+    try:
 
         company_desc = search_results['entities']['value'][0]['description']
 
-        if 'image' in search_results['entities']['value'][0]:
+        try:
     
             company_img = search_results['entities']['value'][0]['image']['thumbnailUrl']
 
-        else:
+        except KeyError:
 
             company_img = None
 
@@ -173,21 +173,21 @@ def get_company_infos(company_name):
 
         return (company_desc, company_img)
 
-    elif 'webPages' in search_results:
-        # If API's search result has no Wikipedia sector, 
-        # it will return the first webpage's description.
-        company_desc = search_results['webPages']['value'][0]['snippet']
+    # elif 'webPages' in search_results:
+    #     # If API's search result has no Wikipedia sector, 
+    #     # it will return the first webpage's description.
+    #     company_desc = search_results['webPages']['value'][0]['snippet']
 
-        return (company_desc, None)
+    #     return (company_desc, None)
 
-    else:
+    except KeyError:
         # If API can't find any information.
         return (None, None)
 
 
 @app.route("/news.json")
 def get_news():
-    """Get news for specific date, 
+    """Get the news for specific date, 
     when user click the interest chart's specific point."""
 
     import datetime
@@ -212,10 +212,14 @@ def get_news():
             "language":"en"
             }
 
-    response = requests.get(url, params=params)
-    print(response.url)
+    try:
+        response = requests.get(url, params=params)
+        print(response.url)
 
-    return jsonify(response.json()['articles'])
+        return jsonify(response.json()['articles'])
+
+    except KeyError:
+        return None
 
 
 def get_maps(company_name):
@@ -242,6 +246,7 @@ def get_maps(company_name):
         return None
 
     return location
+    
 
 @app.route("/interest_ranking")
 def create_interest_ranking_page():
