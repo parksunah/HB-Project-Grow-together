@@ -177,7 +177,7 @@ def get_company_infos(company_name):
             company_desc = search_results['webPages']['value'][1]['snippet']
             company_desc = company_desc.replace("\ue000", "") # delete special characters.
             company_desc = company_desc.replace("\ue001", "") # delete special characters.
-            
+
             return (company_desc, None)
 
         except: 
@@ -228,8 +228,6 @@ def get_maps(company_name):
     """Create company's HQ location using google map."""
 
     map_key = os.environ['MAP_KEY']
-    company = Company.query.filter_by(name=company_name).first()
-    hq_address = company.hq_address
 
     url = ("https://maps.googleapis.com/maps/api/place/findplacefromtext/json")
     params = { "input" : company_name + " HQ california",
@@ -249,8 +247,41 @@ def get_maps(company_name):
                     "address": r['candidates'][0]['formatted_address'],
                     "lat" : r['candidates'][0]['geometry']['location']['lat'],
                     "lng" : r['candidates'][0]['geometry']['location']['lng']}
+    
     else:
-        return None
+
+        company = Company.query.filter_by(name=company_name).first()
+        hq_address = company.hq_address
+        params = { "input" : company_name + ", " + hq_address,
+               "inputtype" : "textquery",
+               "fields":"photos,formatted_address,name,rating,opening_hours,geometry",
+               "key":map_key} 
+        response = requests.get(url, headers=headers, params=params)
+    
+        r = response.json()
+
+        if r['status'] != 'ZERO_RESULTS':
+
+            location = {"name" : r['candidates'][0]['name'], 
+                        "address": r['candidates'][0]['formatted_address'],
+                        "lat" : r['candidates'][0]['geometry']['location']['lat'],
+                        "lng" : r['candidates'][0]['geometry']['location']['lng']}
+        else:
+            
+            params = { "input" : hq_address,
+                       "inputtype" : "textquery",
+                       "fields":"photos,formatted_address,name,rating,opening_hours,geometry",
+                       "key":map_key} 
+            response = requests.get(url, headers=headers, params=params)
+    
+            r = response.json()
+
+            if r['status'] != 'ZERO_RESULTS':
+
+                location = {"name" : r['candidates'][0]['name'], 
+                            "address": r['candidates'][0]['formatted_address'],
+                            "lat" : r['candidates'][0]['geometry']['location']['lat'],
+                            "lng" : r['candidates'][0]['geometry']['location']['lng']}
 
     return location
 
