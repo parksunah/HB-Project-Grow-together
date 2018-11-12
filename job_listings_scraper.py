@@ -11,7 +11,7 @@ def get_job_listings(company_name):
     Source : https://gist.github.com/scrapehero/352286d0f9dee87990cd45c3f979e7cb."""
  
     keyword = company_name
-    place =  "San Francisco Bay area"
+    place =  "san francisco bay area"
 
     headers = { 'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
                 'accept-encoding': 'gzip, deflate, sdch, br',
@@ -90,7 +90,7 @@ def get_job_listings(company_name):
                 rating = ''.join(raw_rating).strip()
                 job_url = raw_job_url[0] if raw_job_url else None
 
-                if company in keyword.lower():
+                if company.lower() in keyword.lower() or keyword.lower() in company.lower():
 
                     jobs = {
                         "Name": job_name,

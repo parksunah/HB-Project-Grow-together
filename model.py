@@ -21,19 +21,22 @@ class Company(db.Model):
 
     company_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String, nullable=False)
+    hq_address = db.Column(db.String, nullable=False)
+    interest_growth = db.Column(db.Integer, nullable=True)
+    ranking = db.Column(db.Integer, nullable=True)
     industry_id = db.Column(db.Integer, db.ForeignKey("industries.industry_id"), nullable=True)
-    desc = db.Column(db.String, nullable=True)
 
     industry = db.relationship("Industry", backref=db.backref("companies"))
 
-    def __init__(self, name):
+    def __init__(self, name, hq_address):
         self.name = name
+        self.hq_address = hq_address
         
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return f"<Company company_id={self.company_id} name={self.name}, ranking={self.desc}>"
+        return f"<Company company_id={self.company_id}, industry_id={self.industry_id}, name={self.name}, interest_growth={self.interest_growth}, ranking={self.ranking}, hq_address={self.hq_address}>"
 
     def as_dict(self):
 
@@ -57,6 +60,10 @@ class Industry(db.Model):
 
         return f"<Industry industry_id={self.industry_id} name={self.name}>"
 
+    def as_dict(self):
+
+        return {"name": self.name}
+
 
 
 class Interest(db.Model):
@@ -78,7 +85,7 @@ class Interest(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return f"<Interest interest_id={self.interest_id}, date={self.date}, interest={self.interest}, company_id={self.company_id}>"
+        return f"<Interest interest_id={self.interest_id}, company_id={self.company_id}, date={self.date}, interest={self.interest}>"
 
 
 class Salary(db.Model):
@@ -88,24 +95,26 @@ class Salary(db.Model):
 
     salary_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     date = db.Column(db.DateTime, nullable=False, unique=False)
-    salary = db.Column(db.Integer, nullable=False, unique=False)
-    location = db.Column(db.String, nullable=False, unique=False)
     job_title = db.Column(db.String, nullable=False, unique=False)
+    salary = db.Column(db.Integer, nullable=False, unique=False)
+    work_site_city = db.Column(db.String, nullable=False, unique=False)
+    work_site_postal_code = db.Column(db.String, nullable=False, unique=False)
     company_id = db.Column(db.Integer, db.ForeignKey("companies.company_id"), nullable=False)
 
     company = db.relationship("Company", backref=db.backref("salaries"))
 
-    def __init__(self, date, job_title, salary, location):
+    def __init__(self, date, job_title, salary, work_site_city, work_site_postal_code):
         self.date = date
         self.job_title = job_title
         self.salary = salary
-        self.location = location
+        self.work_site_city = work_site_city
+        self.work_site_postal_code = work_site_postal_code
         
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return f"<Salary salary_id={self.salary_id}, date={self.date}, job_title={self.job_title}, salary={self.salary}, location={self.location}, company_id={self.company_id}>"
+        return f"<Salary salary_id={self.salary_id}, company_id={self.company_id}, date={self.date}, job_title={self.job_title}, salary={self.salary}, work_site_city={self.work_site_city}, work_site_postal_code={self.work_site_postal_code}>"
 
 
 
@@ -116,7 +125,7 @@ def connect_to_db(app):
     """Connect the database to our Flask app."""
 
     # Configure to use our PstgreSQL database
-    app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///grow"
+    app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql:///insideout"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     db.app = app

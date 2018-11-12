@@ -61,10 +61,10 @@ def create_main_view():
 
     try:
         # des == ranking
-        if company.desc:
+        if company.ranking:
             interest_growth = get_interest_growth(company)
             print('#' * 20, datetime.now() - start)
-            ranking = company.desc
+            ranking = company.ranking
             industry_name = company.industry.name
             industry_num = len(company.industry.companies)
             print('#' * 20, datetime.now() - start)
@@ -180,7 +180,10 @@ def get_company_infos(company_name):
 
     except KeyError:
         # If API can't find any information.
-        return (None, None)
+        
+        company_desc = search_results['webPages']['value'][0]['snippet']
+
+        return (company_desc, None)
 
 
 @app.route("/news.json")

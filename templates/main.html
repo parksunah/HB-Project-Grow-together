@@ -144,7 +144,7 @@ stars.forEach(star => {
   // Turn the value into a percentage.
   const starPercentage = (dataRating / starTotal) * 100;
   console.log(starPercentage);
-  const starPercentageRounded = `${(Math.round(starPercentage / 10) * 10)}%`;
+  const starPercentageRounded = `${((starPercentage / 10) * 10)}%`;
   // Add the percentage value to the class
   star.style.width = starPercentageRounded;
   console.log(starPercentageRounded);
@@ -167,6 +167,25 @@ stars.forEach(star => {
 {% endif %}
 </div>
 
+
+<!-- Location Map ///////////////////////////////////////////////////////// -->
+
+<h1>Location</h1>
+
+<div id="address"></div>
+<div id="location-name"></div>
+<!--The div element for the map -->
+<div id="map" data-map='{{ location|tojson }}'></div>
+    
+
+<script src="/static/map.js"></script>
+
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key={{ map_key }}&callback=initMap">
+</script>
+
+
+
 <!-- Salary table ////////////////////////////////////////////////////////// -->
 
 <h1> Real Salary Data from Labor Department </h1>
@@ -178,7 +197,7 @@ stars.forEach(star => {
             <th>Date</th>
             <th>Job Title</th>
             <th data-class-name="priority">Salary</th>
-            <th>Location</th>
+            <th>Work Site</th>
         </tr>
     </thead>
     <tbody>
@@ -187,7 +206,7 @@ stars.forEach(star => {
             <td>{{ salary.date.strftime("%b-%d-%Y") }} </td>
             <td>{{ salary.job_title.title() }}</td> 
             <td>{{ "${:,}".format(salary.salary) }}</td> 
-            <td>{{ salary.location.title() }} </td>
+            <td>{{ salary.work_site_city.title() }} </td>
         </tr>
         {% endfor %}
     </tbody>
@@ -250,21 +269,7 @@ $(document).ready(function() {
 <script src="/static/news.js"></script>
 
 
-<!-- Location Map ///////////////////////////////////////////////////////// -->
 
-<h1>Location</h1>
-
-<div id="address"></div>
-<div id="location-name"></div>
-<!--The div element for the map -->
-<div id="map" data-map='{{ location|tojson }}'></div>
-    
-
-<script src="/static/map.js"></script>
-
-<script async defer
-  src="https://maps.googleapis.com/maps/api/js?key={{ map_key }}&callback=initMap">
-</script>
 
 
 
