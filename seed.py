@@ -80,8 +80,8 @@ def load_interest():
 
     trend = TrendReq(hl="en-US", tz=360) # connect to google trends
    
-    i = 1451
-    while i <= 1550:
+    i = 2954
+    while i <= 3150:
 
         company = Company.query.get(i)
         kw_list = [] # set keyword

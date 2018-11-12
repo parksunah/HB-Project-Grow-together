@@ -6,14 +6,7 @@
 
 <!-- Nav bar with scrollable area ///////////////////////////////////////////-->
 
- <style>
-  body {
-      position: relative; 
-  }
 
-  .ui-front { z-index: 9999; }
-
-  </style>
 </head>
 <body data-spy="scroll" data-target="#navbar" data-offset="50">
 
@@ -82,43 +75,6 @@
 
 {% if job_listings %}
 
-<style type="text/css">
-
-
-.rating__stars {
-  display: inline;
-}
-
-.rating__score {
-  padding-right: 0.75rem;
-}
-
-.stars-outer {
-  display: inline-block;
-  position: relative;
-  font-family: Font Awesome\ 5 Free;
-}
-
-.stars-outer::before {
-  content: "\f005 \f005 \f005 \f005 \f005";
-  color: #F9DBA6;
-}
-
-.stars-inner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 0;
-}
-
-.stars-inner::before {
-  content: "\f005 \f005 \f005 \f005 \f005";
-  color: #F5A623;
-}
-
-</style>
 
 <!-- <div class="rating"> -->
   <div class="rating__stars">
@@ -128,32 +84,8 @@
   </div>
 <!-- </div> -->
 
-<script type="text/javascript">
-  // Get all stars with class of star and turn it into an array
-const stars = Array.from(document.querySelectorAll('.stars-inner'));
-console.log(stars);
 
-// Loop through all the classes
-stars.forEach(star => {
-  // Get star rating within the data attribute value
-  const dataRating = star.dataset.rating;
-  console.log(dataRating);
-  // total number of stars
-  const starTotal = 5;
-
-  // Turn the value into a percentage.
-  const starPercentage = (dataRating / starTotal) * 100;
-  console.log(starPercentage);
-  const starPercentageRounded = `${((starPercentage / 10) * 10)}%`;
-  // Add the percentage value to the class
-  star.style.width = starPercentageRounded;
-  console.log(starPercentageRounded);
-})
-
-
-</script>
-
-<!-- <script src="/static/star.js"></script> -->
+<script src="/static/star.js"></script>
 
 
 <p> Employees' Rating : {{ job_listings[0]["Rating"]}} </p>

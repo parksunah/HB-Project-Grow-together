@@ -44,7 +44,7 @@ def companydic():
 def create_main_view():
     """Create the company's salary table."""
 
-    from datetime import datetime; start = datetime.now()
+    start = datetime.now() # for checking runtime
     form = CompanyForm(request.args)
     company_name = form.company.data
     company_name = company_name.upper()
@@ -60,7 +60,6 @@ def create_main_view():
     print('#' * 20, datetime.now() - start) # for checking runtime
 
     try:
-        # des == ranking
         if company.ranking:
             interest_growth = get_interest_growth(company)
             print('#' * 20, datetime.now() - start)
@@ -101,6 +100,10 @@ def create_main_view():
 
         flash("Please check the company name.")
         return redirect("/")
+
+    except:
+
+        flash("Something else went wrong.")
 
 
 def create_interest_chart(company):
@@ -155,15 +158,12 @@ def get_company_infos(company_name):
     pprint.pprint(search_results)
 
     try:
-
         company_desc = search_results['entities']['value'][0]['description']
-
         try:
-    
             company_img = search_results['entities']['value'][0]['image']['thumbnailUrl']
 
         except KeyError:
-
+            # If API have a 'entities' field, but doesn't have a 'image' field.
             company_img = None
 
         #print(company_img)
@@ -171,19 +171,18 @@ def get_company_infos(company_name):
 
         return (company_desc, company_img)
 
-        # elif 'webPages' in search_results:
-        #     # If API's search result has no Wikipedia sector, 
-        #     # it will return the first webpage's description.
-        #     company_desc = search_results['webPages']['value'][0]['snippet']
-
-        #     return (company_desc, None)
-
     except KeyError:
-        # If API can't find any information.
-        
-        company_desc = search_results['webPages']['value'][0]['snippet']
+        # If API doesn't have a 'entities' field.
+        try:
+            company_desc = search_results['webPages']['value'][1]['snippet']
+            company_desc = company_desc.replace("\ue000", "") # delete special characters.
+            company_desc = company_desc.replace("\ue001", "") # delete special characters.
+            
+            return (company_desc, None)
 
-        return (company_desc, None)
+        except: 
+            # If API can't find any information.
+            return (None, None)
 
 
 @app.route("/news.json")
@@ -229,6 +228,8 @@ def get_maps(company_name):
     """Create company's HQ location using google map."""
 
     map_key = os.environ['MAP_KEY']
+    company = Company.query.filter_by(name=company_name).first()
+    hq_address = company.hq_address
 
     url = ("https://maps.googleapis.com/maps/api/place/findplacefromtext/json")
     params = { "input" : company_name + " HQ california",
