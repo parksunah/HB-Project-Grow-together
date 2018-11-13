@@ -43,28 +43,29 @@ def companydic():
 @app.route("/company_view")
 def create_main_view():
     """Create the company's salary table."""
-
-    start = datetime.now() # for checking runtime
-    form = CompanyForm(request.args)
-    company_name = form.company.data
-    company_name = company_name.upper()
-    company = Company.query.options(
-                db.joinedload("industry")
-                ).filter_by(name=company_name).first()
-    print('#' * 20, datetime.now() - start) # for checking runtime
-    
-    job_listings = get_job_listings(company_name)
-    print('#' * 20, datetime.now() - start) # for checking runtime
-
-    company_infos = get_company_infos(company_name)
-    print('#' * 20, datetime.now() - start) # for checking runtime
-
-    interest_chart=create_interest_chart(company)
-    location=get_maps(company_name)
-    print('#' * 20, datetime.now() - start) # for checking runtime
-    print(location)
-
+ 
     try:
+
+        start = datetime.now() # for checking runtime
+        form = CompanyForm(request.args)
+        company_name = form.company.data
+        company_name = company_name.upper()
+        company = Company.query.options(
+                    db.joinedload("industry")
+                    ).filter_by(name=company_name).first()
+        print('#' * 20, datetime.now() - start) # for checking runtime
+        
+        job_listings = get_job_listings(company_name)
+        print('#' * 20, datetime.now() - start) # for checking runtime
+
+        company_infos = get_company_infos(company_name)
+        print('#' * 20, datetime.now() - start) # for checking runtime
+
+        interest_chart=create_interest_chart(company)
+        location=get_maps(company_name)
+        print('#' * 20, datetime.now() - start) # for checking runtime
+        print(location)
+  
         if company.ranking:
             interest_growth = get_interest_growth(company)
             print('#' * 20, datetime.now() - start)
@@ -78,7 +79,6 @@ def create_main_view():
             ranking = None
             industry_name = None
             industry_num = None
-
 
         return render_template( "main.html",
                                 map_key=os.environ['MAP_KEY'],
@@ -214,7 +214,7 @@ def get_news():
 
     try:
         response = requests.get(url, headers=headers, params=params)
-        # print(response.url)
+        print(response.url)
 
         return jsonify(response.json()['articles'])
 
@@ -233,6 +233,7 @@ def get_maps(company_name):
 
     postal_code = company.salaries[1].work_site_postal_code
 
+    # Use work site postal code in db.
     url = ("https://maps.googleapis.com/maps/api/place/findplacefromtext/json")
     params = { "input" : company_name +", "+ postal_code,
                "inputtype" : "textquery",
@@ -245,15 +246,8 @@ def get_maps(company_name):
     
     r = response.json()
     
-    # if r['status'] != 'ZERO_RESULTS':
-
-    #     location = {"name" : r['candidates'][0]['name'], 
-    #                 "address": r['candidates'][0]['formatted_address'],
-    #                 "lat" : r['candidates'][0]['geometry']['location']['lat'],
-    #                 "lng" : r['candidates'][0]['geometry']['location']['lng']}
-    
     if r['status'] == 'ZERO_RESULTS':
-
+        # Just use hq_address in db.
         hq_address = company.hq_address
         params = { "input" : hq_address,
                     "inputtype" : "textquery",
@@ -287,6 +281,7 @@ def create_interest_ranking_page():
 
 @app.route("/interest_view/<industry_name>")
 def create_interest_ranking_view(industry_name):
+    """Interest growth ranking page in each industry sector."""
 
     industry = Industry.query.filter_by(name=industry_name).first()
     industries = Industry.query.all()   

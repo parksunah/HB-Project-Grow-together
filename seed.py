@@ -80,8 +80,8 @@ def load_interest():
 
     trend = TrendReq(hl="en-US", tz=360) # connect to google trends
    
-    i = 2954
-    while i <= 3150:
+    i = 3151
+    while i <= 3300:
 
         company = Company.query.get(i)
         kw_list = [] # set keyword
@@ -131,7 +131,7 @@ def get_interest_growth(company):
 def _save_interest_growth_ranking_to_db(industry_id):
     """Get the interest movement ranking in the same industry and store it to db."""
 
-    growth_set = set()
+    growth_list = []
     company_list = []
 
     industry = Industry.query.options(
@@ -142,12 +142,12 @@ def _save_interest_growth_ranking_to_db(industry_id):
 
         if company.interest:
             company_interest_growth = get_interest_growth(company)
-            growth_set.add(company_interest_growth)
+            growth_list.append(company_interest_growth)
             company_list.append(company)
         else:
             print(f"{company.company_id} has no interest.")
         
-    sorted_growth_list = sorted(list(growth_set), reverse=True)
+    sorted_growth_list = sorted(growth_list, reverse=True)
     print(sorted_growth_list)
 
     for company in company_list:
@@ -203,7 +203,7 @@ if __name__ == "__main__":
     #load_industry()
     #load_company()
     #load_salary()
-    load_interest()
+    #load_interest()
 
 
 
