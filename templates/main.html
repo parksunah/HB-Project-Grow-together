@@ -17,7 +17,7 @@
   <form action="/company_view" method="GET">
         <span class="company-search">
             {{ form.company(size=25) }}
-            {{ form.submit() }}
+            <button type="button" class="btn btn-primary btn-sm"><i class="fas fa-search"></i></button>
         </span>
     </form>
 
@@ -61,7 +61,7 @@
 
 {% if company_infos[1] %}
 <div id="logo">
-    <img src={{ company_infos[1] }}>
+    <img src={{ company_infos[1] }} class="img-thumbnail">
 </div>
 {% endif %}
 {% if company_infos[0] %}
@@ -95,7 +95,9 @@
 
 <div id="ranking" data-ranking="{{ industry_name }}">
 {% if ranking %}
-<p> Google trends movement growth is {{ interest_growth }}%, ranking is {{ ranking }} of {{ industry_num }} in {{ industry_name }} sector. (during past 5 years) </p>
+<p> Google trends movement growth is {{ interest_growth }}%, 
+    ranking is {{ ranking }} of {{ industry_num }}
+    in <a href="/interest_view/{{ industry_name }}"> {{ industry_name }} </a> sector. (during past 5 years) </p>
 {% endif %}
 </div>
 

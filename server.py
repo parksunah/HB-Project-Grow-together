@@ -59,6 +59,11 @@ def create_main_view():
     company_infos = get_company_infos(company_name)
     print('#' * 20, datetime.now() - start) # for checking runtime
 
+    interest_chart=create_interest_chart(company)
+    location=get_maps(company_name)
+    print('#' * 20, datetime.now() - start) # for checking runtime
+    print(location)
+
     try:
         if company.ranking:
             interest_growth = get_interest_growth(company)
@@ -75,18 +80,11 @@ def create_main_view():
             industry_num = None
 
 
-        interest_chart=create_interest_chart(company)
-        location=get_maps(company_name)
-        print('#' * 20, datetime.now() - start) # for checking runtime
-        print(location)
-
-        salary_query = company.salaries
-
         return render_template( "main.html",
                                 map_key=os.environ['MAP_KEY'],
                                 form=form,
                                 location=location,
-                                salary_query=salary_query, 
+                                salary_query=company.salaries, 
                                 company_name=company_name, 
                                 job_listings=job_listings,
                                 interest_growth=interest_growth,
@@ -101,7 +99,7 @@ def create_main_view():
         flash("Please check the company name.")
         return redirect("/")
 
-    except:
+    except TypeError:
 
         flash("Something else went wrong.")
 
@@ -155,7 +153,7 @@ def get_company_infos(company_name):
     params  = {"q": search_term, "textDecorations":True}
     response = requests.get(search_url, headers=headers, params=params)
     search_results = response.json()
-    pprint.pprint(search_results)
+    # pprint.pprint(search_results)
 
     try:
         company_desc = search_results['entities']['value'][0]['description']
@@ -216,7 +214,7 @@ def get_news():
 
     try:
         response = requests.get(url, headers=headers, params=params)
-        print(response.url)
+        # print(response.url)
 
         return jsonify(response.json()['articles'])
 
@@ -229,11 +227,17 @@ def get_maps(company_name):
 
     map_key = os.environ['MAP_KEY']
 
+    company = Company.query.options(
+                db.joinedload("salaries")
+                ).filter_by(name=company_name).first()
+
+    postal_code = company.salaries[1].work_site_postal_code
+
     url = ("https://maps.googleapis.com/maps/api/place/findplacefromtext/json")
-    params = { "input" : company_name + " HQ california",
+    params = { "input" : company_name +", "+ postal_code,
                "inputtype" : "textquery",
                "fields":"photos,formatted_address,name,rating,opening_hours,geometry",
-               "key":map_key} 
+               "key": map_key } 
 
     headers = {'Content-Type': 'application/json; charset=utf-8'}
 
@@ -241,47 +245,29 @@ def get_maps(company_name):
     
     r = response.json()
     
-    if r['status'] != 'ZERO_RESULTS':
+    # if r['status'] != 'ZERO_RESULTS':
 
-        location = {"name" : r['candidates'][0]['name'], 
-                    "address": r['candidates'][0]['formatted_address'],
-                    "lat" : r['candidates'][0]['geometry']['location']['lat'],
-                    "lng" : r['candidates'][0]['geometry']['location']['lng']}
+    #     location = {"name" : r['candidates'][0]['name'], 
+    #                 "address": r['candidates'][0]['formatted_address'],
+    #                 "lat" : r['candidates'][0]['geometry']['location']['lat'],
+    #                 "lng" : r['candidates'][0]['geometry']['location']['lng']}
     
-    else:
+    if r['status'] == 'ZERO_RESULTS':
 
-        company = Company.query.filter_by(name=company_name).first()
         hq_address = company.hq_address
-        params = { "input" : company_name + ", " + hq_address,
-               "inputtype" : "textquery",
-               "fields":"photos,formatted_address,name,rating,opening_hours,geometry",
-               "key":map_key} 
+        params = { "input" : hq_address,
+                    "inputtype" : "textquery",
+                    "fields":"photos,formatted_address,name,rating,opening_hours,geometry",
+                    "key":map_key} 
         response = requests.get(url, headers=headers, params=params)
-    
+
         r = response.json()
 
-        if r['status'] != 'ZERO_RESULTS':
-
-            location = {"name" : r['candidates'][0]['name'], 
-                        "address": r['candidates'][0]['formatted_address'],
-                        "lat" : r['candidates'][0]['geometry']['location']['lat'],
-                        "lng" : r['candidates'][0]['geometry']['location']['lng']}
-        else:
-            
-            params = { "input" : hq_address,
-                       "inputtype" : "textquery",
-                       "fields":"photos,formatted_address,name,rating,opening_hours,geometry",
-                       "key":map_key} 
-            response = requests.get(url, headers=headers, params=params)
-    
-            r = response.json()
-
-            if r['status'] != 'ZERO_RESULTS':
-
-                location = {"name" : r['candidates'][0]['name'], 
-                            "address": r['candidates'][0]['formatted_address'],
-                            "lat" : r['candidates'][0]['geometry']['location']['lat'],
-                            "lng" : r['candidates'][0]['geometry']['location']['lng']}
+    location = {"name" : r['candidates'][0]['name'], 
+                "address": r['candidates'][0]['formatted_address'],
+                "lat" : r['candidates'][0]['geometry']['location']['lat'],
+                "lng" : r['candidates'][0]['geometry']['location']['lng']}
+    print(location)
 
     return location
 
@@ -298,6 +284,15 @@ def create_interest_ranking_page():
 
     return render_template("interest_ranking.html", industry=industry)
 
+
+@app.route("/interest_view/<industry_name>")
+def create_interest_ranking_view(industry_name):
+
+    industry = Industry.query.filter_by(name=industry_name).first()
+    industries = Industry.query.all()   
+    companies = Company.query.filter(Company.industry_id==industry.industry_id, Company.ranking!=None).order_by(Company.ranking).all()
+
+    return render_template("interest_ranking.html", companies=companies, industries=industries)
 
 
 if __name__ == "__main__":

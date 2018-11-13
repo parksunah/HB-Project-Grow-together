@@ -118,18 +118,20 @@ def get_interest_growth(company):
 
     # preventing for division by zero error.
     if interest_start.interest == 0:
-        interest_growth = (interest_end.interest - 1) / 1 * 100
-        
+        if interest_end.interest != 0:
+            interest_growth = (interest_end.interest - 1) / 1 * 100
+        else:
+            interest_growth = 0        
     else:
         interest_growth = (interest_end.interest - interest_start.interest) / interest_start.interest * 100
 
     return interest_growth
 
 
-def get_interest_growth_ranking(industry_id):
+def _save_interest_growth_ranking_to_db(industry_id):
     """Get the interest movement ranking in the same industry and store it to db."""
 
-    growth_list = []
+    growth_set = set()
     company_list = []
 
     industry = Industry.query.options(
@@ -140,21 +142,54 @@ def get_interest_growth_ranking(industry_id):
 
         if company.interest:
             company_interest_growth = get_interest_growth(company)
-            if company_interest_growth not in growth_list:
-                growth_list.append(company_interest_growth)
-                company_list.append(company)
+            growth_set.add(company_interest_growth)
+            company_list.append(company)
+        else:
+            print(f"{company.company_id} has no interest.")
         
-    sorted_growth_list = sorted(growth_list, reverse=True)
+    sorted_growth_list = sorted(list(growth_set), reverse=True)
     print(sorted_growth_list)
 
     for company in company_list:
         ranking = sorted_growth_list.index(get_interest_growth(company))
-        print(ranking, company.name, get_interest_growth(company))
-        company.desc = ranking+1
-        print(company.desc)
+        print((ranking+1), company.name, company.company_id, get_interest_growth(company))
+        company.ranking = ranking+1
+        #print(company.ranking)
         db.session.commit()
 
-        
+
+
+def _save_interest_growth_to_db(industry_id):
+    """Get the interest ranking in the same industy companies."""
+
+    all_company = Company.query.filter_by(industry_id=industry_id).all()
+
+    for company in all_company:
+
+        if company.interest:
+
+            interest = sorted(company.interest, key=lambda x: x.date)
+            interest_start = interest[0]
+            interest_end = interest[-1]
+
+            # preventing for division by zero error.
+            if interest_start.interest == 0:
+                if  interest_end.interest != 0:
+                    interest_growth = (interest_end.interest - 1) / 1 * 100
+                else:
+                    interest_growth = 0
+            else:
+                interest_growth = (interest_end.interest - interest_start.interest) / interest_start.interest * 100
+
+            company.interest_growth = float(interest_growth)
+            db.session.commit()
+            print(f"{company.company_id} saved.")
+
+        else:
+            print(f"{company.company_id} has no interest data.")
+
+
+    print("Interest growth saved completely.")      
 
 
 

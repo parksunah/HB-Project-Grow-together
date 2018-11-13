@@ -8,4 +8,4 @@ class CompanyForm(FlaskForm):
 
     company = StringField('Company', validators=[DataRequired()], 
                                      render_kw={"placeholder": "Company Name"})
-    submit = SubmitField("Submit")
+
