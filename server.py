@@ -112,9 +112,10 @@ def create_interest_chart(company):
 
     else:
 
+        interest = sorted(company.interest, key=lambda x: x.date)
         chart_dic = { 
-                      "label1": [ datetime.strftime(obj.date, "%b-%d-%Y") for obj in company.interest ],
-                      "label2": [ obj.interest for obj in company.interest ]
+                      "label1": [ datetime.strftime(obj.date, "%b-%d-%Y") for obj in interest ],
+                      "label2": [ obj.interest for obj in interest ]
                     }
               
         return chart_dic
