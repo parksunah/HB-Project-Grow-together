@@ -153,7 +153,7 @@ def get_company_infos(company_name):
     params  = {"q": search_term, "textDecorations":True}
     response = requests.get(search_url, headers=headers, params=params)
     search_results = response.json()
-    # pprint.pprint(search_results)
+    pprint.pprint(search_results)
 
     try:
         company_desc = search_results['entities']['value'][0]['description']
@@ -231,7 +231,7 @@ def get_maps(company_name):
                 db.joinedload("salaries")
                 ).filter_by(name=company_name).first()
 
-    postal_code = company.salaries[1].work_site_postal_code
+    postal_code = company.salaries[0].work_site_postal_code
 
     # Use work site postal code in db.
     url = ("https://maps.googleapis.com/maps/api/place/findplacefromtext/json")
