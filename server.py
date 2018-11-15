@@ -73,7 +73,7 @@ def create_main_view():
             if company.ranking:
                 ranking = company.ranking
                 industry_name = company.industry.name
-                industry_num = len(company.industry.companies)
+                industry_num = get_industry_num(industry_name)
                 print('#' * 20, datetime.now() - start)
 
             else:
@@ -109,6 +109,17 @@ def create_main_view():
     except TypeError:
 
         flash("Something else went wrong.")
+
+
+def get_industry_num(industry_name):
+    """Get number of companies which have both a industry and a interest ranking.""" 
+
+    industry = Industry.query.filter_by(name=industry_name).first()
+    companies = Company.query.filter(Company.industry_id==industry.industry_id, 
+                                                          Company.ranking!=None).order_by(Company.ranking).all()
+
+    return len(companies)
+
 
 
 def create_interest_chart(company):
