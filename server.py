@@ -4,7 +4,7 @@ from flask import Flask, render_template, redirect, request, flash, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 import requests
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from model import Company, Industry, Interest, Salary, connect_to_db, db
 from forms import CompanyForm
@@ -66,13 +66,20 @@ def create_main_view():
         print('#' * 20, datetime.now() - start) # for checking runtime
         print(location)
   
-        if company.ranking:
+        if company.interest:
             interest_growth = get_interest_growth(company)
             print('#' * 20, datetime.now() - start)
-            ranking = company.ranking
-            industry_name = company.industry.name
-            industry_num = len(company.industry.companies)
-            print('#' * 20, datetime.now() - start)
+
+            if company.ranking:
+                ranking = company.ranking
+                industry_name = company.industry.name
+                industry_num = len(company.industry.companies)
+                print('#' * 20, datetime.now() - start)
+
+            else:
+                industry_name = None 
+                industry_num = None 
+                ranking = None 
 
         else:
             interest_growth = None
@@ -188,8 +195,6 @@ def get_company_infos(company_name):
 def get_news():
     """Get the news for specific date, 
     when user click the interest chart's specific point."""
-
-    import datetime
     
     news_key = os.environ['NEWS_KEY']
 
@@ -197,8 +202,8 @@ def get_news():
     company_name = cap_company_name.lower()
 
     news_date = request.args.get("from")
-    from_date = datetime.datetime.strptime(news_date, "%b-%d-%Y")
-    to_date = from_date + datetime.timedelta(6)
+    from_date = datetime.strptime(news_date, "%b-%d-%Y")
+    to_date = from_date + timedelta(6)
 
     url = "https://newsapi.org/v2/everything"
     

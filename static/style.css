@@ -45,11 +45,19 @@ body {
   z-index: 9999; 
 }
 
+.dropdown-menu {         
+  max-height: 400px;
+  overflow: auto;
+}
+
+/* /////////////////// Card News ////////////////// */
+
 
 #news-article {
   overflow:hidden;
   height:505px;
 }
+
 
 h1 {
   width: 317px;
@@ -242,7 +250,4 @@ h1 {
     color: #9FA5A8;
 }
 
-.dropdown-menu {         
-  max-height: 400px;
-  overflow: auto;
-}
+

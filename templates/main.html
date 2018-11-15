@@ -94,8 +94,10 @@
 
 
 <div id="ranking" data-ranking="{{ industry_name }}">
-{% if ranking %}
+{% if interest_growth %}
 <p> Google trends movement growth is {{ interest_growth }}%, 
+{% endif %}
+{% if ranking %}
     ranking is {{ ranking }} of {{ industry_num }}
     in <a href="/interest_view/{{ industry_name }}"> {{ industry_name }} </a> sector. (during past 5 years) </p>
 {% endif %}
