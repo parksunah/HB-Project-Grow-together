@@ -64,7 +64,6 @@ document.getElementById("myChart").onclick = function(evt){
                         
                         }
 
-                        // console.log(newsList.length);
                         $("#news-article").html(newsList);
                         // console.log(response);
 
@@ -85,15 +84,6 @@ $("#fold").click(function(){
         $('#news-article').animate({ height: 505 }, 1000);
                            });
 
-// <div>
-//                       <h3> ${r.title}</h3>
-//                       <p>  ${r.publishedAt} </p>
-//                       <p>  ${r.source.name} </p>
-//                       <p>  ${r.publishedAt} </p>
-//                       <p>  ${r.url} </p>
-//                       <p>  ${r.description} </p>
-//                       <p>  ${r.urlToImage} </p>
-//                     </div>
 
 
 
