@@ -1,7 +1,5 @@
 "use strict";
 
-console.log(typeof $("#myChart").data("chart").label1[0]);
-console.log(typeof $("#myChart").data("chart").label2[0]);
 const ctx = document.getElementById("myChart").getContext('2d');
 const myChart = new Chart.Line(ctx, {
     data: {

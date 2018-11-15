@@ -48,10 +48,13 @@ body {
 
 
 #news-article {
-  height: 2000px;
+  overflow:hidden;
+  height:300px;
 }
 
-
+#more {
+  
+}
 
 h1 {
   width: 317px;

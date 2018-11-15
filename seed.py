@@ -158,6 +158,54 @@ def _save_interest_growth_ranking_to_db(industry_id):
         db.session.commit()
 
 
+def _save_sorted_interest_growth_ranking_to_db(industry_id):
+    """If company has 0 interest during first 10 weeks and last 10 weeks, exclude it from ranking."""
+
+    growth_list = []
+    company_list = []
+
+    industry = Industry.query.options(
+                 db.joinedload("companies")
+               ).filter_by(industry_id=industry_id).first()
+
+    for company in industry.companies:
+
+        if company.interest:
+            interest_list = [ i.interest for i in sorted(company.interest, key=lambda x: x.date) ]
+            
+            if (0 in interest_list[:10]) and (0 in interest_list[146:]):
+                print(f"{company.company_id} has 0 interest during first 10 weeks and last 10 weeks.")
+                
+            else:
+                company_interest_growth = get_interest_growth(company)
+                growth_list.append(company_interest_growth)
+                company_list.append(company)
+        else:
+            print(f"{company.company_id} has no interest.")
+        
+    sorted_growth_list = sorted(growth_list, reverse=True)
+    print(sorted_growth_list)
+
+    for company in company_list:
+        ranking = sorted_growth_list.index(get_interest_growth(company))
+        print((ranking+1), company.name, company.company_id, get_interest_growth(company))
+        company.ranking = ranking+1
+        #print(company.ranking)
+        db.session.commit()
+
+def _ranking_cleaner(industry_id):
+
+    industry = Industry.query.options(
+                  db.joinedload("companies")
+               ).filter_by(industry_id=industry_id).first()
+
+    for company in industry.companies:  
+
+        if company.ranking:
+            company.ranking = None
+            db.session.commit()
+
+
 
 def _save_interest_growth_to_db(industry_id):
     """Get the interest ranking in the same industy companies."""

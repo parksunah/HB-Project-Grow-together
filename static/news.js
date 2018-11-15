@@ -62,13 +62,21 @@ document.getElementById("myChart").onclick = function(evt){
                         }
 
                         // console.log(newsList.length);
-                        $('#news-article').html(newsList);
+                        $("#news-article").html(newsList);
                         // console.log(response);
 
                     }
                 
             });
         };
+
+$("#more").click(function(){
+        $('#news-article').animate({
+                                        height: $('#news-article').get(0).scrollHeight
+                                    }, 1000, function(){
+                                                        $(this).height('auto');
+                                    });
+                                });
 
 
 // <div>
