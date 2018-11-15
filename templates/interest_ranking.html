@@ -12,14 +12,14 @@
   <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 
 {% for industry in industries %}
-    <a class="dropdown-item" href="#">{{ industry.name }}</a>
+    <a class="dropdown-item" href="/interest_view/{{ industry.name }}">{{ industry.name }}</a>
 {% endfor %}
 
   </div>
 </div>
 
 {% for company in companies %}
-    <li> {{ company.ranking }} : {{ company.name }}, {{ company.interest_growth }}% </li>
+    <li> {{ company.ranking }} : {{ company.name }}, {{ company.interest_growth }}%  <a href="/company_view?company={{company.name}}"> Click here </a> </li>
 {% endfor %}
 
 

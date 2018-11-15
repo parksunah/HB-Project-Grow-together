@@ -1,69 +1,3 @@
-/* Set the size of the div element that contains the map */
-#map {
-height: 400px;  /* The height is 400 pixels */
-width: 100%;  /* The width is the width of the web page */
-}
-
-.rating__stars {
-  display: inline;
-}
-
-.rating__score {
-  padding-right: 0.75rem;
-}
-
-.stars-outer {
-  display: inline-block;
-  position: relative;
-  font-family: Font Awesome\ 5 Free;
-}
-
-.stars-outer::before {
-  content: "\f005 \f005 \f005 \f005 \f005";
-  color: #F9DBA6;
-}
-
-.stars-inner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 0;
-}
-
-.stars-inner::before {
-  content: "\f005 \f005 \f005 \f005 \f005";
-  color: #F5A623;
-}
-
-body {
-    position: relative; 
-}
-
-.ui-front { 
-  z-index: 9999; 
-}
-
-
-#news-article {
-  overflow:hidden;
-  height:505px;
-}
-
-h1 {
-  width: 317px;
-  height: 56px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  /*white-space:nowrap;*/
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-
-
-
 html, body, div, span, applet, object, iframes,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -85,32 +19,35 @@ time, mark, audio, video {
     vertical-align: baseline;
 }
 
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-    display: block;
-}
-
 body {
     font-family: 'OpenSans', sans-serif;
 }
 
+#wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    /*background: -webkit-linear-gradient(#A5B5BD 0, #7B847B 100%);
+    background: -moz-linear-gradient(#A5B5BD 0, #7B847B 100%);
+    background: -ms-linear-gradient(#A5B5BD 0, #7B847B 100%);
+    background: -o-linear-gradient(#A5B5BD 0, #7B847B 100%);
+    background: linear-gradient(#A5B5BD 0, #7B847B 100%);*/
+}
+
 .card {
-    /*cursor: default;*/
+    cursor: default;
     position: relative;
     width: 371px;
-    /*top: 48%;*/
-    left: 22%;
-    margin: 7px;
+    top: 50%;
+    left: 50%;
     transform: -webkit-translate(-50%, -50%);
     transform: -moz-translate(-50%, -50%);
     transform: -ms-translate(-50%, -50%);
     transform: -o-translate(-50%, -50%);
     transform: translate(-50%, -50%);
-    float:left;
 }
 
 .card-header {
-    padding: 0;
     width: 371px;
     height: 235px;
     background-size: 371px 235px;
@@ -123,7 +60,7 @@ body {
 }
 
 #news-img {
-    width: 368px;
+    width: 371px;
     height: 235px;
     background-size: 371px 235px;
     border-radius: 1px 1px 0 0;
@@ -219,10 +156,6 @@ h1 {
     -ms-transition: all .2s ease-in-out;
     -o-transition: all .2s ease-in-out;
     transition: all .2s ease-in-out;
-    width: 317px;
-    height: 210px;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .card:hover .card-body-description {
@@ -242,7 +175,23 @@ h1 {
     color: #9FA5A8;
 }
 
-.dropdown-menu {         
-  max-height: 400px;
-  overflow: auto;
+.icon {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 2px;
+}
+
+.icon-time {
+    margin-top: -3px;
+    width: 10px;
+    height: 17px;
+    background: url(../images/icon-time.png) no-repeat;
+}
+
+.icon-comment {
+    margin-top: -2px;
+    margin-left: 12px;
+    width: 14px;
+    height: 14px;
+    background: url(../images/icon-comment.png) no-repeat;
 }

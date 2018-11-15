@@ -8,6 +8,8 @@ document.getElementById("myChart").onclick = function(evt){
             let company_data = { "company_name" : $("#salary-table").data("company-name"), "from" : label};
             
             const url = "news.json";
+
+
             $.get(url, company_data, (response) => {
                 console.log(response);
 
@@ -30,10 +32,11 @@ document.getElementById("myChart").onclick = function(evt){
                         }
 
                         // card news design source ::: https://www.louistiti.fr/tutoriel-html5-css3-carte-article-ui/33
+                        
                         const article = 
 
                         `
-                         <span>
+                         <span class="news-span">
                             <div class="card">
                                 <div class="card-header"><img id="news-img" src="${newsImg}">
                                     <div class="card-header-mask">
@@ -41,7 +44,7 @@ document.getElementById("myChart").onclick = function(evt){
                                 </div>
                                 <div class="card-body">
                                     <div class="card-body-header">
-                                        <div class="card-body-header-category">${r.publishedAt}</div>
+                                        <div class="card-body-header-category">${r.publishedAt.substring(0,10)}</div>
                                         <h1>${r.title}</h1>
                                         <p class="card-body-header-sentence">
                                             ${r.source.name}</span>
@@ -79,7 +82,7 @@ $("#more").click(function(){
                                 });
 
 $("#fold").click(function(){
-        $('#news-article').animate({ height: 300 }, 1000);
+        $('#news-article').animate({ height: 505 }, 1000);
                            });
 
 // <div>

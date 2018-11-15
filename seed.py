@@ -173,7 +173,7 @@ def _save_sorted_interest_growth_ranking_to_db(industry_id):
         if company.interest:
             interest_list = [ i.interest for i in sorted(company.interest, key=lambda x: x.date) ]
             
-            if (0 in interest_list[:10]) and (0 in interest_list[146:]):
+            if (0 in interest_list[:20]) and (0 in interest_list[136:]):
                 print(f"{company.company_id} has 0 interest during first 10 weeks and last 10 weeks.")
                 
             else:
