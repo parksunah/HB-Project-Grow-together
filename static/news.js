@@ -78,6 +78,9 @@ $("#more").click(function(){
                                     });
                                 });
 
+$("#fold").click(function(){
+        $('#news-article').animate({ height: 300 }, 1000);
+                           });
 
 // <div>
 //                       <h3> ${r.title}</h3>
