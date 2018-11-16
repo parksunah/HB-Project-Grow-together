@@ -38,7 +38,9 @@ def load_company():
         next(file) # skip first line
 
         for row in data:
-            company_name, industry_name, hq_address = row[2].strip(), row[8].strip(), row[3].strip()+", "+ row[4].strip() +", "+ row[5].strip()
+            company_name, industry_name, hq_address = row[2].strip(), 
+                                                      row[8].strip(), 
+                                                      row[3].strip()+", "+ row[4].strip() +", "+ row[5].strip()
             
             if Company.query.filter_by(name=company_name).first() == None:
 
@@ -64,7 +66,12 @@ def load_salary():
         next(file) # skip first line
         
         for row in data:
-            company_name, job_title, salary, date, work_site_city, postal_code = row[2].strip(), row[6].strip(), row[7].strip(), row[1].strip(), row[9].strip(), row[12].strip()
+            company_name, job_title, salary, date, work_site_city, postal_code = row[2].strip(), 
+                                                                                 row[6].strip(), 
+                                                                                 row[7].strip(), 
+                                                                                 row[1].strip(), 
+                                                                                 row[9].strip(), 
+                                                                                 row[12].strip()
             date = datetime.datetime.strptime(date, "%m-%d-%y")
             salary = Salary(date, job_title, int(salary), work_site_city, postal_code)
             salary.company = Company.query.filter_by(name=company_name).first()
@@ -159,7 +166,8 @@ def _save_interest_growth_ranking_to_db(industry_id):
 
 
 def _save_sorted_interest_growth_ranking_to_db(industry_id):
-    """If company has 0 interest during first 10 weeks and last 10 weeks, exclude it from ranking."""
+    """If company has 0 interest during first 20 weeks and last 20 weeks, exclude it from ranking,
+       and get the interest movement ranking in the same industry and store it to db."""
 
     growth_list = []
     company_list = []
@@ -174,7 +182,7 @@ def _save_sorted_interest_growth_ranking_to_db(industry_id):
             interest_list = [ i.interest for i in sorted(company.interest, key=lambda x: x.date) ]
             
             if (0 in interest_list[:20]) and (0 in interest_list[136:]):
-                print(f"{company.company_id} has 0 interest during first 10 weeks and last 10 weeks.")
+                print(f"{company.company_id} has 0 interest during first 20 weeks and last 20 weeks.")
                 
             else:
                 company_interest_growth = get_interest_growth(company)
@@ -193,7 +201,9 @@ def _save_sorted_interest_growth_ranking_to_db(industry_id):
         #print(company.ranking)
         db.session.commit()
 
+
 def _ranking_cleaner(industry_id):
+    """Erase rankings from db column."""
 
     industry = Industry.query.options(
                   db.joinedload("companies")
@@ -208,7 +218,7 @@ def _ranking_cleaner(industry_id):
 
 
 def _save_interest_growth_to_db(industry_id):
-    """Get the interest ranking in the same industy companies."""
+    """Using industry_id, get the interest ranking in the same industy companies and save to db."""
 
     all_company = Company.query.filter_by(industry_id=industry_id).all()
 
@@ -229,7 +239,7 @@ def _save_interest_growth_to_db(industry_id):
             else:
                 interest_growth = (interest_end.interest - interest_start.interest) / interest_start.interest * 100
 
-            company.interest_growth = float(interest_growth)
+            company.interest_growth = interest_growth
             db.session.commit()
             print(f"{company.company_id} saved.")
 
@@ -240,8 +250,11 @@ def _save_interest_growth_to_db(industry_id):
     print("Interest growth saved completely.") 
 
 
-def _save_interest_growth_to_db_by_company_id(company_id):
-    """Get the interest ranking in the same industy companies."""
+def _save_interest_growth_to_db_by_company_id():
+    """Using company_id, get the interest ranking in the same industy companies and save to db."""
+
+    
+    while i < 
 
     all_company = Company.query.filter_by(company_id=company_id).all()
 
@@ -262,7 +275,7 @@ def _save_interest_growth_to_db_by_company_id(company_id):
             else:
                 interest_growth = (interest_end.interest - interest_start.interest) / interest_start.interest * 100
 
-            company.interest_growth = float(interest_growth)
+            company.interest_growth = interest_growth
             db.session.commit()
             print(f"{company.company_id} saved.")
 

@@ -159,7 +159,8 @@ def get_company_infos(company_name):
     search_url = "https://api.cognitive.microsoft.com/bing/v7.0/search"
     search_term = company_name.lower()+" company profile"
 
-    headers = {"Ocp-Apim-Subscription-Key" : subscription_key, "Content-Type": "application/json; charset=utf-8"}
+    headers = {"Ocp-Apim-Subscription-Key" : subscription_key, 
+               "Content-Type": "application/json; charset=utf-8"}
     params  = {"q": search_term, "textDecorations":True}
     response = requests.get(search_url, headers=headers, params=params)
     search_results = response.json()
@@ -293,7 +294,9 @@ def create_interest_ranking_view(industry_name):
 
     industry = Industry.query.filter_by(name=industry_name).first()
     industries = Industry.query.all()   
-    companies = Company.query.filter(Company.industry_id==industry.industry_id, Company.ranking!=None).order_by(Company.ranking).all()
+    companies = Company.query.filter(
+                            Company.industry_id==industry.industry_id, 
+                            Company.ranking!=None).order_by(Company.ranking).all()
 
     return render_template("interest_ranking.html", companies=companies, industries=industries)
 
