@@ -1,14 +1,12 @@
 "use strict";
 
 document.getElementById("myChart").onclick = function(evt){
+
             const activePoints = myChart.getElementsAtEvent(evt);
             const firstPoint = activePoints[0];
-            const label = myChart.data.labels[firstPoint._index];
-            const value = myChart.data.datasets[firstPoint._datasetIndex].data[firstPoint._index];
-            let company_data = { "company_name" : $("#chart").data("label-name"), "from" : label};
-            
+            const date = myChart.data.datasets[0].data[firstPoint._index].x;
+            let company_data = { "company_name" : $("#chart").data("label-name"), "from" : date};
             const url = "news.json";
-
 
             $.get(url, company_data, (response) => {
                 console.log(response);

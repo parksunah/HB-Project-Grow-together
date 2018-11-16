@@ -67,7 +67,7 @@ def create_main_view():
 
  
         if company.interest_growth:
-            interest_chart=create_interest_chart(company)
+            interest_chart = create_interest_chart(company)
             print('#' * 20, 'chart', datetime.now() - start) # for checking runtime
             interest_growth = company.interest_growth
             print('#' * 20, 'interest_growth', datetime.now() - start) # for checking runtime
@@ -103,9 +103,9 @@ def create_main_view():
         flash("Please check the company name.")
         return redirect("/")
 
-    except TypeError:
+    # except TypeError:
 
-        flash("Something else went wrong.")
+    #     flash("Something else went wrong.")
 
 
 def get_industry_num(industry_id):
@@ -120,13 +120,15 @@ def get_industry_num(industry_id):
 def create_interest_chart(company):
     """Google trends interest chart generator."""
     
-    interest = sorted(company.interest, key=lambda x: x.date)
-    chart_dic = { 
-                  "label1": [ datetime.strftime(obj.date, "%b-%d-%Y") for obj in interest ],
-                  "label2": [ obj.interest for obj in interest ]
-                }
-          
-    return chart_dic
+    chart_data = [
+                    {
+                        "x": obj.date.isoformat()[:10],
+                        "y": obj.interest
+                    }
+                    for obj in company.interest
+                 ]
+
+    return chart_data
 
 
 def get_interest_growth(company):
@@ -163,7 +165,7 @@ def get_company_infos(company_name):
     params  = {"q": search_term, "textDecorations":True}
     response = requests.get(search_url, headers=headers, params=params)
     search_results = response.json()
-    pprint.pprint(search_results)
+    #pprint.pprint(search_results)
 
     try:
         company_desc = search_results['entities']['value'][0]['description']
@@ -204,7 +206,7 @@ def get_news():
     company_name = cap_company_name.lower()
 
     news_date = request.args.get("from")
-    from_date = datetime.strptime(news_date, "%b-%d-%Y")
+    from_date = datetime.strptime(news_date, "%Y-%m-%d")
     to_date = from_date + timedelta(6)
 
     url = "https://newsapi.org/v2/everything"
@@ -251,7 +253,7 @@ def get_maps(company_name):
     headers = {'Content-Type': 'application/json; charset=utf-8'}
 
     response = requests.get(url, headers=headers, params=params)
-    
+
     r = response.json()
     
     if r['status'] == 'ZERO_RESULTS':
@@ -263,7 +265,6 @@ def get_maps(company_name):
                     "key":map_key} 
         response = requests.get(url, headers=headers, params=params)
 
-        r = response.json()
 
     location = {"name" : r['candidates'][0]['name'], 
                 "address": r['candidates'][0]['formatted_address'],

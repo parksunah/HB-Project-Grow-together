@@ -2,11 +2,11 @@
 
 const ctx = document.getElementById("myChart").getContext('2d');
 const myChart = new Chart.Line(ctx, {
+    
     data: {
-        labels: $("#myChart").data("chart").label1,
-        datasets: [{
+    datasets: [{
             label: $("#chart").data("label-name"),
-            data: $("#myChart").data("chart").label2,
+            data: $("#myChart").data("chart"),
             backgroundColor: "rgba(255, 99, 132, 0.2)",
             borderColor: "rgba(255, 99, 132, 1)",
             borderWidth: 1,
@@ -20,12 +20,13 @@ const myChart = new Chart.Line(ctx, {
         scales: {
             xAxes: [{
                       display: true,
-                      ticks: {
-                          callback: function(dataLabel, index) {
-                              return index % 2 === 0 ? dataLabel : '';
-                          },
-                      type: 'time'
-                      }
+                      type: 'time',
+              time: {
+                      unit: 'month',
+                      unitStepSize: 2,
+                      min: $("#myChart").data("chart")[0].x,
+                      max: $("#myChart").data("chart")[155].x
+                    }
             }],
             yAxes: [{
                 ticks: {
