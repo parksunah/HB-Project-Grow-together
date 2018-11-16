@@ -237,6 +237,39 @@ def _save_interest_growth_to_db(industry_id):
             print(f"{company.company_id} has no interest data.")
 
 
+    print("Interest growth saved completely.") 
+
+
+def _save_interest_growth_to_db_by_company_id(company_id):
+    """Get the interest ranking in the same industy companies."""
+
+    all_company = Company.query.filter_by(company_id=company_id).all()
+
+    for company in all_company:
+
+        if company.interest:
+
+            interest = sorted(company.interest, key=lambda x: x.date)
+            interest_start = interest[0]
+            interest_end = interest[-1]
+
+            # preventing for division by zero error.
+            if interest_start.interest == 0:
+                if  interest_end.interest != 0:
+                    interest_growth = (interest_end.interest - 1) / 1 * 100
+                else:
+                    interest_growth = 0
+            else:
+                interest_growth = (interest_end.interest - interest_start.interest) / interest_start.interest * 100
+
+            company.interest_growth = float(interest_growth)
+            db.session.commit()
+            print(f"{company.company_id} saved.")
+
+        else:
+            print(f"{company.company_id} has no interest data.")
+
+
     print("Interest growth saved completely.")      
 
 

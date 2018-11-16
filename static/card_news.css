@@ -2,38 +2,10 @@
 /*card news design source ::: https://www.louistiti.fr/tutoriel-html5-css3-carte-article-ui/33
 */
 
-#news-article {
-  overflow:hidden;
-  height:505px;
-}
-
-
-h1 {
-  width: 317px;
-  height: 56px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  /*white-space:nowrap;*/
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-
-
 
 html, body, div, span, applet, object, iframes,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, sub, sup, tt, var,
-u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
+.title, h2, h3, h4, h5, h6, p, blockquote, pre,
+video {
     margin: 0;
     padding: 0;
     border: 0;
@@ -51,19 +23,23 @@ body {
     font-family: 'OpenSans', sans-serif;
 }
 
+#news-article {
+    overflow:hidden;
+    height:554px;
+    display: flex;
+    width: 100%;
+    padding: 2em;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
 .card {
-    /*cursor: default;*/
-    position: relative;
-    width: 371px;
-    /*top: 48%;*/
-    left: 22%;
+    left: 25%;
     margin: 7px;
-    transform: -webkit-translate(-50%, -50%);
-    transform: -moz-translate(-50%, -50%);
-    transform: -ms-translate(-50%, -50%);
-    transform: -o-translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    float:left;
+}
+
+span.news-span { 
+    flex: 0 0 auto; 
 }
 
 .card-header {
@@ -72,23 +48,13 @@ body {
     height: 235px;
     background-size: 371px 235px;
     border-radius: 1px 1px 0 0;
-    -webkit-transition: all .3s ease-in-out;
-    -moz-transition: all .3s ease-in-out;
-    -ms-transition: all .3s ease-in-out;
-    -o-transition: all .3s ease-in-out;
-    transition: all .3s ease-in-out;
 }
 
 #news-img {
-    width: 368px;
+    width: 369px;
     height: 235px;
     background-size: 371px 235px;
     border-radius: 1px 1px 0 0;
-    -webkit-transition: all .3s ease-in-out;
-    -moz-transition: all .3s ease-in-out;
-    -ms-transition: all .3s ease-in-out;
-    -o-transition: all .3s ease-in-out;
-    transition: all .3s ease-in-out;
 }
 
 .card:hover .card-header {
@@ -96,14 +62,6 @@ body {
     background-position: -16px -16px;
 }
 
-.card-header-mask {
-    /*height: 100%;*/
-    -webkit-transition: all .3s ease-in-out;
-    -moz-transition: all .3s ease-in-out;
-    -ms-transition: all .3s ease-in-out;
-    -o-transition: all .3s ease-in-out;
-    transition: all .3s ease-in-out;
-}
 
 .card:hover .card-header-mask {
     background-color: rgba(0, 0, 0, .6);
@@ -125,8 +83,7 @@ body {
     padding: 8px 14px;
     line-height: 15px;
 }
-
-
+    
 .card-body {
     background-color: #FFF;
     border-radius: 0 0 1px 1px;
@@ -150,11 +107,22 @@ body {
     margin-top: -141px;
 }
 
-h1 {
+.title {
     color: #23282D;
     letter-spacing: -1px;
     font-size: 24px;
     font-weight: bold;
+}
+
+.title {
+  width: 317px;
+  height: 56px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /*white-space:nowrap;*/
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .card-body-header-sentence {

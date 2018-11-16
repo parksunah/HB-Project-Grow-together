@@ -95,10 +95,10 @@
 
 <div id="ranking" data-ranking="{{ industry_name }}">
 {% if interest_growth %}
-<p> Google trends movement growth is {{ interest_growth }}%, 
+<p> Google trends movement growth is {{ interest_growth }}% 
 {% endif %}
 {% if ranking %}
-    ranking is {{ ranking }} of {{ industry_num }}
+    , ranking is {{ ranking }} of {{ industry_num }}
     in <a href="/interest_view/{{ industry_name }}"> {{ industry_name }} </a> sector. (during past 5 years) </p>
 {% endif %}
 </div>
@@ -119,6 +119,29 @@
 <script async defer
   src="https://maps.googleapis.com/maps/api/js?key={{ map_key }}&callback=initMap">
 </script>
+
+
+
+<!-- Google trends interest chart ////////////////////////////////////////// -->
+
+<h1> Interest Movement Chart From Google trends </h1>
+
+<div id="chart" data-label-name="{{ company_name }}">
+<canvas data-chart='{{ interest_chart|tojson }}' id="myChart"></canvas>
+</div>
+
+<script src="/static/interest_chart.js"></script>
+
+
+
+<!-- News generator by click event ///////////////////////////////////////// -->
+
+<h1> News </h1>
+    <button id="more"> More </button> <button id="fold"> Fold </button>
+  <div id="news-article"> ******** </div>
+
+<script src="/static/news.js"></script>
+<link rel="stylesheet" href="/static/card_news.css">
 
 
 
@@ -187,24 +210,6 @@ $(document).ready(function() {
 </table>
 </div>   
 
-<!-- Google trends interest chart ////////////////////////////////////////// -->
-
-<h1> Interest Movement Chart From Google trends </h1>
-
-<div id="chart">
-<canvas data-chart='{{ interest_chart|tojson }}' id="myChart"></canvas>
-</div>
-
-<script src="/static/interest_chart.js"></script>
-
-<!-- News generator by click event ///////////////////////////////////////// -->
-
-<h1> News </h1>
-    <button id="more"> More </button> <button id="fold"> Fold </button>
-  <div id="news-article"> ******** </div>
-
-<script src="/static/news.js"></script>
-<link rel="stylesheet" href="/static/card_news.css">
 
 
 

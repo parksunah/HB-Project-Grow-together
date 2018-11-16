@@ -53,39 +53,36 @@ def create_main_view():
         company = Company.query.options(
                     db.joinedload("industry")
                     ).filter_by(name=company_name).first()
-        print('#' * 20, datetime.now() - start) # for checking runtime
-        
-        job_listings = get_job_listings(company_name)
-        print('#' * 20, datetime.now() - start) # for checking runtime
-
+        print('#' * 20, 'query', datetime.now() - start) # for checking runtime
+ 
         company_infos = get_company_infos(company_name)
-        print('#' * 20, datetime.now() - start) # for checking runtime
-
-        interest_chart=create_interest_chart(company)
+        print('#' * 20, 'infos', datetime.now() - start) # for checking runtime
+        
         location=get_maps(company_name)
-        print('#' * 20, datetime.now() - start) # for checking runtime
+        print('#' * 20, 'map', datetime.now() - start) # for checking runtime
         print(location)
-  
+
+        job_listings = get_job_listings(company_name)
+        print('#' * 20, 'job_listings', datetime.now() - start) # for checking runtime
+
+ 
         if company.interest:
+            interest_chart=create_interest_chart(company)
+            print('#' * 20, 'chart', datetime.now() - start) # for checking runtime
             interest_growth = get_interest_growth(company)
-            print('#' * 20, datetime.now() - start)
+            print('#' * 20, 'interest_growth', datetime.now() - start) # for checking runtime
 
             if company.ranking:
                 ranking = company.ranking
                 industry_name = company.industry.name
                 industry_num = get_industry_num(industry_name)
-                print('#' * 20, datetime.now() - start)
+                print('#' * 20, 'industry_num & ranking', datetime.now() - start) # for checking runtime
 
             else:
-                industry_name = None 
-                industry_num = None 
-                ranking = None 
+                industry_name, industry_num, ranking = None, None, None 
 
         else:
-            interest_growth = None
-            ranking = None
-            industry_name = None
-            industry_num = None
+            interest_chart, interest_growth, ranking, industry_name, industry_num = None, None, None, None, None
 
         return render_template( "main.html",
                                 map_key=os.environ['MAP_KEY'],
@@ -121,22 +118,16 @@ def get_industry_num(industry_name):
     return len(companies)
 
 
-
 def create_interest_chart(company):
     """Google trends interest chart generator."""
     
-    if not company.interest:
-        return None
-
-    else:
-
-        interest = sorted(company.interest, key=lambda x: x.date)
-        chart_dic = { 
-                      "label1": [ datetime.strftime(obj.date, "%b-%d-%Y") for obj in interest ],
-                      "label2": [ obj.interest for obj in interest ]
-                    }
-              
-        return chart_dic
+    interest = sorted(company.interest, key=lambda x: x.date)
+    chart_dic = { 
+                  "label1": [ datetime.strftime(obj.date, "%b-%d-%Y") for obj in interest ],
+                  "label2": [ obj.interest for obj in interest ]
+                }
+          
+    return chart_dic
 
 
 def get_interest_growth(company):

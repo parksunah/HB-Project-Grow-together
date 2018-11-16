@@ -5,7 +5,7 @@ document.getElementById("myChart").onclick = function(evt){
             const firstPoint = activePoints[0];
             const label = myChart.data.labels[firstPoint._index];
             const value = myChart.data.datasets[firstPoint._datasetIndex].data[firstPoint._index];
-            let company_data = { "company_name" : $("#salary-table").data("company-name"), "from" : label};
+            let company_data = { "company_name" : $("#chart").data("label-name"), "from" : label};
             
             const url = "news.json";
 
@@ -25,10 +25,10 @@ document.getElementById("myChart").onclick = function(evt){
                     
                     for (let r of response) {
 
-                        const newsImg = r.urlToImage;
+                        let newsImg = r.urlToImage;
                         
                         if (newsImg === null) {
-                            newsImg = "./static/images/placeholder.png";
+                            newsImg = "/static/images/placeholder.png";
                         }
 
                         // card news design source ::: https://www.louistiti.fr/tutoriel-html5-css3-carte-article-ui/33
@@ -45,7 +45,7 @@ document.getElementById("myChart").onclick = function(evt){
                                 <div class="card-body">
                                     <div class="card-body-header">
                                         <div class="card-body-header-category">${r.publishedAt.substring(0,10)}</div>
-                                        <h1>${r.title}</h1>
+                                        <h1 class="title">${r.title}</h1>
                                         <p class="card-body-header-sentence">
                                             ${r.source.name}</span>
                                         </p>
@@ -81,7 +81,7 @@ $("#more").click(function(){
                                 });
 
 $("#fold").click(function(){
-        $('#news-article').animate({ height: 505 }, 1000);
+        $('#news-article').animate({ height: 554 }, 1000);
                            });
 
 

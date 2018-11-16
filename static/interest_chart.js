@@ -5,7 +5,7 @@ const myChart = new Chart.Line(ctx, {
     data: {
         labels: $("#myChart").data("chart").label1,
         datasets: [{
-            label: $("#salary-table").data("company-name"),
+            label: $("#chart").data("label-name"),
             data: $("#myChart").data("chart").label2,
             backgroundColor: "rgba(255, 99, 132, 0.2)",
             borderColor: "rgba(255, 99, 132, 1)",
