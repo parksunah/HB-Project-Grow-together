@@ -66,16 +66,16 @@ def create_main_view():
         print('#' * 20, 'job_listings', datetime.now() - start) # for checking runtime
 
  
-        if company.interest:
+        if company.interest_growth:
             interest_chart=create_interest_chart(company)
             print('#' * 20, 'chart', datetime.now() - start) # for checking runtime
-            interest_growth = get_interest_growth(company)
+            interest_growth = company.interest_growth
             print('#' * 20, 'interest_growth', datetime.now() - start) # for checking runtime
 
             if company.ranking:
                 ranking = company.ranking
                 industry_name = company.industry.name
-                industry_num = get_industry_num(industry_name)
+                industry_num = get_industry_num(company.industry.industry_id)
                 print('#' * 20, 'industry_num & ranking', datetime.now() - start) # for checking runtime
 
             else:
@@ -108,11 +108,10 @@ def create_main_view():
         flash("Something else went wrong.")
 
 
-def get_industry_num(industry_name):
+def get_industry_num(industry_id):
     """Get number of companies which have both a industry and a interest ranking.""" 
 
-    industry = Industry.query.filter_by(name=industry_name).first()
-    companies = Company.query.filter(Company.industry_id==industry.industry_id, 
+    companies = Company.query.filter(Company.industry_id==industry_id, 
                                                           Company.ranking!=None).order_by(Company.ranking).all()
 
     return len(companies)

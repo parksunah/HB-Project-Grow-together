@@ -38,8 +38,8 @@ def load_company():
         next(file) # skip first line
 
         for row in data:
-            company_name, industry_name, hq_address = row[2].strip(), 
-                                                      row[8].strip(), 
+            company_name, industry_name, hq_address = row[2].strip(), \
+                                                      row[8].strip(), \
                                                       row[3].strip()+", "+ row[4].strip() +", "+ row[5].strip()
             
             if Company.query.filter_by(name=company_name).first() == None:
@@ -66,11 +66,11 @@ def load_salary():
         next(file) # skip first line
         
         for row in data:
-            company_name, job_title, salary, date, work_site_city, postal_code = row[2].strip(), 
-                                                                                 row[6].strip(), 
-                                                                                 row[7].strip(), 
-                                                                                 row[1].strip(), 
-                                                                                 row[9].strip(), 
+            company_name, job_title, salary, date, work_site_city, postal_code = row[2].strip(), \
+                                                                                 row[6].strip(), \
+                                                                                 row[7].strip(), \
+                                                                                 row[1].strip(), \
+                                                                                 row[9].strip(), \
                                                                                  row[12].strip()
             date = datetime.datetime.strptime(date, "%m-%d-%y")
             salary = Salary(date, job_title, int(salary), work_site_city, postal_code)
@@ -253,12 +253,10 @@ def _save_interest_growth_to_db(industry_id):
 def _save_interest_growth_to_db_by_company_id():
     """Using company_id, get the interest ranking in the same industy companies and save to db."""
 
-    
-    while i < 
+    i = 1
+    while i <= 3150:
 
-    all_company = Company.query.filter_by(company_id=company_id).all()
-
-    for company in all_company:
+        company = Company.query.get(i)
 
         if company.interest:
 
@@ -281,6 +279,8 @@ def _save_interest_growth_to_db_by_company_id():
 
         else:
             print(f"{company.company_id} has no interest data.")
+
+        i += 1
 
 
     print("Interest growth saved completely.")      
