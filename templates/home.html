@@ -4,6 +4,10 @@
 
 {% block content %}
 
+
+<link href='https://fonts.googleapis.com/css?family=Work+Sans:400,300,600,400italic,700' rel='stylesheet' type='text/css'>
+<link href="https://fonts.googleapis.com/css?family=Sacramento" rel="stylesheet">
+
 <style type="text/css">
 
 body, html {
@@ -19,9 +23,10 @@ body, html {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  position: relative;
 }
 
-/*.img-cover{
+.img-cover{
   position: absolute;
   height: 100%;
   width: 100%;
@@ -31,7 +36,9 @@ body, html {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-}*/
+  position: relative;
+}
+
 
 .company-search {
    position: absolute;
@@ -60,28 +67,53 @@ body, html {
   object-fit: contain;
 }
 
+h1 {
+  font-family: "Sacramento", Arial, serif;
+  color: white;
+}
+
+.col-md-6 {
+  height: 500px;
+  vertical-align: middle;
+}
+
+.logo {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  top: 27%;
+  left: 20%;
+}
+
+img {
+  width: 80%
+}
 
 </style>
 
 <!-- Company name input from /////////////////////////////////////////////// -->
- <div class="container-fluid back-img">
-    <div class="img-cover">
+ 
+<div class="container-fluid back-img">
+  <div class="img-cover">
     <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md-6 input-group">
-    <form id="search-form" class="form-inline" role="form" method="post" action="/company_view">
+      <h1> Inside Out </h1>
+      <div class="logo"><img src="static/images/logo.png"></div>
+    <form id="search-form" class="form-inline" role="form" method="get" action="/company_view">
         {{ form.company(class="form-control search-form") }}
         <span class="input-group-btn">
-            <button type="submit" class="btn btn-primary search-btn" data-target="#search-form" name="q">
+            <button type="submit" class="btn btn-primary search-btn">
                 <i class="fa fa-search"></i>
             </button>
         </span>
 </form>
 </div>
+</div>
 <div class="col-md-3"></div>
     </div>
 </div>
-</div>
+
 <!-- Autocomplete with Jquery ////////////////////////////////////////////// -->
 
 
