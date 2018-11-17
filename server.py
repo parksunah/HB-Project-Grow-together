@@ -58,7 +58,7 @@ def create_main_view():
         company_infos = get_company_infos(company_name)
         print('#' * 20, 'infos', datetime.now() - start) # for checking runtime
         
-        location=get_maps(company_name)
+        location = get_maps(company_name)
         print('#' * 20, 'map', datetime.now() - start) # for checking runtime
         print(location)
 
@@ -262,9 +262,9 @@ def get_maps(company_name):
         params = { "input" : hq_address,
                     "inputtype" : "textquery",
                     "fields":"photos,formatted_address,name,rating,opening_hours,geometry",
-                    "key":map_key} 
+                    "key":map_key } 
         response = requests.get(url, headers=headers, params=params)
-
+        r = response.json()
 
     location = {"name" : r['candidates'][0]['name'], 
                 "address": r['candidates'][0]['formatted_address'],
@@ -273,6 +273,16 @@ def get_maps(company_name):
     print(location)
 
     return location
+
+
+def get_postal_codes(company_id):
+
+    postal_codes = db.session.query(Salary.company_id, Salary.work_site_postal_code) \
+                             .group_by(Salary.company_id, Salary.work_site_postal_code) \
+                             .having(Salary.company_id==company_id).all()
+
+    return postal_codes
+
 
 
 @app.route("/interest_ranking")
