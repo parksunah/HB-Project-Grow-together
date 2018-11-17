@@ -5,7 +5,7 @@ document.getElementById("myChart").onclick = function(evt){
             const activePoints = myChart.getElementsAtEvent(evt);
             const firstPoint = activePoints[0];
             const date = myChart.data.datasets[0].data[firstPoint._index].x;
-            let company_data = { "company_name" : $("#chart").data("label-name"), "from" : date};
+            let company_data = { "company_name" : $("#chart").data("label-name"), "from" : date };
             const url = "news.json";
 
             $.get(url, company_data, (response) => {

@@ -14,22 +14,15 @@
   <a class="navbar-brand" href="/">
     <i class="fas fa-home"></i> Home
   </a>
-  <form action="/company_view" method="GET">
-        <span class="company-search">
-            {{ form.company(size=25) }}
+  <span class="company-search">
+    <form action="/company_view" method="GET">
+            {{ form.company(size=30) }}
             <button type="button" class="btn btn-primary btn-sm"><i class="fas fa-search"></i></button>
-        </span>
     </form>
-
+  </span>
   <ul class="nav nav-pills">
     <li class="nav-item">
       <a class="nav-link" href="#logo">About Company</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#salary">Real Salary Data</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#job-listing">Job Listing</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="#chart">Google trends</a>
@@ -37,14 +30,11 @@
     <li class="nav-item">
       <a class="nav-link" href="#news-article">Related News</a>
     </li>
-    <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" href="#one">one</a>
-        <a class="dropdown-item" href="#two">two</a>
-        <div role="separator" class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#three">three</a>
-      </div>
+    <li class="nav-item">
+      <a class="nav-link" href="#salary">Real Salary Data</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#job-listing">Job Listing</a>
     </li>
   </ul>
 </nav>
@@ -58,22 +48,24 @@
 
 <br><br><br>
 <div class="container-fluid">
+    <div class="row">
+      <h1>{{ company_name }}</h1>
+    </div>
 
-    <h1>{{ company_name }}</h1>
-  
-    {% if company_infos[1] %}
-        <div id="logo">
-            <img src={{ company_infos[1] }} class="img-thumbnail">
-        </div>
-    {% endif %}
-    
+    <div class="row">
+      {% if company_infos[1] %}
+          <div id="logo">
+              <img src={{ company_infos[1] }} class="img-thumbnail">
+          </div>
+      {% endif %}
+      
 
-    {% if company_infos[0] %}
-        <div id="definition">
-            {{ company_infos[0] }}
-        </div>
-    {% endif %}
-
+      {% if company_infos[0] %}
+          <div id="definition">
+              {{ company_infos[0] }}
+          </div>
+      {% endif %}
+    </div>
 
 
     <!-- rating, ranking /////////////////////////////////////////////////////// -->

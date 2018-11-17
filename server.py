@@ -103,9 +103,9 @@ def create_main_view():
         flash("Please check the company name.")
         return redirect("/")
 
-    # except TypeError:
+    except:
 
-    #     flash("Something else went wrong.")
+        flash("Something else went wrong.")
 
 
 def get_industry_num(industry_id):
@@ -270,19 +270,10 @@ def get_maps(company_name):
                 "address": r['candidates'][0]['formatted_address'],
                 "lat" : r['candidates'][0]['geometry']['location']['lat'],
                 "lng" : r['candidates'][0]['geometry']['location']['lng']}
+
     print(location)
 
     return location
-
-
-def get_postal_codes(company_id):
-
-    postal_codes = db.session.query(Salary.company_id, Salary.work_site_postal_code) \
-                             .group_by(Salary.company_id, Salary.work_site_postal_code) \
-                             .having(Salary.company_id==company_id).all()
-
-    return postal_codes
-
 
 
 @app.route("/interest_ranking")
