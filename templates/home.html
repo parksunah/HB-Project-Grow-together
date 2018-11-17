@@ -4,97 +4,14 @@
 
 {% block content %}
 
-
-<style type="text/css">
-
-body, html {
-  height: 100%
-  display:flex;
-  align-items:center;
-}
-
-.back-img { 
-  background: url(static/images/home.jpg) no-repeat center center fixed; 
-  height: 100vh;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  position: relative;
-}
-
-.img-cover{
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.4);                                                                 
-  z-index:1;
-}
-
-
-.company-search {
-  position: absolute;
-  top:50%;
-  left:50%;
-  color: white;
-  z-index: 2;
-  text-align: center;
-}
-
-#search-form {
-  border-radius: 30px 0px 0px 30px;
-  width: 90%;
-  object-fit: contain;
-  z-index: 1;
-}
-
-
-.search-btn {
-  border-radius: 0px 30px 30px 0px;
-  cursor:pointer;
-  position: absolute;
-  padding: 8px;
-}
-
-.input-group-btn {
-
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-#company {
-  border-radius: 30px 0px 0px 30px;
-  width: 90%;
-  object-fit: contain;
-  padding: 20px;
-}
-
-.col-md-6 {
-  height: 800px;
-  vertical-align: middle;
-}
-
-.logo {
-  position: absolute;
-  width: 500px;
-  height: 500px;
-  top: 12%;
-  left: 16%;
-}
-
-img {
-  width: 80%
-}
-
-</style>
+<link rel="stylesheet" href="/static/home.css">
 
 <!-- Company name input from /////////////////////////////////////////////// -->
  
 <div class="container-fluid back-img">
   <div class="img-cover">
     <div class="row">
-    <div class="col-md-3"></div>
+    <div class="col-md-3" id="left"></div>
     <div class="col-md-6 input-group">
       <div class="logo"><img src="static/images/logo.png"></div>
     <form id="search-form" class="form-inline" role="form" method="get" action="/company_view">
@@ -103,21 +20,15 @@ img {
             <button type="submit" class="btn btn-primary search-btn">
                 <i class="fa fa-search"></i>
             </button>
-        </span>
+        </span>   
 </form>
+<h3> Job seeker's best freind. </h3>
 </div>
 </div>
 <div class="col-md-3"></div>
     </div>
 </div>
 
-<!-- Autocomplete with Jquery ////////////////////////////////////////////// -->
 
-
-<script src="/static/autocomplete.js"></script>
-
-<!-- <style type="text/css">
-.ui-front { z-index: 9999; }
-</style> -->
 
 {% endblock %}
