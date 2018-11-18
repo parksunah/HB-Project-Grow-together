@@ -9,26 +9,24 @@
 <!-- Company name input from /////////////////////////////////////////////// -->
  
 <div class="container-fluid back-img">
-  <div class="img-cover">
     <div class="row">
-    <div class="col-md-3" id="left"></div>
-    <div class="col-md-6 input-group">
-      <div class="logo"><img src="static/images/logo.png"></div>
-    <form id="search-form" class="form-inline" role="form" method="get" action="/company_view">
-        {{ form.company(class="form-control search-form") }}
-        <span class="input-group-btn">
-            <button type="submit" class="btn btn-primary search-btn">
-                <i class="fa fa-search"></i>
-            </button>
-        </span>   
-</form>
-<h3> Job seeker's best freind. </h3>
-</div>
-</div>
-<div class="col-md-3"></div>
+        <div class="col-md-3" id="left"></div>
+        <div class="col-md-6 input-group">
+            <div class="logo"><img src="static/images/logo.png"></div>
+            <form id="search-form" class="form-inline" role="form" method="get" action="/company_view">
+              {{ form.company(class="form-control search-form") }}
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary search-btn">
+                    <i class="fa fa-search"></i>
+                </button>
+            </span>   
+            </form>
+            <h3> Job seeker's best freind </h3>
+            <h5> Everything you need to know before you join a company </h5>
+        </div>
+        <div class="col-md-3"></div>
     </div>
 </div>
-
 
 
 {% endblock %}

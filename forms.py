@@ -7,5 +7,5 @@ class CompanyForm(FlaskForm):
     """Select the company and period want to show."""
 
     company = StringField('Company', validators=[DataRequired()], 
-                                     render_kw={"placeholder": "Company Name"})
+                                     render_kw={"placeholder": "Search by Company Name"})
 

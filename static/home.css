@@ -71,7 +71,7 @@ body, html {
   position: absolute;
   width: 500px;
   height: 500px;
-  top: 12%;
+  top: 8%;
   left: 15%;
 }
 
@@ -85,6 +85,14 @@ h3 {
   position: absolute;
   top: 55%;
   left: 21%;
+}
+
+h5 {
+  font-family: 'Open Sans', sans-serif;
+  color: white;
+  position: absolute;
+  top: 60%;
+  left: 8%;
 }
 
 #left {

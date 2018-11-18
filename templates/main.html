@@ -7,23 +7,17 @@
 <!-- CSS -->
 <link rel="stylesheet" href="/static/style.css">
 
+
 <!-- Nav bar with scrollable area ///////////////////////////////////////////-->
 
 
-</head>
 <body data-spy="scroll" data-target="#navbar" data-offset="50">
 
-<nav id="navbar" class="navbar navbar-light bg-light fixed-top"> 
-  <a class="navbar-brand" href="/">
-    <i class="fas fa-home"></i> Home
-  </a>
-  <span class="company-search">
-    <form action="/company_view" method="GET">
-            {{ form.company(size=30) }}
-            <button type="button" class="btn btn-primary btn-sm"><i class="fas fa-search"></i></button>
-    </form>
-  </span>
+<nav id="navbar" class="navbar navbar-light bg-light fixed-top navbar-custom"> 
   <ul class="nav nav-pills">
+    <li class="nav-item">
+      <a class="nav-link" href="/"><!-- <img id="nav-logo" src="static/images/logo.png" -->></a>
+    </li>
     <li class="nav-item">
       <a class="nav-link" href="#logo">About Company</a>
     </li>
@@ -40,83 +34,84 @@
       <a class="nav-link" href="#job-listing">Job Listing</a>
     </li>
   </ul>
+    <form id="search-form" class="form-inline" role="form" method="get" action="/company_view">
+        {{ form.company(class="form-control search-form") }}
+      <span class="input-group-btn">
+          <button type="submit" class="btn btn-primary search-btn">
+              <i class="fa fa-search"></i>
+          </button>
+      </span>   
+  </form>
 </nav>
 
 
 
 <!-- Logo and Definition /////////////////////////////////////////////////// -->
 
-<br><br><br>
-<div class="container-fluid">
-    <div class="row">
-      <h1>{{ company_name }}</h1>
-    </div>
+<main role="main" class="container">
+
+  <div class="container-fluid">
 
     <div class="row">
-      {% if company_infos[1] %}
-          <div id="logo">
-              <img src={{ company_infos[1] }} class="img-thumbnail">
-          </div>
-      {% endif %}
-      
-
-      {% if company_infos[0] %}
-          <div id="definition">
-              {{ company_infos[0] }}
-          </div>
-      {% endif %}
-    </div>
-
-
-<!-- rating, ranking /////////////////////////////////////////////////////// -->
-
-    {% if job_listings %}
-
-
-      <div class="rating__stars">
-          <div class="fas stars-outer">
-              <div id="star" class="stars-inner" data-rating="{{ job_listings[0]["Rating"]}}"></div>
-          </div>
-      </div>
-    
-      <script src="/static/star.js"></script>
-
-        <p> Employees' Rating : {{ job_listings[0]["Rating"]}} </p>
-
-    {% endif %}
-
-        <div id="ranking" data-ranking="{{ industry_name }}">
-    
-    {% if interest_growth %}
-        <p> Google trends movement growth is {{ interest_growth }}% 
-    {% endif %}
-    
-    {% if ranking %}
-            , ranking is {{ ranking }} of {{ industry_num }}
-            in <a href="/interest_view/{{ industry_name }}"> 
-                {{ industry_name }} 
-               </a> sector. (during past 5 years) 
-        </p>
-    {% endif %}
-    
+      <div class="col-md-8 align-self-center">
+        <div class="row">
+          <h1>{{ company_name.title() }}</h1>
         </div>
+        <div class="row">
+          <div class="col-md-3 logo">
+            {% if company_infos[1] %}
+            <img src={{ company_infos[1] }} class="img-thumbnail">
+            {% endif %}
+          </div>
+          <div class="col-md-9 align-items-center">
+            {% if job_listings %}
+            <div class="rating__stars"> 
+              <div class="fas stars-outer"> 
+                <div id="star" class="stars-inner" data-rating="{{ job_listings[0]["Rating"]}}"></div>
+                <script src="/static/star.js"></script>
+              </div>
+            </div>  
+            <p> Employees' Rating : {{ job_listings[0]["Rating"]}} </p>
+            {% endif %}
+            <div id="ranking" data-ranking="{{ industry_name }}">
+                  
+            {% if interest_growth %}
+            <p> Google trends movement growth is {{ interest_growth }}%. 
+            {% endif %}
+            <br>      
+            {% if ranking %}
+            Ranking is {{ ranking }} of {{ industry_num }}
+            in <a href="/interest_view/{{ industry_name }}"> 
+            {{ industry_name }} 
+            </a> sector. (during past 5 years) 
+            </p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+        <div class="row">
+          {% if company_infos[0] %}
+          <div id="definition">
+            {{ company_infos[0] }}
+          </div>
+          {% endif %}
+        </div>
+      </div>  
+                    
+      <div class="col-md-4 align-self-end">
+        <div id="address"></div>
+                      <!-- <div id="location-name"></div> -->
+                      <!--The div element for the map -->
+        <div id="map" data-map='{{ location|tojson }}'></div>
+        <script src="/static/map.js"></script>
+        <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key={{ map_key }}&callback=initMap">
+        </script>
+      </div>
+      </div>
+    </div>
+  </div>
 
-<!-- Location Map ///////////////////////////////////////////////////////// -->
-
-    <h1>Location</h1>
-
-    <div id="address"></div>
-    <div id="location-name"></div>
-    <!--The div element for the map -->
-    <div id="map" data-map='{{ location|tojson }}'></div>
-        
-    <script src="/static/map.js"></script>
-
-    <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key={{ map_key }}&callback=initMap">
-    </script>
-
-</div>
 
 <!-- Google trends interest chart ////////////////////////////////////////// -->
 
@@ -218,6 +213,6 @@ $(document).ready(function() {
 
 </div>
 
-
+</main>
 
 {% endblock %}

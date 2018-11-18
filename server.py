@@ -103,7 +103,7 @@ def create_main_view():
         flash("Please check the company name.")
         return redirect("/")
 
-    except:
+    except TypeError:
 
         flash("Something else went wrong.")
 

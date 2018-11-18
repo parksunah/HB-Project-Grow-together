@@ -17,6 +17,6 @@
       });
   }
   const address = $("#map").data("map").address;
-  const locationName = $("#map").data("map").name;
+  // const locationName = $("#map").data("map").name;
   $("#address").html(address);
-  $("#location-name").html(locationName);
+  // $("#location-name").html(locationName);
