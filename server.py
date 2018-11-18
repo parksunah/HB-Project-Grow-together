@@ -64,7 +64,6 @@ def create_main_view():
 
         job_listings = get_job_listings(company_name)
         print('#' * 20, 'job_listings', datetime.now() - start) # for checking runtime
-
  
         if company.interest_growth:
             interest_chart = create_interest_chart(company)
@@ -229,7 +228,39 @@ def get_news():
         return jsonify(response.json()['articles'])
 
     except KeyError:
+
         return None
+
+
+@app.route("/recent_news.json")
+def get_recent_news():
+    """Get the recent news on the main page."""
+    
+    news_key = os.environ['NEWS_KEY']
+
+    cap_company_name = request.args.get("company_name")
+    company_name = cap_company_name.lower()
+
+    url = "https://newsapi.org/v2/everything"
+    
+    headers = {"Content-Type": "application/json; charset=utf-8"}
+
+    params  = { 
+            "q": company_name, 
+            "apiKey" : news_key,
+            "language":"en"
+            }
+
+    try:
+        response = requests.get(url, headers=headers, params=params)
+        print(response.url)
+
+        return jsonify(response.json()['articles'])
+
+    except KeyError:
+
+        return None
+
 
 
 def get_maps(company_name):
@@ -276,18 +307,6 @@ def get_maps(company_name):
     return location
 
 
-@app.route("/interest_ranking")
-def create_interest_ranking_page():
-    """Create google interest ranking page in each industry sector."""
-
-    industry_name = request.args.get("industry_name")
-
-    company = Company.query.options(
-                    db.joinedload("industry")
-                      ).filter_by(industry_name=industry_name).order_by(Company.desc).all()
-
-    return render_template("interest_ranking.html", industry=industry)
-
 
 @app.route("/interest_view/<industry_name>")
 def create_interest_ranking_view(industry_name):
@@ -299,7 +318,9 @@ def create_interest_ranking_view(industry_name):
                             Company.industry_id==industry.industry_id, 
                             Company.ranking!=None).order_by(Company.ranking).all()
 
-    return render_template("interest_ranking.html", companies=companies, industries=industries)
+    return render_template("interest_ranking.html", companies=companies, 
+                                                    industries=industries, 
+                                                    industry_name=industry.name)
 
 
 if __name__ == "__main__":

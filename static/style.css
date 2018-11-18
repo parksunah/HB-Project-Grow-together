@@ -51,7 +51,11 @@ h1 {
 }
 
 body > .container {
-  padding: 100px 15px 0;
+  padding: 60px 15px 0;
+}
+
+.container > .container-fluid {
+  padding: 60px 15px 0;
 }
 
 
@@ -110,7 +114,6 @@ margin: auto;
   overflow: auto;
 }
 
-
 .span-inline {
   display: inline-block;
 }
@@ -122,5 +125,14 @@ margin: auto;
 #definition {
   padding: 20px 0 0 0;
 }
+
+.container-fluid {
+  padding: 0 0 40px 0;
+}
+
+#address {
+  padding: 0 0 5px 5px;
+}
+
 
 

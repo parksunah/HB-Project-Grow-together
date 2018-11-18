@@ -51,7 +51,7 @@ span.news-span {
 }
 
 #news-img {
-    width: 369px;
+    width: 371px;
     height: 235px;
     background-size: 371px 235px;
     border-radius: 1px 1px 0 0;
@@ -95,6 +95,7 @@ span.news-span {
     position: absolute;
     left: 0;
     padding: 26px;
+    width: 371px;
     background-color: #FFF;
     -webkit-transition: all .3s ease-in-out;
     -moz-transition: all .3s ease-in-out;
@@ -119,7 +120,7 @@ span.news-span {
   height: 56px;
   overflow: hidden;
   text-overflow: ellipsis;
-  /*white-space:nowrap;*/
+  line-height: 1.2;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;

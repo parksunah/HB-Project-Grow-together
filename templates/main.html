@@ -10,7 +10,6 @@
 
 <!-- Nav bar with scrollable area ///////////////////////////////////////////-->
 
-
 <body data-spy="scroll" data-target="#navbar" data-offset="50">
 
 <nav id="navbar" class="navbar navbar-light bg-light fixed-top navbar-custom"> 
@@ -19,19 +18,19 @@
       <a class="nav-link" href="/"><!-- <img id="nav-logo" src="static/images/logo.png" -->></a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#logo">About Company</a>
+      <a class="nav-link" href="#about">About Company</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#chart">Google trends</a>
+      <a class="nav-link" href="#trends">Google Trends</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#news-article">Related News</a>
+      <a class="nav-link" href="#news">Related News</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#salary">Real Salary Data</a>
+      <a class="nav-link" href="#salary-data">Real Salary Data</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#job-listing">Job Listing</a>
+      <a class="nav-link" href="#job-data">Job Listing</a>
     </li>
   </ul>
     <form id="search-form" class="form-inline" role="form" method="get" action="/company_view">
@@ -50,7 +49,7 @@
 
 <main role="main" class="container">
 
-  <div class="container-fluid">
+  <div class="container-fluid" id="about">
 
     <div class="row">
 
@@ -65,9 +64,9 @@
               <script src="/static/star.js"></script>
               </div>
             </div>  
-            <span class="span-inline"><p> Employees' Rating : {{ job_listings[0]["Rating"]}} </p> </span>
+            &nbsp; <span class="span-inline"><p> Employees' Rating : {{ job_listings[0]["Rating"]}} </p> </span>
             <span>
-            <img src='https://www.glassdoor.com/static/img/api/glassdoor_logo_80.png'></span> 
+            &nbsp; <img src='https://www.glassdoor.com/static/img/api/glassdoor_logo_80.png'></span> 
           {% endif %}
         </div>
         <div class="col-md-3 align-self-end">
@@ -88,11 +87,11 @@
 
         <div id="ranking" data-ranking="{{ industry_name }}">          
           {% if interest_growth %}
-          <p> Consumer interest on Google Trends grew {{ interest_growth }}% over the past 3 years. 
+          <p> Search volume on Google Trends grew <mark>{{ interest_growth }}%</mark> over the past 3 years. 
           {% endif %}
           <br>      
           {% if ranking %}
-          Interest growth ranking is {{ ranking }} out of {{ industry_num }} companies
+          Interest growth ranking is <mark>{{ ranking }}</mark> out of {{ industry_num }} companies
           in <a href="/interest_view/{{ industry_name }}"> 
           {{ industry_name }} 
           </a> sector.  
@@ -122,9 +121,27 @@
 
 <!-- Google trends interest chart ////////////////////////////////////////// -->
 
-<div class="container-fluid">
+<div class="container-fluid" id="trends">
 
-    <h1> Interest Movement Chart From Google trends </h1>
+    <span class="span-inline"><h1> Search Volume Trend Over the Past 3 Years </h1></span> 
+    &nbsp; <i class="fas fa-question-circle" style="font-size: x-large;color: #bdc2c7;cursor: pointer;" data-toggle="modal" data-target="#exampleModalCenter"></i>
+
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalCenterTitle">Interest over time form Google Trends</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      Numbers represent search interest relative to the highest point on the chart for the given region and time. A value of 100 is the peak popularity for the term. A value of 50 means that the term is half as popular. A score of 0 means there was not enough data for this term.
+                    </div>
+                  </div>
+                </div>
+              </div>
 
     <div id="chart" data-label-name="{{ company_name }}">
     <canvas data-chart='{{ interest_chart|tojson }}' id="myChart"></canvas>
@@ -136,11 +153,12 @@
 
 
 <!-- News generator by click event ///////////////////////////////////////// -->
-<div class="container-fluid">
+<div class="container-fluid" id="news">
     
-    <h1> News </h1>
-        <button id="more"> More </button> <button id="fold"> Fold </button>
-      <div id="news-article"> ******** </div>
+    <h1> Related News </h1>
+        <button id="more" class="btn btn-light"> More </button> <button id="fold" class="btn btn-light"> Fold </button>
+        <span class="alert alert-warning" role="alert"> Click on the dates above to check what was trending that day.</span>
+      <div id="news-article"></div>
 
     <script src="/static/news.js"></script>
     <link rel="stylesheet" href="/static/card_news.css">
@@ -149,9 +167,9 @@
 
 
 <!-- Salary table ////////////////////////////////////////////////////////// -->
-<div class="container-fluid">
+<div class="container-fluid" id="salary-data">
 
-    <h1> Real Salary Data from Labor Department </h1>
+    <h1> Real Salary Data from U.S Labor Department </h1>
 
     <div id="salary">
     <table id ="salary-table" class="display table table-striped table-bordered" data-company-name="{{ company_name }}">
@@ -189,9 +207,9 @@ $(document).ready(function() {
 
 <!-- Glassdoor job listing table /////////////////////////////////////////// -->
 
-<div class="container-fluid">
+<div class="container-fluid" id="job-data">
 
-    <h1> Job listing by Glassdoor </h1>
+    <h1> Job Listing </h1>
 
     <div id="job-listing">
     <table class="display table table-striped table-bordered">
@@ -199,7 +217,7 @@ $(document).ready(function() {
         <tr>
             <th>Job Title</th>
             <th>Location</th>
-            <th>Glassdoor Estimated Salary</th>
+            <th>Estimated Salary</th>
             <th>Url</th>
         </tr>
     </thead>
@@ -221,5 +239,6 @@ $(document).ready(function() {
 </div>
 
 </main>
+
 
 {% endblock %}
