@@ -103,8 +103,6 @@
 
       <div class="col-md-4 align-self-center">
         <div id="address"></div>
-                      <!-- <div id="location-name"></div> -->
-                      <!--The div element for the map -->
         <div id="map" data-map='{{ location|tojson }}'></div>
         <script src="/static/map.js"></script>
         <script async defer
@@ -172,7 +170,7 @@
     <h1> Real Salary Data from U.S Labor Department </h1>
 
     <div id="salary">
-    <table id ="salary-table" class="display table table-striped table-bordered" data-company-name="{{ company_name }}">
+    <table id ="salary-table" class="display table table-striped" data-company-name="{{ company_name }}">
         <thead>
             <tr>
                 <th>Date</th>
@@ -212,7 +210,7 @@ $(document).ready(function() {
     <h1> Job Listing </h1>
 
     <div id="job-listing">
-    <table class="display table table-striped table-bordered">
+    <table class="display table table-striped">
     <thead>
         <tr>
             <th>Job Title</th>
