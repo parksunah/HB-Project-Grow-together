@@ -136,7 +136,7 @@ function recentNews() {
                                     </div>
                                 </div>
                             </span>
-                            `
+                            `;
                             recentNewsList.push(recentArticle);
                             
                             }

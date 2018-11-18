@@ -5,10 +5,14 @@
 {% block content %}
 
 <link rel="stylesheet" href="/static/home.css">
+<link rel="stylesheet" href="/static/loading.css">
+<script src="/static/loading.js"></script>
 
 <!-- Company name input from /////////////////////////////////////////////// -->
- 
-<div class="container-fluid back-img">
+<div id="loading">
+</div>
+
+<div class="container-fluid back-img" id="content">
     <div class="row">
         <div class="col-md-3" id="left"></div>
         <div class="col-md-6 input-group">
@@ -16,7 +20,7 @@
             <form id="search-form" class="form-inline" role="form" method="get" action="/company_view">
               {{ form.company(class="form-control search-form") }}
             <span class="input-group-btn">
-                <button type="submit" class="btn btn-primary search-btn">
+                <button type="submit" class="btn btn-primary search-btn" onclick="loading();">
                     <i class="fa fa-search"></i>
                 </button>
             </span>   

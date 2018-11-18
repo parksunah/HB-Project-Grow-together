@@ -111,7 +111,7 @@ def get_industry_num(industry_id):
     """Get number of companies which have both a industry and a interest ranking.""" 
 
     companies = Company.query.filter(Company.industry_id==industry_id, 
-                                                          Company.ranking!=None).order_by(Company.ranking).all()
+                                     Company.ranking!=None).order_by(Company.ranking).all()
 
     return len(companies)
 
@@ -234,7 +234,7 @@ def get_news():
 
 @app.route("/recent_news.json")
 def get_recent_news():
-    """Get the recent news on the main page."""
+    """Get the recent news on the main page as default."""
     
     news_key = os.environ['NEWS_KEY']
 
@@ -279,7 +279,7 @@ def get_maps(company_name):
     params = { "input" : company_name +", "+ postal_code,
                "inputtype" : "textquery",
                "fields":"photos,formatted_address,name,rating,opening_hours,geometry",
-               "key": map_key } 
+               "key" : map_key } 
 
     headers = {'Content-Type': 'application/json; charset=utf-8'}
 
@@ -289,11 +289,11 @@ def get_maps(company_name):
     
     if r['status'] == 'ZERO_RESULTS':
         # Just use hq_address in db.
-        hq_address = company.hq_address
-        params = { "input" : hq_address,
+
+        params = { "input" : company.hq_address,
                     "inputtype" : "textquery",
                     "fields":"photos,formatted_address,name,rating,opening_hours,geometry",
-                    "key":map_key } 
+                    "key" : map_key } 
         response = requests.get(url, headers=headers, params=params)
         r = response.json()
 
