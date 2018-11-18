@@ -53,52 +53,56 @@
   <div class="container-fluid">
 
     <div class="row">
+
       <div class="col-md-8 align-self-center">
-        <div class="row">
+        <div class="row justify-content-end">
+        <div class="col-md-9 align-self-start">
           <h1>{{ company_name.title() }}</h1>
+          {% if job_listings %}
+            <div class="rating__stars"> 
+              <div class="fas stars-outer"> 
+                <div id="star" class="stars-inner" data-rating="{{ job_listings[0]["Rating"]}}"></div>
+              <script src="/static/star.js"></script>
+              </div>
+            </div>  
+            <span class="span-inline"><p> Employees' Rating : {{ job_listings[0]["Rating"]}} </p> </span>
+            <span>
+            <img src='https://www.glassdoor.com/static/img/api/glassdoor_logo_80.png'></span> 
+          {% endif %}
         </div>
-        <div class="row">
-          <div class="col-md-3 logo">
+        <div class="col-md-3 align-self-end">
+          <div id="img-thumbnail">
             {% if company_infos[1] %}
             <img src={{ company_infos[1] }} class="img-thumbnail">
             {% endif %}
           </div>
-          <div class="col-md-9 align-items-center">
-            {% if job_listings %}
-            <div class="rating__stars"> 
-              <div class="fas stars-outer"> 
-                <div id="star" class="stars-inner" data-rating="{{ job_listings[0]["Rating"]}}"></div>
-                <script src="/static/star.js"></script>
-              </div>
-            </div>  
-            <p> Employees' Rating : {{ job_listings[0]["Rating"]}} </p>
-            {% endif %}
-            <div id="ranking" data-ranking="{{ industry_name }}">
-                  
-            {% if interest_growth %}
-            <p> Google trends movement growth is {{ interest_growth }}%. 
-            {% endif %}
-            <br>      
-            {% if ranking %}
-            Ranking is {{ ranking }} of {{ industry_num }}
-            in <a href="/interest_view/{{ industry_name }}"> 
-            {{ industry_name }} 
-            </a> sector. (during past 5 years) 
-            </p>
-            {% endif %}
-          </div>
         </div>
+        
       </div>
-        <div class="row">
-          {% if company_infos[0] %}
-          <div id="definition">
-            {{ company_infos[0] }}
-          </div>
+
+        {% if company_infos[0] %}
+        <div id="definition">
+        {{ company_infos[0] }}
+        </div>
+        {% endif %}
+
+        <div id="ranking" data-ranking="{{ industry_name }}">          
+          {% if interest_growth %}
+          <p> Consumer interest on Google Trends grew {{ interest_growth }}% over the past 3 years. 
+          {% endif %}
+          <br>      
+          {% if ranking %}
+          Interest growth ranking is {{ ranking }} out of {{ industry_num }} companies
+          in <a href="/interest_view/{{ industry_name }}"> 
+          {{ industry_name }} 
+          </a> sector.  
+          </p>
           {% endif %}
         </div>
+
       </div>  
-                    
-      <div class="col-md-4 align-self-end">
+
+      <div class="col-md-4 align-self-center">
         <div id="address"></div>
                       <!-- <div id="location-name"></div> -->
                       <!--The div element for the map -->
@@ -107,10 +111,13 @@
         <script async defer
             src="https://maps.googleapis.com/maps/api/js?key={{ map_key }}&callback=initMap">
         </script>
+      
       </div>
-      </div>
+                    
     </div>
+
   </div>
+
 
 
 <!-- Google trends interest chart ////////////////////////////////////////// -->

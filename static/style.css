@@ -79,6 +79,7 @@ margin: auto;
 .stars-outer::before {
   content: "\f005 \f005 \f005 \f005 \f005";
   color: #F9DBA6;
+  font-size: x-large;
 }
 
 .stars-inner {
@@ -93,6 +94,7 @@ margin: auto;
 .stars-inner::before {
   content: "\f005 \f005 \f005 \f005 \f005";
   color: #F5A623;
+  font-size: x-large;
 }
 
 /*body {
@@ -109,5 +111,16 @@ margin: auto;
 }
 
 
+.span-inline {
+  display: inline-block;
+}
+
+#ranking {
+  padding: 25px 0 15px 0;
+}
+
+#definition {
+  padding: 20px 0 0 0;
+}
 
 
