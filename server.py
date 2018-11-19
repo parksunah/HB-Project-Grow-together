@@ -42,7 +42,7 @@ def companydic():
 
 @app.route("/company_view")
 def create_main_view():
-    """Create the company's salary table."""
+    """Create the company's search result view."""
  
     try:
 
@@ -197,7 +197,7 @@ def get_company_infos(company_name):
 @app.route("/news.json")
 def get_news():
     """Get the news for specific date, 
-    when user click the interest chart's specific point."""
+       when user click the interest chart's specific point."""
     
     news_key = os.environ['NEWS_KEY']
 
