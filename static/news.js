@@ -13,9 +13,11 @@ document.getElementById("myChart").onclick = function(evt){
 
                 if (response.length === 0) {
 
-                    const msg = "News not found.";
+                    const msg = `<div class="alert alert-info" role="alert"> News not found. </div>`;
+
+
                     alert(msg);
-                    $('#news-article').html(msg);
+                    $("#news-article").html(msg);
                 }
 
                 else {
@@ -93,8 +95,8 @@ function recentNews() {
 
                     if (response.length === 0) {
 
-                        const msg = "News not found.";
-                        $('#news-article').html(msg);
+                        const msg = `<div class="alert alert-info" role="alert"> News not found. </div>`;
+                        $("#news-article").html(msg);
                     }
 
                     else {
