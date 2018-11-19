@@ -1,0 +1,169 @@
+/* /////////////////// Card News ////////////////// */
+/*card news design source ::: https://www.louistiti.fr/tutoriel-html5-css3-carte-article-ui/33
+*/
+
+
+html, body, div, span, applet, object, iframes,
+.title, h2, h3, h4, h5, h6, p, blockquote, pre,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+#news-article {
+    overflow:hidden;
+    height:554px;
+    display: flex;
+    width: 100%;
+    padding: 2em 2em 0 4em;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.card {
+    left: 25%;
+    margin: 7px;
+}
+
+span.news-span { 
+    flex: 0 0 auto; 
+}
+
+.card-header {
+    padding: 0;
+    width: 371px;
+    height: 235px;
+    background-size: 371px 235px;
+    border-radius: 1px 1px 0 0;
+}
+
+#news-img {
+    width: 371px;
+    height: 235px;
+    background-size: 371px 235px;
+    border-radius: 1px 1px 0 0;
+}
+
+.card:hover .card-header {
+    background-size: 403px 267px;
+    background-position: -16px -16px;
+}
+
+
+.card:hover .card-header-mask {
+    background-color: rgba(0, 0, 0, .6);
+}
+
+.card-body-header-category {
+    text-transform: uppercase;
+    background-color: #EF5A31;
+    color: #FFF;
+    font-weight: bold;
+    text-align: center;
+}
+
+.card-body-header-category {
+    position: absolute;
+    font-size: 13px;
+    top: -31px;
+    left: 0;
+    padding: 8px 14px;
+    line-height: 15px;
+}
+    
+.card-body {
+    background-color: #FFF;
+    border-radius: 0 0 1px 1px;
+    padding: 0 26px 26px 26px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+}
+
+.card-body-header {
+    position: absolute;
+    left: 0;
+    padding: 26px;
+    width: 371px;
+    background-color: #FFF;
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -ms-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+}
+
+.card:hover .card-body-header {
+    margin-top: -141px;
+}
+
+.title {
+    color: #23282D;
+    letter-spacing: -1px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.title {
+  width: 317px;
+  height: 56px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.card-body-header-sentence {
+    color: #EF5A31;
+    margin-top: 14px;
+    font-size: 19px;
+}
+
+.card-body-header-sentence span {
+    font-style: italic;
+}
+
+.card-body-description {
+    opacity: 0;
+    color: #757B82;
+    line-height: 30px;
+    -webkit-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    -ms-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+    width: 317px;
+    height: 210px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card:hover .card-body-description {
+    opacity: 1;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+}
+
+.card-body-footer {
+    position: relative;
+    z-index: 10;
+    margin-top: 14px;
+    font-size: 14px;
+    color: #9FA5A8;
+}
