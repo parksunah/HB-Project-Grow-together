@@ -8,6 +8,8 @@
 
 <!-- Nav bar with scrollable area ///////////////////////////////////////////-->
 
+<div id="loading2"></div>
+
 <body data-spy="scroll" data-target="#navbar" data-offset="50">
 
 <nav id="navbar" class="navbar navbar-light bg-light fixed-top navbar-custom"> 
@@ -34,7 +36,7 @@
     <form id="search-form" class="form-inline" role="form" method="get" action="/company_view">
         {{ form.company(class="form-control search-form") }}
       <span class="input-group-btn">
-          <button type="submit" class="btn btn-primary search-btn">
+          <button type="submit" class="btn btn-primary search-btn" onclick="loading2();">
               <i class="fa fa-search"></i>
           </button>
       </span>   
@@ -48,7 +50,7 @@
 <!-- Logo and Definition /////////////////////////////////////////////////// -->
 
 
-<main role="main" class="container" style="padding-bottom: 100px;">
+<main role="main" class="container custom" style="padding-bottom: 100px;" id="wrapper">
 
   <div class="container-fluid" id="about">
 
@@ -259,12 +261,6 @@ $(document).ready(function() {
 </div>
 
 </main>
-
-    <footer class="footer">
-      <div class="container">
-        <span class="text-muted">Place sticky footer content here.</span>
-      </div>
-    </footer>
 
 </body>
 

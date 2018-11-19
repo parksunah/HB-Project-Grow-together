@@ -13,8 +13,11 @@ document.getElementById("myChart").onclick = function(evt){
 
                 if (response.length === 0) {
 
-                    const msg = `<div class="alert alert-info" role="alert"> News not found. </div>`;
-
+                    const msg = `
+                                <div class="alert alert-info" id="news-alert" role="alert">
+                                    News not found.
+                                </div>
+                                `;
 
                     alert(msg);
                     $("#news-article").html(msg);
@@ -59,7 +62,7 @@ document.getElementById("myChart").onclick = function(evt){
                                 </div>
                             </div>
                         </span>
-                        `
+                        `;
                         newsList.push(article);
                         
                         }
@@ -95,7 +98,11 @@ function recentNews() {
 
                     if (response.length === 0) {
 
-                        const msg = `<div class="alert alert-info" role="alert"> News not found. </div>`;
+                        const msg = `
+                                    <div class="alert alert-info" id="news-alert" role="alert">
+                                        News not found.
+                                    </div>
+                                    `;
                         $("#news-article").html(msg);
                     }
 

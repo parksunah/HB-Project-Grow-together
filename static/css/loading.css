@@ -6,7 +6,7 @@ body, html {
   background-color: white;
 }
 
-.container {
+#dot-container {
   width: 200px;
   height: 200px;
   position: absolute;
