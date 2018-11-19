@@ -37,6 +37,7 @@ def companydic():
 
     res = Company.query.all()
     list_companies = [r.as_dict() for r in res]
+
     return jsonify(list_companies)    
 
 
@@ -66,6 +67,7 @@ def create_main_view():
         print('#' * 20, 'job_listings', datetime.now() - start) # for checking runtime
  
         if company.interest_growth:
+            # interest growth data exists only for a company which has interest data.
             interest_chart = create_interest_chart(company)
             print('#' * 20, 'chart', datetime.now() - start) # for checking runtime
             interest_growth = company.interest_growth
@@ -102,9 +104,9 @@ def create_main_view():
         flash("Please check the company name.")
         return redirect("/")
 
-    except TypeError:
+    # except TypeError:
 
-        flash("Something else went wrong.")
+    #     flash("Something else went wrong.")
 
 
 def get_industry_num(industry_id):

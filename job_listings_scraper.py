@@ -3,7 +3,6 @@ import requests
 import re
 import os
 import sys
-import argparse
 
 
 def get_job_listings(company_name):
@@ -42,7 +41,7 @@ def get_job_listings(company_name):
         print("Fetching location details")
         location_response = requests.post(location_url, headers=location_headers, data=data).json()
         place_id = location_response[0]['locationId']
-        job_litsting_url = 'https://www.glassdoor.com/Job/jobs.htm'
+        job_listing_url = 'https://www.glassdoor.com/Job/jobs.htm'
         # Form data to get job results
         data = {
             'clickSource': 'searchBtn',
@@ -54,7 +53,7 @@ def get_job_listings(company_name):
 
         job_listings = []
         if place_id:
-            response = requests.post(job_litsting_url, headers=headers, data=data)
+            response = requests.post(job_listing_url, headers=headers, data=data)
             parser = html.fromstring(response.text)
             # Making absolute url 
             base_url = "https://www.glassdoor.com"

@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="/static/css/style.css">
 
 <!-- Nav bar with scrollable area ///////////////////////////////////////////-->
 
@@ -41,13 +41,14 @@
   </form>
 </nav>
 
-<script src="/static/top_button.js"></script>
-<link rel="stylesheet" href="/static/top_button.css">
+<script src="/static/js/top_button.js"></script>
+<link rel="stylesheet" href="/static/css/top_button.css">
 <button onclick="topFunction()" id="myBtn" title="Go to top"><i class="fas fa-chevron-circle-up"></i></button>
 
 <!-- Logo and Definition /////////////////////////////////////////////////// -->
 
-<main role="main" class="container my-custom-container" style="padding-bottom: 100px;">
+
+<main role="main" class="container" style="padding-bottom: 100px;">
 
   <div class="container-fluid" id="about">
 
@@ -61,7 +62,7 @@
             <div class="rating__stars"> 
               <div class="fas stars-outer"> 
                 <div id="star" class="stars-inner" data-rating="{{ job_listings[0]["Rating"]}}"></div>
-              <script src="/static/star.js"></script>
+              <script src="/static/js/star.js"></script>
               </div>
             </div>  
             &nbsp; <span class="span-inline"><p> Employees' Rating : {{ job_listings[0]["Rating"]}} </p> </span>
@@ -104,7 +105,7 @@
       <div class="col-md-4 align-self-center">
         <div id="address"></div>
         <div id="map" data-map='{{ location|tojson }}'></div>
-        <script src="/static/map.js"></script>
+        <script src="/static/js/map.js"></script>
         <script async defer
             src="https://maps.googleapis.com/maps/api/js?key={{ map_key }}&callback=initMap">
         </script>
@@ -147,7 +148,7 @@
     <div class="alert alert-info" role="alert" style="text-align: center;"> Click on the dates above to check what was trending that day.</div>
     
 
-    <script src="/static/interest_chart.js"></script>
+    <script src="/static/js/interest_chart.js"></script>
 
 </div>
 
@@ -160,8 +161,8 @@
         
       <div id="news-article"></div>
 
-    <script src="/static/news.js"></script>
-    <link rel="stylesheet" href="/static/card_news.css">
+    <script src="/static/js/news.js"></script>
+    <link rel="stylesheet" href="/static/css/card_news.css">
 
 </div>
 
