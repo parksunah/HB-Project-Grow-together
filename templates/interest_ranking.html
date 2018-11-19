@@ -7,21 +7,47 @@
 <!-- CSS -->
 <link rel="stylesheet" href="/static/style.css">
 
-<main role="main" class="container">
+
+<body data-spy="scroll" data-target="#navbar" data-offset="50">
+
+<nav id="navbar" class="navbar navbar-light bg-light fixed-top navbar-custom"> 
+  <ul class="nav nav-pills">
+    <li class="nav-item">
+      <a class="nav-link" href="/"><!-- <img id="nav-logo" src="/static/images/logo2.png" style="width: 100px; height: 56px;"> --> * </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="javascript:history.back()">Back</a>
+    </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">
+        Select Industry
+      </a>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        {% for industry in industries %}
+        <a class="dropdown-item" href="/interest_view/{{ industry.name }}">{{ industry.name }}</a>
+        {% endfor %}
+      </div>
+    </li>
+  </ul>
+    <form id="search-form" class="form-inline" role="form" method="get" action="/company_view">
+        {{ form.company(class="form-control search-form") }}
+      <span class="input-group-btn">
+          <button type="submit" class="btn btn-primary search-btn">
+              <i class="fa fa-search"></i>
+          </button>
+      </span>   
+  </form>
+</nav>
+
+<script src="/static/top_button.js"></script>
+<link rel="stylesheet" href="/static/top_button.css">
+<button onclick="topFunction()" id="myBtn" title="Go to top"><i class="fas fa-chevron-circle-up"></i></button>
+
+<main role="main" class="container" style="padding-bottom: 100px;">
+  <div class="container-fluid">
 
 <h1> {{ industry_name }} </h1>
-<div class="dropdown">
-  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Select Industry
-  </a>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
 
-{% for industry in industries %}
-    <a class="dropdown-item" href="/interest_view/{{ industry.name }}">{{ industry.name }}</a>
-{% endfor %}
-
-  </div>
-</div>
 
 
 <table class="table table-hover">
@@ -44,6 +70,13 @@
 {% endfor %}
     </tbody>
 </table>
+</div>
 </main>
+  <footer class="footer">
+    <div class="container">
+      <span class="text-muted">Place sticky footer content here.</span>
+    </div>
+  </footer>
+</body>
 
 {% endblock %}

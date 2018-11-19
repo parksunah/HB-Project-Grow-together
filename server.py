@@ -164,7 +164,7 @@ def get_company_infos(company_name):
     params  = {"q": search_term, "textDecorations":True}
     response = requests.get(search_url, headers=headers, params=params)
     search_results = response.json()
-    #pprint.pprint(search_results)
+    pprint.pprint(search_results)
 
     try:
         company_desc = search_results['entities']['value'][0]['description']
@@ -312,6 +312,9 @@ def get_maps(company_name):
 def create_interest_ranking_view(industry_name):
     """Interest growth ranking page in each industry sector."""
 
+    form = CompanyForm(request.args)
+    company_name = form.company.data
+
     industry = Industry.query.filter_by(name=industry_name).first()
     industries = Industry.query.all()   
     companies = Company.query.filter(
@@ -320,7 +323,8 @@ def create_interest_ranking_view(industry_name):
 
     return render_template("interest_ranking.html", companies=companies, 
                                                     industries=industries, 
-                                                    industry_name=industry.name)
+                                                    industry_name=industry.name,
+                                                    form=form)
 
 
 if __name__ == "__main__":

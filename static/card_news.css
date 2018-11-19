@@ -28,14 +28,14 @@ body {
     height:554px;
     display: flex;
     width: 100%;
-    padding: 2em 2em 0 4em;
+    /*padding: 2em 2em 0 4em;*/
     align-items: center;
     flex-wrap: wrap;
 }
 
 .card {
-    left: 25%;
-    margin: 7px;
+    /*left: 25%;*/
+    margin: 6px;
 }
 
 span.news-span { 

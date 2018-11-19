@@ -41,11 +41,13 @@
   </form>
 </nav>
 
-
+<script src="/static/top_button.js"></script>
+<link rel="stylesheet" href="/static/top_button.css">
+<button onclick="topFunction()" id="myBtn" title="Go to top"><i class="fas fa-chevron-circle-up"></i></button>
 
 <!-- Logo and Definition /////////////////////////////////////////////////// -->
 
-<main role="main" class="container">
+<main role="main" class="container" style="padding-bottom: 100px;">
 
   <div class="container-fluid" id="about">
 
@@ -120,14 +122,14 @@
 <div class="container-fluid" id="trends">
 
     <span class="span-inline"><h1> Search Volume Trend Over the Past 3 Years </h1></span> 
-    &nbsp; <i class="fas fa-question-circle" style="font-size: x-large;color: #bdc2c7;cursor: pointer;" data-toggle="modal" data-target="#exampleModalCenter"></i>
+    &nbsp; <i class="fas fa-question-circle" style="font-size: x-large;color: #bdc2c7;cursor: pointer;" data-toggle="modal" data-target="#interest-modal"></i>
 
               <!-- Modal -->
-              <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal fade" id="interest-modal" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalCenterTitle">Interest over time form Google Trends</h5>
+                      <h5 class="modal-title">Interest over time form Google Trends</h5>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
@@ -142,6 +144,8 @@
     <div id="chart" data-label-name="{{ company_name }}">
     <canvas data-chart='{{ interest_chart|tojson }}' id="myChart"></canvas>
     </div>
+    <div class="alert alert-info" role="alert" style="text-align: center;"> Click on the dates above to check what was trending that day.</div>
+    
 
     <script src="/static/interest_chart.js"></script>
 
@@ -153,7 +157,7 @@
     
     <h1> Related News </h1>
         <button id="more" class="btn btn-light"> More </button> <button id="fold" class="btn btn-light"> Fold </button>
-        <span class="alert alert-warning" role="alert"> Click on the dates above to check what was trending that day.</span>
+        
       <div id="news-article"></div>
 
     <script src="/static/news.js"></script>
@@ -165,7 +169,25 @@
 <!-- Salary table ////////////////////////////////////////////////////////// -->
 <div class="container-fluid" id="salary-data">
 
-    <h1> Real Salary Data from U.S Labor Department </h1>
+    <span class="span-inline"><h1> Real Salary Data from U.S Labor Department </h1></span>
+    &nbsp; <i class="fas fa-question-circle" style="font-size: x-large;color: #bdc2c7;cursor: pointer;" data-toggle="modal" data-target="#salary-modal"></i>
+
+              <!-- Modal -->
+              <div class="modal fade" id="salary-modal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Salary Data from U.S Department of Labor</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      In the U.S, employers are required to report real salary data when they file the H-1B visa request for work permit. The U.S Department of Labor discloses the salary data every year, and this is usually the most accurate salary data for any company that hires a foreign worker. You can find the full data set on its official website.
+                    </div>
+                  </div>
+                </div>
+              </div>
 
     <div id="salary">
     <table id ="salary-table" class="display table table-striped" data-company-name="{{ company_name }}">
@@ -235,7 +257,14 @@ $(document).ready(function() {
 </div>
 
 </main>
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">Place sticky footer content here.</span>
+      </div>
+    </footer>
+
 </body>
-</div>
+
 
 {% endblock %}
