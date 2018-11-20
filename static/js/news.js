@@ -81,7 +81,7 @@ $("#more").click(function(){
                                    });
 
 $("#fold").click(function(){
-        $('#news-article').animate({ height: 554 }, 1000);
+        $('#news-article').animate({ height: 553 }, 1000);
                            });
 
 
