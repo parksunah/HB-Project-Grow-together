@@ -25,17 +25,16 @@ body {
 
 #news-article {
     overflow:hidden;
-    height:554px;
+    height:553px;
     display: flex;
     width: 100%;
-    padding: 2em 2em 0 4em;
+    padding-top: 2em;
     align-items: center;
     flex-wrap: wrap;
 }
 
 .card {
-    left: 25%;
-    margin: 7px;
+    margin: 5px;
 }
 
 span.news-span { 
