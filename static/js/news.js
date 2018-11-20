@@ -26,7 +26,10 @@ document.getElementById("myChart").onclick = function(evt){
                     
                     let endDate = moment(startDate, "YYYY-MM-DD").add(6, 'days').format("YYYY-MM-DD");
                     let newsPeriod = `
-                                       News from <b>${startDate}</b> to <b>${endDate}</b>. Check what was trending that week. 
+                                        <div class="alert alert-warning" role="alert">
+                                            <i class="far fa-newspaper" style="font-size: xx-large;"></i> 
+                                            News from ${startDate} to ${endDate}. Check what was trending that week.
+                                        </div>
                                      `
                     $("#news-period").html(newsPeriod);
                     

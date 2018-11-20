@@ -154,3 +154,7 @@ margin: auto;
 main.container#wrapper {
     max-width: 84%;
 }
+
+#news-period {
+  padding-left: 10px;
+}
