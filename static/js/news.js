@@ -13,10 +13,13 @@ document.getElementById("myChart").onclick = function(evt){
 
                 if (response.length === 0) {
 
-                    const msg = "News not found.";
-                    alert(msg);
-                    $('#news-article').html(msg);
-                }
+                    const msg = `
+                                    <div class="alert alert-info" id="news-alert" role="alert">
+                                        News not found.
+                                    </div>
+                                `;
+                        $("#news-article").html(msg);
+                    }
 
                 else {
                     const newsList = [];

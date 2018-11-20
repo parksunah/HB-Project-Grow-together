@@ -152,6 +152,6 @@ margin: auto;
   z-index: 100;
 }
 
-.custom {
-    max-width: 1220px;
+.wrapper {
+    width: 1220px;
 } 

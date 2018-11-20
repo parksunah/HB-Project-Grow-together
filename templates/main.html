@@ -6,6 +6,8 @@
 
 <link rel="stylesheet" href="/static/css/style.css">
 
+
+
 <!-- Nav bar with scrollable area ///////////////////////////////////////////-->
 
 <div id="loading2"></div>
@@ -43,9 +45,8 @@
   </form>
 </nav>
 
-<script src="/static/js/top_button.js"></script>
-<link rel="stylesheet" href="/static/css/top_button.css">
-<button onclick="topFunction()" id="myBtn" title="Go to top"><i class="fas fa-chevron-circle-up"></i></button>
+
+<button onclick="topFunction()" id="myBtn" title="Go to top"><i class="fas fa-arrow-circle-up"></i></button>
 
 <!-- Logo and Definition /////////////////////////////////////////////////// -->
 
@@ -64,7 +65,7 @@
             <div class="rating__stars"> 
               <div class="fas stars-outer"> 
                 <div id="star" class="stars-inner" data-rating="{{ job_listings[0]["Rating"]}}"></div>
-              <script src="/static/js/star.js"></script>
+                <script src="/static/js/star.js"></script>
               </div>
             </div>  
             &nbsp; <span class="span-inline"><p> Employees' Rating : {{ job_listings[0]["Rating"]}} </p> </span>
@@ -78,8 +79,7 @@
             <img src={{ company_infos[1] }} class="img-thumbnail">
             {% endif %}
           </div>
-        </div>
-        
+        </div>  
       </div>
 
         {% if company_infos[0] %}
