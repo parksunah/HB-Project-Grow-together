@@ -4,8 +4,8 @@ document.getElementById("myChart").onclick = function(evt){
 
             const activePoints = myChart.getElementsAtEvent(evt);
             const firstPoint = activePoints[0];
-            const date = myChart.data.datasets[0].data[firstPoint._index].x;
-            let company_data = { "company_name" : $("#chart").data("label-name"), "from" : date };
+            const startDate = myChart.data.datasets[0].data[firstPoint._index].x;
+            let company_data = { "company_name" : $("#chart").data("label-name"), "from" : startDate };
             const url = "news.json";
 
             $.get(url, company_data, (response) => {
@@ -14,7 +14,7 @@ document.getElementById("myChart").onclick = function(evt){
                 if (response.length === 0) {
 
                     const msg = `
-                                    <div class="alert alert-info" id="news-alert" role="alert">
+                                    <div class="alert alert-info" id="news-alert" role="alert" style="text-align: center;">
                                         News not found.
                                     </div>
                                 `;
@@ -24,6 +24,13 @@ document.getElementById("myChart").onclick = function(evt){
                 else {
                     const newsList = [];
                     
+                    let endDate = moment(startDate, "YYYY-MM-DD").add(6, 'days').format("YYYY-MM-DD");
+                    let newsPeriod = `
+                                       News from <b>${startDate}</b> to <b>${endDate}</b>. Check what was trending that week. 
+                                     `
+                    $("#news-period").html(newsPeriod);
+                    
+
                     for (let r of response) {
 
                         let newsImg = r.urlToImage;
@@ -96,7 +103,11 @@ function recentNews() {
 
                     if (response.length === 0) {
 
-                        const msg = "News not found.";
+                        const msg = `
+                                        <div class="alert alert-info" id="news-alert" role="alert" style="text-align: center;">
+                                            News not found.
+                                        </div>
+                                    `;
                         $('#news-article').html(msg);
                     }
 

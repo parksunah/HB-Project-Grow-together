@@ -147,7 +147,7 @@
     <div id="chart" data-label-name="{{ company_name }}">
     <canvas data-chart='{{ interest_chart|tojson }}' id="myChart"></canvas>
     </div>
-    <div class="alert alert-info" id="interest-alert" role="alert" style="text-align: center;"> Click on the dates above to check what was trending that day.</div>
+    <div class="alert alert-info" id="interest-alert" role="alert" style="text-align: center;"> Click on the dates above to check what was trending that week.</div>
     
 
     <script src="/static/js/interest_chart.js"></script>
@@ -159,7 +159,11 @@
 <div class="container-fluid" id="news">
     
     <h1> Related News </h1>
-        <button id="more" class="btn btn-light"> More </button> <button id="fold" class="btn btn-light"> Fold </button>
+        <div>
+          <button id="more" class="btn btn-light"> More </button> 
+          <button id="fold" class="btn btn-light"> Fold </button>
+          <span id="news-period"></span>
+        </div>
         
       <div id="news-article">
       </div>
