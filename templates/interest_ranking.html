@@ -7,6 +7,7 @@
 <!-- CSS -->
 <link rel="stylesheet" href="/static/css/style.css">
 
+<div id="loading3"></div>
 
 <body data-spy="scroll" data-target="#navbar" data-offset="50">
 
@@ -32,7 +33,7 @@
     <form id="search-form" class="form-inline" role="form" method="get" action="/company_view">
         {{ form.company(class="form-control search-form") }}
       <span class="input-group-btn">
-          <button type="submit" class="btn btn-primary search-btn">
+          <button type="submit" class="btn btn-primary search-btn" onclick="loading3();">
               <i class="fa fa-search"></i>
           </button>
       </span>   
@@ -43,7 +44,7 @@
 <link rel="stylesheet" href="/static/css/top_button.css">
 <button onclick="topFunction()" id="myBtn" title="Go to top"><i class="fas fa-chevron-circle-up"></i></button>
 
-<main role="main" class="container" style="padding-bottom: 100px;">
+<main role="main" class="container" style="padding-bottom: 100px;" id="ranking-wrapper">
   <div class="container-fluid">
 
 <h1> {{ industry_name }} </h1>
@@ -65,7 +66,7 @@
       <th scope="row">{{ company.ranking }}</th>
       <td>{{ company.name.title() }}</td>
       <td>{{ company.interest_growth }}%</td>
-      <td><a href="/company_view?company={{company.name}}"> Click here </a></td>
+      <td><a href="/company_view?company={{company.name}}" onclick="loading3();"> Click here </a></td>
     </tr>
 {% endfor %}
     </tbody>
