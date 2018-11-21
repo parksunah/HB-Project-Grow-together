@@ -160,9 +160,10 @@ main.container#wrapper {
   padding-left: 10px;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
-  background-color: #f74d75;  
-  color: white;
+.nav .nav-link.active, .nav .show>.nav-link {
+  color: #f74d75;
+  border-bottom: 3px solid #f74d75;
+  font-weight: bold;
 }
 
 .nav-link {
