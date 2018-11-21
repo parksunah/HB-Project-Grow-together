@@ -1,8 +1,7 @@
 from lxml import html, etree
 import requests
 import re
-import os
-import sys
+
 
 
 def get_job_listings(company_name):
