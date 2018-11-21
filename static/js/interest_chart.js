@@ -46,6 +46,11 @@ const myChart = new Chart.Line(ctx, {
                         beginAtZero:true
                     }
                 }],
+            },
+            hover: {
+                      onHover: function(e) {
+                        $("#myChart").css("cursor", e[0] ? "pointer" : "default");
+                      }
             }
         }
     });
