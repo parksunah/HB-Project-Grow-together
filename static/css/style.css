@@ -2,6 +2,7 @@
 
 h1 {
     font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
 }
 
 body {
@@ -56,7 +57,7 @@ body {
 }
 
 body > .container {
-  padding: 60px 15px 0;
+  padding: 50px 15px 0;
 }
 
 .container > .container-fluid {
@@ -158,4 +159,25 @@ main.container#wrapper {
 #news-period {
   padding-left: 10px;
 }
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+  background-color: #f74d75;  
+  color: white;
+}
+
+.nav-link {
+  color: #314147;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+
+.nav > li > a:hover{
+  color: #777;
+}
+
+#navbar {
+  border-bottom: solid 1px #e4e4e4;
+}
+
 

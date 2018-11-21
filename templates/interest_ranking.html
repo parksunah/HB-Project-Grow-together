@@ -11,7 +11,7 @@
 
 <body data-spy="scroll" data-target="#navbar" data-offset="50">
 
-<nav id="navbar" class="navbar navbar-light bg-light fixed-top navbar-custom"> 
+<nav id="navbar" class="navbar navbar-light bg-light fixed-top"> 
   <ul class="nav nav-pills">
     <li class="nav-item">
       <a class="nav-link" href="/"><!-- <img id="nav-logo" src="/static/images/logo2.png" style="width: 100px; height: 56px;"> --> * </a>
@@ -33,7 +33,7 @@
     <form id="search-form" class="form-inline" role="form" method="get" action="/company_view">
         {{ form.company(class="form-control search-form") }}
       <span class="input-group-btn">
-          <button type="submit" class="btn btn-primary search-btn" onclick="loading3();">
+          <button type="submit" class="btn btn-primary search-btn" onclick="loading3();" style="background-color: black; border-color: black;">
               <i class="fa fa-search"></i>
           </button>
       </span>   
