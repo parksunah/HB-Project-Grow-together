@@ -4,3 +4,4 @@ Flask-WTF==0.14.2
 pytrends==4.4.0
 flask-debugtoolbar==0.10.1
 psycopg2==2.7.5
+lxml==4.2.5

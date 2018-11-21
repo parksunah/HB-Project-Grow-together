@@ -4,7 +4,9 @@ document.getElementById("myChart").onclick = function(evt){
 
             const activePoints = myChart.getElementsAtEvent(evt);
             const firstPoint = activePoints[0];
+            console.log(firstPoint);
             const startDate = myChart.data.datasets[0].data[firstPoint._index].x;
+            console.log(myChart.data.datasets[0]);
             let company_data = { "company_name" : $("#chart").data("label-name"), "from" : startDate };
             const url = "news.json";
 

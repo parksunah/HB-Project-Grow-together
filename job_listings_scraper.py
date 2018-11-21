@@ -7,7 +7,7 @@ import sys
 
 def get_job_listings(company_name):
     """Glassdoor job postings scraper. 
-    Source : https://gist.github.com/scrapehero/352286d0f9dee87990cd45c3f979e7cb."""
+    Source : https://gist.github.com/scrapehero/352286d0f9dee87990cd45c3f979e7cb"""
  
     keyword = company_name
     place =  "san francisco bay area"
