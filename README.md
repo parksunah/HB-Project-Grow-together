@@ -9,25 +9,25 @@ Inside Out is an web app that provides to job seekers essential company data tha
 
 # Features
 ## Homepage
-![alt text](https://drive.google.com/open?id=1tTy7_Iq3Al2cDpJAQT9Pt0GgtgLSydzj)
+![alt text](https://github.com/parksunah/Project-Inside-Out/blob/master/static/images/_readme/1.png?raw=true)
 
 ## Main page
 
 ### Company Overview
-![alt text]()
+![alt text](https://github.com/parksunah/Project-Inside-Out/blob/master/static/images/_readme/2.png?raw=true)
 
 ### Search Volume Trend from Google Trends
-![alt text]()
+![alt text](https://github.com/parksunah/Project-Inside-Out/blob/master/static/images/_readme/3.png?raw=true)
 
 ### Related News
-![alt text]()
+![alt text](https://github.com/parksunah/Project-Inside-Out/blob/master/static/images/_readme/4.png?raw=true)
 
 ### Real Salary Data from U.S Labor Department
-![alt text]()
+![alt text](https://github.com/parksunah/Project-Inside-Out/blob/master/static/images/_readme/5.png?raw=true)
 
 ### Job Listing from Glassdoor
-![alt text]()
+![alt text](https://github.com/parksunah/Project-Inside-Out/blob/master/static/images/_readme/6.png?raw=true)
 
 ## Ranking Page
-![alt text]()
+![alt text](https://github.com/parksunah/Project-Inside-Out/blob/master/static/images/_readme/7.png?raw=true)
 
