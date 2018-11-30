@@ -9,25 +9,31 @@ Inside Out is an web app that provides to job seekers essential company data tha
 
 # Features
 ## Homepage
-![alt text](https://drive.google.com/open?id=1tTy7_Iq3Al2cDpJAQT9Pt0GgtgLSydzj)
+![alt text](https://github.com/parksunah/Project-Inside-Out/blob/master/static/images/_readme/1.png?raw=true)
 
 ## Main page
 
 ### Company Overview
-![alt text]()
+- I used Bing Web Search API for the company's logo and description, and Google Maps API for the company's location.
+![alt text](https://github.com/parksunah/Project-Inside-Out/blob/master/static/images/_readme/2.png?raw=true)
 
 ### Search Volume Trend from Google Trends
-![alt text]()
+- I used Chart JS to show company's search volume data from Google Trends.
+![alt text](https://github.com/parksunah/Project-Inside-Out/blob/master/static/images/_readme/3.png?raw=true)
 
 ### Related News
-![alt text]()
+- This news card generator responds to user's click. When user clicks a point on the chart, Chart JS method is called, and captures date. I used it to make a request to News API then loops over JSON results, and generates news card from the specific week.
+![alt text](https://github.com/parksunah/Project-Inside-Out/blob/master/static/images/_readme/4.png?raw=true)
 
 ### Real Salary Data from U.S Labor Department
-![alt text]()
+- I used Postgre and SQLAlchemy for this.
+![alt text](https://github.com/parksunah/Project-Inside-Out/blob/master/static/images/_readme/5.png?raw=true)
 
 ### Job Listing from Glassdoor
-![alt text]()
+- Glass door doesn't have an API. So I wrote my own scraper with the Python request and lxml modules to scrape the company's rating and job listings.
+![alt text](https://github.com/parksunah/Project-Inside-Out/blob/master/static/images/_readme/6.png?raw=true)
 
 ## Ranking Page
-![alt text]()
+- Search volume growth ranking within same industries. To improve loading time, I used an eager join on a db relationship between db tables, and created table index to avoid a full table scan.
+![alt text](https://github.com/parksunah/Project-Inside-Out/blob/master/static/images/_readme/7.png?raw=true)
 
