@@ -14,26 +14,26 @@ Inside Out is an web app that provides to job seekers essential company data tha
 ## Main page
 
 ### Company Overview
-- I used Bing Web Search API for the company's logo and description, and Google Maps API for the company's location.
+- In this section, company overview including the logo & description is provided through Bing Web Search API. Company's location is also diplayed through Google Maps API. Latest employee rating, scraped real-time from Glassdoor, as well as Google search volume growth ranking within industries are shown here so that users can get a better sense of the company's work environment and overall business health.
 ![alt text](https://github.com/parksunah/Project-Inside-Out/blob/master/static/images/_readme/2.png?raw=true)
 
 ### Search Volume Trend from Google Trends
-- I used Chart JS to show company's search volume data from Google Trends.
+- Here, the company's search volume data from Google Trends is visualized through Chart JS. It shows the search trend on Google for the past 3 years. 
 ![alt text](https://github.com/parksunah/Project-Inside-Out/blob/master/static/images/_readme/3.png?raw=true)
 
 ### Related News
-- This news card generator responds to user's click. When user clicks a point on the chart, Chart JS method is called, and captures date. I used it to make a request to News API then loops over JSON results, and generates news card from the specific week.
+- This news card generator responds to user's click. When user clicks a point on the chart, Chart JS method is called, and captures date.  Then a request to News API is triggered to loop over JSON results, and generates news card from the specific week.
 ![alt text](https://github.com/parksunah/Project-Inside-Out/blob/master/static/images/_readme/4.png?raw=true)
 
 ### Real Salary Data from U.S Labor Department
-- I used Postgre and SQLAlchemy for this.
+- In this section, users can check out real salary data from U.S Labor Department. This is based on H1B foreign worker filings in 2018. Postgre and SQLAlchemy are used here.
 ![alt text](https://github.com/parksunah/Project-Inside-Out/blob/master/static/images/_readme/5.png?raw=true)
 
 ### Job Listing from Glassdoor
-- Glass door doesn't have an API. So I wrote my own scraper with the Python request and lxml modules to scrape the company's rating and job listings.
+- This is where jobs posted online are displayed based on real time data from Glassdoor. Because Glassdoor doesn't have a public API anymore, these jobs are fetched through a custom scraper with the Python request and lxml modules to scrape the company's rating and job listings.
 ![alt text](https://github.com/parksunah/Project-Inside-Out/blob/master/static/images/_readme/6.png?raw=true)
 
 ## Ranking Page
-- Search volume growth ranking within same industries. To improve loading time, I used an eager join on a db relationship between db tables, and created table index to avoid a full table scan.
+- Search volume growth ranking within same industries is shown here. Eager join (on a db relationship between db tables) and table index (to avoid a full table scan) are used to improve loading time.
 ![alt text](https://github.com/parksunah/Project-Inside-Out/blob/master/static/images/_readme/7.png?raw=true)
 
